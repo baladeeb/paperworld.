@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>شلة بنات</title>
+
+  <!-- Enable dark mode if previously selected -->
+  <script>
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.body?.classList.add('dark');
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      padding: 2rem;
+      color: #333;
+      margin: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .item {
+      background: white;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .item img {
+      width: 100%;
+      height: 450px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .item img:hover {
+      transform: scale(1.03);
+    }
+
+    .item p {
+      margin: 0;
+      font-weight: bold;
+      color: #34495e;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .back-link a {
+      background: #3498db;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    /* 🌙 Dark Mode Styles */
+    body.dark {
+      background: #1e1e1e;
+      color: #eee;
+    }
+
+    body.dark .item {
+      background: #2c2c2c;
+    }
+
+    body.dark .item p {
+      color: #ddd;
+    }
+
+    body.dark .back-link a {
+      background: #444;
+      color: #fff;
+    }
+
+    /* 💡 Lightbox Overlay */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox-overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      animation: zoomIn 0.3s ease;
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.7);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>شلة بنات</h1>
+
+  <!-- 📷 Image Gallery -->
+  <div class="gallery">
+    <div class="item"><img src="br1.jpg" alt="آنا"><p>آنا</p></div>
+    <div class="item"><img src="ali2.jpg" alt="كارلوس"><p>كارلوس</p></div>
+    <div class="item"><img src="br3.jpg" alt="لجين"><p>لجين</p></div>
+    <div class="item"><img src="br4.jpg" alt="جو"><p>جو</p></div>
+    <div class="item"><img src="br5.jpg" alt="سلوى"><p>سلوى</p></div>
+    <div class="item"><img src="br6.jpg" alt="مايكل"><p>مايكل</p></div>
+    <div class="item"><img src="br7.jpg" alt="ميليس"><p>ميليس</p></div>
+    <div class="item"><img src="br8.jpg" alt="ويليام"><p>ويليام</p></div>
+    <div class="item"><img src="br9.jpg" alt="المدير"><p>المدير</p></div>
+    <div class="item"><img src="br10.jpg" alt="هازال"><p>هازال</p></div>
+    <div class="item"><img src="br11.jpg" alt="بربل"><p>بربل</p></div>
+    <div class="item"><img src="br12.jpg" alt="أدهم"><p>أدهم</p></div>
+  </div>
+
+  <!-- 🔙 Back Button -->
+  <div class="back-link">
+    <a href="index.html">← العودة إلى الصفحة الرئيسية</a>
+  </div>
+
+  <!-- 💡 Lightbox Container -->
+  <div class="lightbox-overlay" id="lightbox">
+    <img id="lightbox-img" src="" alt="عرض الصورة">
+  </div>
+
+  <!-- 💡 Lightbox Script -->
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    document.querySelectorAll('.item img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.style.display = 'flex';
+      });
+    });
+
+    lightbox.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        lightbox.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>

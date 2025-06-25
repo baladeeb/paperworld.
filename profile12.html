@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مشاهدة الحلقات</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #f2f2f2;
+      margin: 0; padding: 20px;
+      direction: rtl;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 15px;
+      margin: 20px auto;
+      max-width: 800px;
+    }
+
+    .episode-btn {
+      background: #3498db;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    .episode-btn:hover {
+      background: #2980b9;
+    }
+
+    .viewer {
+      margin-top: 30px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .viewer img {
+      max-width: 400px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .caption-box {
+      max-width: 400px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<h1>الحلقات</h1>
+
+<div class="grid" id="episodesGrid">
+  <!-- Buttons will be generated here -->
+</div>
+
+<div class="viewer" id="viewerSection" style="display: none;">
+  <img id="episodeImage" src="" alt="صورة الحلقة" />
+  <div class="caption-box" id="captionBox">وصف الحلقة سيظهر هنا.</div>
+</div>
+
+<script>
+  // Array of episode objects
+  const episodes = [
+    { title: "الحلقة الأولى", image: "ep1.jpg", caption: "هذا وصف الحلقة الأولى." },
+    { title: "الحلقة الثانية", image: "ep2_image.png", caption: "هذا وصف الحلقة الثانية." },
+    { title: "الحلقة الثالثة", image: "ep3_photo.jpeg", caption: "هذا وصف الحلقة الثالثة." },
+    { title: "الحلقة الرابعة", image: "ep_004.jpg", caption: "هذا وصف الحلقة الرابعة." },
+    { title: "الحلقة الخامسة", image: "ep5custom.jpg", caption: "هذا وصف الحلقة الخامسة." },
+    { title: "الحلقة السادسة", image: "sixthpic.jpg", caption: "وصف الحلقة السادسة." },
+    { title: "الحلقة السابعة", image: "ep7real.png", caption: "وصف الحلقة السابعة." },
+    { title: "الحلقة الثامنة", image: "8ep.jpg", caption: "وصف الحلقة الثامنة." },
+    { title: "الحلقة التاسعة", image: "photo_ep9.png", caption: "وصف الحلقة التاسعة." },
+    { title: "الحلقة العاشرة", image: "ep10final.jpg", caption: "وصف الحلقة العاشرة." },
+    // Continue up to الحلقة الثلاثين
+    { title: "الحلقة الحادية عشر", image: "ep11.jpg", caption: "..." },
+    { title: "الحلقة الثانية عشر", image: "ep12.jpg", caption: "..." },
+    { title: "الحلقة الثالثة عشر", image: "ep13.jpg", caption: "..." },
+    { title: "الحلقة الرابعة عشر", image: "ep14.jpg", caption: "..." },
+    { title: "الحلقة الخامسة عشر", image: "ep15.jpg", caption: "..." },
+    { title: "الحلقة السادسة عشر", image: "ep16.jpg", caption: "..." },
+    { title: "الحلقة السابعة عشر", image: "ep17.jpg", caption: "..." },
+    { title: "الحلقة الثامنة عشر", image: "ep18.jpg", caption: "..." },
+    { title: "الحلقة التاسعة عشر", image: "ep19.jpg", caption: "..." },
+    { title: "الحلقة العشرون", image: "ep20.jpg", caption: "..." },
+    { title: "الحلقة الحادية والعشرون", image: "ep21.jpg", caption: "..." },
+    { title: "الحلقة الثانية والعشرون", image: "ep22.jpg", caption: "..." },
+    { title: "الحلقة الثالثة والعشرون", image: "ep23.jpg", caption: "..." },
+    { title: "الحلقة الرابعة والعشرون", image: "ep24.jpg", caption: "..." },
+    { title: "الحلقة الخامسة والعشرون", image: "ep25.jpg", caption: "..." },
+    { title: "الحلقة السادسة والعشرون", image: "ep26.jpg", caption: "..." },
+    { title: "الحلقة السابعة والعشرون", image: "ep27.jpg", caption: "..." },
+    { title: "الحلقة الثامنة والعشرون", image: "ep28.jpg", caption: "..." },
+    { title: "الحلقة التاسعة والعشرون", image: "ep29.jpg", caption: "..." },
+    { title: "الحلقة الثلاثون", image: "ep30.jpg", caption: "..." }
+  ];
+
+  const grid = document.getElementById("episodesGrid");
+  const viewer = document.getElementById("viewerSection");
+  const img = document.getElementById("episodeImage");
+  const captionBox = document.getElementById("captionBox");
+
+  episodes.forEach((ep, index) => {
+    const btn = document.createElement("button");
+    btn.className = "episode-btn";
+    btn.textContent = ep.title;
+    btn.addEventListener("click", () => {
+      img.src = ep.image;
+      captionBox.textContent = ep.caption;
+      viewer.style.display = "flex";
+    });
+    grid.appendChild(btn);
+  });
+</script>
+
+</body>
+</html>

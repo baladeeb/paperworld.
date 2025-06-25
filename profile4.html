@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>نور في ظلام</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- ✅ Enable dark mode early -->
+  <script>
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body?.classList.add('dark');
+      document.documentElement?.classList.add('dark');
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      padding: 2rem;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 2rem auto;
+    }
+
+    .item {
+      background: white;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .item img {
+      width: 100%;
+      height: 450px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .item img:hover {
+      transform: scale(1.03);
+    }
+
+    .item p {
+      margin: 0;
+      font-weight: bold;
+      color: #34495e;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .back-link a {
+      background: #3498db;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    /* ✅ Dark Mode */
+    body.dark {
+      background: #1e1e1e;
+      color: #eee;
+    }
+
+    body.dark .item {
+      background: #2c2c2c;
+    }
+
+    body.dark .item p {
+      color: #ddd;
+    }
+
+    body.dark .back-link a {
+      background: #444;
+      color: #fff;
+    }
+
+    /* ✅ Lightbox Styles */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox-overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+      animation: zoomIn 0.3s ease;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.7); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>نور في ظلام</h1>
+
+<div class="gallery">
+  <div class="item"><img src="n2.jpg" alt="نور"><p>نور</p></div>
+  <div class="item"><img src="n3.jpg" alt="جولدي"><p>جولدي</p></div>
+  <div class="item"><img src="n4.jpg" alt="لينا"><p>لينا</p></div>
+  <div class="item"><img src="n1.jpg" alt="ايمري"><p>ايمري</p></div>
+  <div class="item"><img src="ali4.jpg" alt="مادلين"><p>مادلين</p></div>
+  <div class="item"><img src="n5.jpg" alt="ميار"><p>ميار</p></div>
+  <div class="item"><img src="n6.jpg" alt="لهب"><p>لهب</p></div>
+  <div class="item"><img src="ali4.jpg" alt="مايكل"><p>مايكل</p></div>
+  <div class="item"><img src="n7.jpg" alt="زينة"><p>زينة</p></div>
+  <div class="item"><img src="al1.jpg" alt="لارين"><p>لارين</p></div>
+  <div class="item"><img src="ali10.jpg" alt="كارمن"><p>كارمن</p></div>
+  <div class="item"><img src="ali15.jpg" alt="براون"><p>براون</p></div>
+  <div class="item"><img src="al6.jpg" alt="بيلا"><p>بيلا</p></div>
+  <div class="item"><img src="n8.jpg" alt="هولاند"><p>هولاند</p></div>
+</div>
+
+<!-- 🔙 Back Button -->
+<div class="back-link">
+  <a href="index.html">← Back to Main Page</a>
+</div>
+
+<!-- 💡 Lightbox HTML -->
+<div class="lightbox-overlay" id="lightbox">
+  <img id="lightbox-img" src="" alt="Lightbox">
+</div>
+
+<!-- 💡 JavaScript for Lightbox -->
+<script>
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+
+  document.querySelectorAll('.item img').forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightbox.style.display = 'flex';
+    });
+  });
+
+  lightbox.addEventListener('click', () => {
+    lightbox.style.display = 'none';
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      lightbox.style.display = 'none';
+    }
+  });
+</script>
+
+</body>
+</html>

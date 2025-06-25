@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>صفحة الأخبار</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 2rem;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background: #121212;
+      color: #eee;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .toggle-btn {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+    .return-btn {
+      background: #888;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .filters {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .filters button {
+      margin: 5px;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 20px;
+      background-color: #555;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .filters button:hover {
+      background-color: #777;
+    }
+
+    .feed {
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .post {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .post img {
+      width: 100%;
+      height: auto;
+      cursor: pointer;
+    }
+
+    .caption {
+      padding: 1rem;
+      font-size: 16px;
+      line-height: 1.5;
+      position: relative;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      padding: 0 1rem 1rem;
+      align-items: center;
+    }
+
+    .like-btn, .fav-btn {
+      font-size: 22px;
+      color: gray;
+      transition: color 0.3s;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .like-btn.liked::before {
+      content: "♥";
+      color: red;
+    }
+
+    .like-btn:not(.liked)::before {
+      content: "♡";
+      color: gray;
+    }
+
+    .fav-btn.favorited::before {
+      content: "★";
+      color: gold;
+    }
+
+    .fav-btn:not(.favorited)::before {
+      content: "☆";
+      color: gray;
+    }
+
+    .like-btn, .fav-btn {
+      font-family: inherit;
+      position: relative;
+      color: transparent;
+    }
+
+    .comment-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: #555;
+    }
+
+    .comment-box {
+      display: none;
+      padding: 0 1rem 1rem;
+    }
+
+    .comment-box textarea {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      resize: none;
+    }
+
+    .comment-box button {
+      margin-top: 5px;
+      padding: 6px 12px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      background-color: #3498db;
+      color: white;
+      cursor: pointer;
+    }
+
+    body.dark .post {
+      background: #1e1e1e;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      animation: zoomIn 0.3s ease;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <button class="toggle-btn" id="toggleMode">🌙 الوضع الداكن</button>
+  <button class="return-btn" onclick="location.href='index.html'">⬅️ العودة</button>
+</div>
+
+<h1>📰 صفحة الأخبار</h1>
+
+<div class="filters">
+  <button onclick="filterPosts('all')">الكل</button>
+  <button onclick="filterPosts('entertainment')">ترفيه</button>
+  <button onclick="filterPosts('sports')">رياضة</button>
+  <button onclick="filterPosts('politics')">سياسة</button>
+</div>
+
+<div class="feed">
+  <!-- Post 1 -->
+  <div class="post" data-category="entertainment">
+    <img src="news1.jpg" alt="خبر 1" class="post-image">
+    <div class="caption">بدأ عرض مسلسل صيفي جديد من بطولة يونس ولينا وآخرين!</div>
+    <div class="actions">
+      <button class="like-btn"></button>
+      <button class="comment-btn">💬</button>
+      <button class="fav-btn"></button>
+    </div>
+    <div class="comment-box">
+      <textarea rows="2" placeholder="أضف تعليقك..."></textarea>
+      <button class="send-comment">إرسال</button>
+    </div>
+  </div>
+
+  <!-- Post 2 -->
+  <div class="post" data-category="entertainment">
+    <img src="news2.jpg" alt="خبر 2" class="post-image">
+    <div class="caption">تسريبات عن فيلم جديد قادم إلى الساحات، فيلم رومانسي أكشن ببطولات جديدة ومشوقة</div>
+    <div class="actions">
+      <button class="like-btn"></button>
+      <button class="comment-btn">💬</button>
+      <button class="fav-btn"></button>
+    </div>
+    <div class="comment-box">
+      <textarea rows="2" placeholder="أضف تعليقك..."></textarea>
+      <button class="send-comment">إرسال</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <img id="lightbox-img" src="" alt="صورة">
+</div>
+
+<script>
+  // Dark mode
+  const toggleBtn = document.getElementById('toggleMode');
+  if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark');
+    toggleBtn.textContent = '☀️ الوضع الفاتح';
+  }
+  toggleBtn.addEventListener('click', () => {
+    const isDark = document.body.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    toggleBtn.textContent = isDark ? '☀️ الوضع الفاتح' : '🌙 الوضع الداكن';
+  });
+
+  // Lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  document.querySelectorAll('.post-image').forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightbox.style.display = 'flex';
+    });
+  });
+  lightbox.addEventListener('click', () => lightbox.style.display = 'none');
+
+  // Like
+  document.querySelectorAll('.like-btn').forEach(btn => {
+    btn.addEventListener('click', () => btn.classList.toggle('liked'));
+  });
+
+  // Favorite
+  document.querySelectorAll('.fav-btn').forEach(btn => {
+    btn.addEventListener('click', () => btn.classList.toggle('favorited'));
+  });
+
+  // Comments
+  document.querySelectorAll('.comment-btn').forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      const box = document.querySelectorAll('.comment-box')[i];
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    });
+  });
+
+  document.querySelectorAll('.send-comment').forEach((sendBtn, i) => {
+    sendBtn.addEventListener('click', () => {
+      const textarea = document.querySelectorAll('.comment-box textarea')[i];
+      alert("تم إرسال تعليقك: " + textarea.value);
+      textarea.value = "";
+    });
+  });
+
+  // Filter
+  function filterPosts(type) {
+    document.querySelectorAll('.post').forEach(post => {
+      if (type === 'all' || post.dataset.category === type) {
+        post.style.display = 'block';
+      } else {
+        post.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
