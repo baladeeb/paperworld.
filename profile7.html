@@ -117,11 +117,81 @@
       background: #444;
       color: #fff;
     }
+/* ⭐ Star Rating Styles */
+.star-rating {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 6px;
+  user-select: none;
+  z-index: 10000;
+}
+
+.star-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  transition: transform 0.2s ease;
+}
+
+.star-btn:hover,
+.star-btn:focus {
+  transform: scale(1.2);
+  outline: none;
+}
+
+.star-icon {
+  fill: #999; /* gray star */
+  transition: fill 0.3s ease;
+  width: 100%;
+  height: 100%;
+}
+
+.star-btn.active .star-icon {
+  fill: gold;
+}
   </style>
 </head>
 <body>
 
 <h1>الفريق الخطأ</h1>
+<!-- ⭐ Star Rating -->
+<div class="star-rating" aria-label="تقييم النجوم">
+  <button data-value="1" aria-label="تقييم 1 نجمة" type="button" class="star-btn">
+    <svg viewBox="0 0 24 24" class="star-icon">
+      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
+        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+  </button>
+  <button data-value="2" aria-label="تقييم 2 نجمتين" type="button" class="star-btn">
+    <svg viewBox="0 0 24 24" class="star-icon">
+      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
+        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+  </button>
+  <button data-value="3" aria-label="تقييم 3 نجوم" type="button" class="star-btn">
+    <svg viewBox="0 0 24 24" class="star-icon">
+      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
+        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+  </button>
+  <button data-value="4" aria-label="تقييم 4 نجوم" type="button" class="star-btn">
+    <svg viewBox="0 0 24 24" class="star-icon">
+      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
+        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+  </button>
+  <button data-value="5" aria-label="تقييم 5 نجوم" type="button" class="star-btn">
+    <svg viewBox="0 0 24 24" class="star-icon">
+      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
+        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+  </button>
+</div>
 
 <div class="gallery">
   <div class="item"><img src="FT1.jpg" alt="عزيز"><p>عزيز</p></div>
@@ -168,6 +238,39 @@
       lightbox.style.display = 'none';
     }
   });
+// ⭐ Star Rating Script
+(function() {
+  const stars = document.querySelectorAll('.star-rating .star-btn');
+  const storageKey = `rating-${location.pathname}`; // unique per page
+
+  // Load saved rating
+  let savedRating = localStorage.getItem(storageKey);
+  if (savedRating) {
+    savedRating = parseInt(savedRating);
+    setRating(savedRating);
+  }
+
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const val = parseInt(star.getAttribute('data-value'));
+      setRating(val);
+      localStorage.setItem(storageKey, val);
+    });
+  });
+
+  function setRating(rating) {
+    stars.forEach(star => {
+      const val = parseInt(star.getAttribute('data-value'));
+      if (val <= rating) {
+        star.classList.add('active');
+        star.querySelector('svg').style.fill = 'gold';
+      } else {
+        star.classList.remove('active');
+        star.querySelector('svg').style.fill = '#999';
+      }
+    });
+  }
+})();
 </script>
 
 </body>

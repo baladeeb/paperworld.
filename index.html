@@ -145,7 +145,6 @@
       justify-content: center;
       z-index: 10;
     }
-
     .like-btn svg {
       fill: #aaa;
       transition: fill 0.3s ease;
@@ -392,9 +391,9 @@
   translateBtn.addEventListener('click', () => {
     alert('ميزة الترجمة تحت التطوير!');
   });
-  favsBtn.addEventListener('click', () => {
-    alert('ميزة المفضلة تحت التطوير!');
-  });
+    document.getElementById('favsBtn').addEventListener('click', () => {
+      window.location.href = 'favorites.html';
+    });
 
 </script>
 

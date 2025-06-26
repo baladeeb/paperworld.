@@ -1,33 +1,56 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>شلة بنات</title>
 
-  <!-- Enable dark mode if previously selected -->
+  <!-- ✅ Enable dark mode if selected -->
   <script>
     if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.classList.add('dark');
-      // لا حاجة لإضافة 'dark' إلى body هنا
     }
   </script>
 
   <style>
+    /* 🌌 Lightbox Overlay */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox-overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+      animation: zoomIn 0.3s ease;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.7); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #f0f4f8;
       padding: 2rem;
       color: #333;
-      margin: 0;
       transition: background 0.3s, color 0.3s;
+      margin: 0;
     }
 
     h1 {
       text-align: center;
       color: #2c3e50;
-      margin-bottom: 30px;
-      font-size: 28px;
     }
 
     .gallery {
@@ -35,7 +58,7 @@
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 20px;
       max-width: 1000px;
-      margin: 0 auto;
+      margin: 2rem auto;
     }
 
     .item {
@@ -53,11 +76,6 @@
       border-radius: 8px;
       margin-bottom: 10px;
       cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    .item img:hover {
-      transform: scale(1.03);
     }
 
     .item p {
@@ -80,65 +98,103 @@
       font-weight: bold;
     }
 
-    /* 🌙 Dark Mode Styles */
+    /* 🌙 DARK MODE STYLES */
     html.dark body {
       background: #1e1e1e;
       color: #eee;
     }
 
-    html.dark body .item {
+    html.dark .item {
       background: #2c2c2c;
+      color: #eee;
     }
 
-    html.dark body .item p {
+    html.dark .item p {
       color: #ddd;
     }
 
-    html.dark body .back-link a {
+    html.dark .back-link a {
       background: #444;
       color: #fff;
     }
+/* ⭐ Star Rating Styles */
+.star-rating {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 6px;
+  user-select: none;
+  z-index: 10000;
+}
 
-    /* 💡 Lightbox Overlay */
-    .lightbox-overlay {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.9);
-      justify-content: center;
-      align-items: center;
-    }
+.star-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  transition: transform 0.2s ease;
+}
 
-    .lightbox-overlay img {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-      animation: zoomIn 0.3s ease;
-    }
+.star-btn:hover,
+.star-btn:focus {
+  transform: scale(1.2);
+  outline: none;
+}
 
-    @keyframes zoomIn {
-      from {
-        transform: scale(0.7);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
+.star-icon {
+  fill: #999; /* gray star */
+  transition: fill 0.3s ease;
+  width: 100%;
+  height: 100%;
+}
+
+.star-btn.active .star-icon {
+  fill: gold;
+}
   </style>
 </head>
 <body>
 
-  <h1>شلة بنات</h1>
+<h1>شلة بنات</h1>
 
-  <!-- 📷 Image Gallery -->
-  <div class="gallery">
+<!-- ⭐ Star Rating -->
+<div class="star-rating" aria-label="تقييم النجوم">
+  <button data-value="1" aria-label="تقييم 1 نجمة" type="button" class="star-btn">
+    <svg viewBox="0 0 24 24" class="star-icon">
+      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
+        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+  </button>
+  <button data-value="2" aria-label="تقييم 2 نجمتين" type="button" class="star-btn">
+    <svg viewBox="0 0 24 24" class="star-icon">
+      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
+        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+  </button>
+  <button data-value="3" aria-label="تقييم 3 نجوم" type="button" class="star-btn">
+    <svg viewBox="0 0 24 24" class="star-icon">
+      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
+        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+  </button>
+  <button data-value="4" aria-label="تقييم 4 نجوم" type="button" class="star-btn">
+    <svg viewBox="0 0 24 24" class="star-icon">
+      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
+        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+  </button>
+  <button data-value="5" aria-label="تقييم 5 نجوم" type="button" class="star-btn">
+    <svg viewBox="0 0 24 24" class="star-icon">
+      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
+        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+  </button>
+</div>
+
+<div class="gallery">
     <div class="item"><img src="br1.jpg" alt="آنا"><p>آنا</p></div>
     <div class="item"><img src="ali2.jpg" alt="كارلوس"><p>كارلوس</p></div>
     <div class="item"><img src="br3.jpg" alt="لجين"><p>لجين</p></div>
@@ -151,40 +207,73 @@
     <div class="item"><img src="br10.jpg" alt="هازال"><p>هازال</p></div>
     <div class="item"><img src="br11.jpg" alt="بربل"><p>بربل</p></div>
     <div class="item"><img src="br12.jpg" alt="أدهم"><p>أدهم</p></div>
-  </div>
+</div>
 
-  <!-- 🔙 Back Button -->
-  <div class="back-link">
-    <a href="index.html">← العودة إلى الصفحة الرئيسية</a>
-  </div>
+<!-- 🔙 Back Button -->
+<div class="back-link">
+  <a href="index.html">← Back to Main Page</a>
+</div>
 
-  <!-- 💡 Lightbox Container -->
-  <div class="lightbox-overlay" id="lightbox">
-    <img id="lightbox-img" src="" alt="عرض الصورة">
-  </div>
+<!-- ✅ Lightbox Container -->
+<div class="lightbox-overlay" id="lightbox">
+  <img id="lightbox-img" src="" alt="Lightbox Image">
+</div>
 
-  <!-- 💡 Lightbox Script -->
-  <script>
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
+<script>
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
 
-    document.querySelectorAll('.item img').forEach(img => {
-      img.addEventListener('click', () => {
-        lightboxImg.src = img.src;
-        lightbox.style.display = 'flex';
-      });
+  document.querySelectorAll('.item img').forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightbox.style.display = 'flex';
     });
+  });
 
-    lightbox.addEventListener('click', () => {
+  lightbox.addEventListener('click', () => {
+    lightbox.style.display = 'none';
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
       lightbox.style.display = 'none';
-    });
+    }
+  });
 
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        lightbox.style.display = 'none';
+// ⭐ Star Rating Script
+(function() {
+  const stars = document.querySelectorAll('.star-rating .star-btn');
+  const storageKey = `rating-${location.pathname}`; // unique per page
+
+  // Load saved rating
+  let savedRating = localStorage.getItem(storageKey);
+  if (savedRating) {
+    savedRating = parseInt(savedRating);
+    setRating(savedRating);
+  }
+
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const val = parseInt(star.getAttribute('data-value'));
+      setRating(val);
+      localStorage.setItem(storageKey, val);
+    });
+  });
+
+  function setRating(rating) {
+    stars.forEach(star => {
+      const val = parseInt(star.getAttribute('data-value'));
+      if (val <= rating) {
+        star.classList.add('active');
+        star.querySelector('svg').style.fill = 'gold';
+      } else {
+        star.classList.remove('active');
+        star.querySelector('svg').style.fill = '#999';
       }
     });
-  </script>
+  }
+})();
+</script>
 
 </body>
 </html>
