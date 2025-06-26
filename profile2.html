@@ -9,7 +9,6 @@
   <script>
     if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.classList.add('dark');
-      document.body?.classList.add('dark');
     }
   </script>
 
@@ -49,6 +48,7 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       text-align: center;
       height: 100%;
+      transition: background 0.3s, color 0.3s;
     }
 
     .item img {
@@ -69,6 +69,7 @@
       margin: 0;
       font-weight: bold;
       color: #34495e;
+      transition: color 0.3s;
     }
 
     .back-link {
@@ -83,27 +84,28 @@
       text-decoration: none;
       border-radius: 8px;
       font-weight: bold;
+      transition: background 0.3s, color 0.3s;
     }
 
     .item-wrapper.hidden {
       display: none;
     }
 
-    /* 🌙 Dark Mode */
-    body.dark {
+    /* 🌙 DARK MODE using html.dark body */
+    html.dark body {
       background: #1e1e1e;
       color: #eee;
     }
 
-    body.dark .item {
+    html.dark body .item {
       background: #2c2c2c;
     }
 
-    body.dark .item p {
+    html.dark body .item p {
       color: #ddd;
     }
 
-    body.dark .back-link a {
+    html.dark body .back-link a {
       background: #444;
       color: #fff;
     }

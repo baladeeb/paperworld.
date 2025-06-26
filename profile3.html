@@ -9,7 +9,7 @@
   <script>
     if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.classList.add('dark');
-      document.body?.classList.add('dark');
+      // لا حاجة لإضافة 'dark' إلى body هنا
     }
   </script>
 
@@ -81,20 +81,20 @@
     }
 
     /* 🌙 Dark Mode Styles */
-    body.dark {
+    html.dark body {
       background: #1e1e1e;
       color: #eee;
     }
 
-    body.dark .item {
+    html.dark body .item {
       background: #2c2c2c;
     }
 
-    body.dark .item p {
+    html.dark body .item p {
       color: #ddd;
     }
 
-    body.dark .back-link a {
+    html.dark body .back-link a {
       background: #444;
       color: #fff;
     }

@@ -5,11 +5,11 @@
   <title>نور في ظلام</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- ✅ Enable dark mode early -->
+  <!-- Enable dark mode early -->
   <script>
     if (localStorage.getItem('theme') === 'dark') {
-      document.body?.classList.add('dark');
-      document.documentElement?.classList.add('dark');
+      document.documentElement.classList.add('dark');
+      // لا حاجة لإضافة 'dark' إلى body
     }
   </script>
 
@@ -20,6 +20,7 @@
       padding: 2rem;
       color: #333;
       transition: background 0.3s, color 0.3s;
+      margin: 0;
     }
 
     h1 {
@@ -77,26 +78,26 @@
       font-weight: bold;
     }
 
-    /* ✅ Dark Mode */
-    body.dark {
+    /* Dark Mode Styles */
+    html.dark body {
       background: #1e1e1e;
       color: #eee;
     }
 
-    body.dark .item {
+    html.dark body .item {
       background: #2c2c2c;
     }
 
-    body.dark .item p {
+    html.dark body .item p {
       color: #ddd;
     }
 
-    body.dark .back-link a {
+    html.dark body .back-link a {
       background: #444;
       color: #fff;
     }
 
-    /* ✅ Lightbox Styles */
+    /* Lightbox Overlay */
     .lightbox-overlay {
       display: none;
       position: fixed;
@@ -144,17 +145,16 @@
   <div class="item"><img src="n8.jpg" alt="هولاند"><p>هولاند</p></div>
 </div>
 
-<!-- 🔙 Back Button -->
+<!-- Back Button -->
 <div class="back-link">
   <a href="index.html">← Back to Main Page</a>
 </div>
 
-<!-- 💡 Lightbox HTML -->
+<!-- Lightbox -->
 <div class="lightbox-overlay" id="lightbox">
   <img id="lightbox-img" src="" alt="Lightbox">
 </div>
 
-<!-- 💡 JavaScript for Lightbox -->
 <script>
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
