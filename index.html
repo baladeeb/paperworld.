@@ -281,6 +281,7 @@
     { name: "أرض زيكولا", photo: "photo14.jpg", profile: "profile14.html", type: "films" },
     { name: "لعبة زواج", photo: "news1.jpg", profile: "profile15.html", type: "series", isNew: true },
     { name: "عالم التسلية", photo: "photo16.jpg", profile: "profile16.html", type: "programs" },
+    { name: "أمنية الدم", photo: "photo17.jpg", profile: "profile17.html", type: "films", isSoon: true },
   ];
 
   const container = document.getElementById('cardsContainer');
@@ -296,10 +297,13 @@
     // العلامة جديد
     const newTag = person.isNew ? `<span style="color:#e74c3c; font-weight:bold; font-size:14px; margin-left:6px;"> جديد</span>` : '';
 
+    // العلامة قريبًا
+    const newSoon = person.isSoon ? `<span style="color:#e74c3c; font-weight:bold; font-size:14px; margin-left:6px;"> قريبًا</span>` : '';
+
     card.innerHTML = `
       <a href="${person.profile}" style="text-decoration:none;color:inherit;display:block;position:relative;">
         <img src="${person.photo}" alt="${person.name}" />
-        <h3>${person.name}${newTag}</h3>
+        <h3>${person.name}${newTag}${newSoon}</h3>
       </a>
       <button class="like-btn" aria-label="Like button" title="أعجبني" type="button">
         <svg viewBox="0 0 24 24">
