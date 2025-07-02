@@ -1,94 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
   <meta charset="UTF-8" />
   <title>نور في ظلام</title>
-
-  <!-- ✅ Enable dark mode if selected -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>
     if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.classList.add('dark');
     }
   </script>
-
   <style>
-    /* 🌌 Lightbox Overlay */
-    .lightbox-overlay {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.9);
-      justify-content: center;
-      align-items: center;
-    }
-
-    .lightbox-overlay img {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.7);
-      animation: zoomIn 0.3s ease;
-    }
-
-    @keyframes zoomIn {
-      from { transform: scale(0.7); opacity: 0; }
-      to   { transform: scale(1); opacity: 1; }
-    }
-
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #f0f4f8;
-      padding: 2rem;
+      margin: 0;
+      padding: 1rem;
       color: #333;
       transition: background 0.3s, color 0.3s;
-      margin: 0;
     }
-
+    html.dark body {
+      background: #1e1e1e;
+      color: #eee;
+    }
     h1 {
       text-align: center;
-      color: #2c3e50;
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-      max-width: 1000px;
-      margin: 2rem auto;
-    }
-
-    .item {
-      background: white;
-      border-radius: 10px;
-      padding: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-
-    .item img {
-      width: 100%;
-      height: 450px;
-      object-fit: cover;
-      border-radius: 8px;
       margin-bottom: 10px;
-      cursor: pointer;
     }
-
-    .item p {
-      margin: 0;
-      font-weight: bold;
-      color: #34495e;
-    }
-
     .back-link {
-      text-align: center;
-      margin-top: 40px;
+      margin: 1rem;
+      text-align: left;
     }
-
     .back-link a {
       background: #3498db;
       color: white;
@@ -97,183 +38,248 @@
       border-radius: 8px;
       font-weight: bold;
     }
-
-    /* 🌙 DARK MODE STYLES */
-    html.dark body {
-      background: #1e1e1e;
-      color: #eee;
+    .gallery-scroll {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      padding: 1rem 0;
+      scroll-behavior: smooth;
     }
-
-    html.dark .item {
+    .character {
+      flex: 0 0 auto;
+      width: 120px;
+      text-align: center;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .character img {
+      width: 100%;
+      height: 80px;
+      object-fit: cover;
+      object-position: top;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+    }
+    .character p {
+      margin: 5px 0;
+      font-weight: bold;
+    }
+    html.dark .character {
       background: #2c2c2c;
+    }
+    html.dark .character p {
       color: #eee;
     }
-
-    html.dark .item p {
+    .episodes {
+      max-width: 600px;
+      margin: 2rem auto;
+    }
+    .episode {
+      background: #fff;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .episode h3 {
+      margin: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .episode .desc {
+      margin-top: 10px;
+      display: none;
+    }
+    html.dark .episode {
+      background: #2c2c2c;
+    }
+    html.dark .episode .desc {
       color: #ddd;
     }
-
-    html.dark .back-link a {
-      background: #444;
-      color: #fff;
+    .star-rating {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      gap: 5px;
+      z-index: 1000;
     }
-/* ⭐ Star Rating Styles */
-.star-rating {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  gap: 6px;
-  user-select: none;
-  z-index: 10000;
+    .star-btn {
+      background: none;
+      border: none;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+    }
+    .star-icon {
+      fill: #999;
+      transition: fill 0.3s;
+    }
+    .star-btn.active .star-icon {
+      fill: gold;
+    }
+    /* Lightbox */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .lightbox-overlay img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+.info-section {
+  background: #ecf0f1;
+  padding: 30px 20px;
+  margin-top: 60px;
+  font-size: 16px;
+  border-top: 2px solid #bdc3c7;
+  direction: rtl;
 }
 
-.star-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
+.info-section h2 {
+  margin-top: 0;
+  color: #2c3e50;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.info-section ul {
+  list-style: none;
   padding: 0;
-  width: 28px;
-  height: 28px;
-  transition: transform 0.2s ease;
+  margin: 0;
 }
 
-.star-btn:hover,
-.star-btn:focus {
-  transform: scale(1.2);
-  outline: none;
+.info-section li {
+  margin-bottom: 10px;
+  color: #34495e;
 }
 
-.star-icon {
-  fill: #999; /* gray star */
-  transition: fill 0.3s ease;
-  width: 100%;
-  height: 100%;
+.info-section strong {
+  color: #000;
 }
 
-.star-btn.active .star-icon {
-  fill: gold;
+/* الوضع الليلي */
+html.dark .info-section {
+  background: #2c2c2c;
+  border-top-color: #444;
+}
+
+html.dark .info-section h2 {
+  color: #fff;
+}
+
+html.dark .info-section li {
+  color: #ccc;
+}
+
+html.dark .info-section strong {
+  color: #fff;
 }
   </style>
 </head>
 <body>
-
+<div class="back-link"><a href="index.html">← العودة</a></div>
 <h1>نور في ظلام</h1>
-<!-- ⭐ Star Rating -->
+<div class="gallery-scroll">
+  <div class="character"><img src="n2.jpg" alt="نور"><p>نور</p></div>
+  <div class="character"><img src="n3.jpg" alt="جولدي"><p>جولدي</p></div>
+  <div class="character"><img src="n4.jpg" alt="لينا"><p>لينا</p></div>
+  <div class="character"><img src="n1.jpg" alt="ايمري"><p>ايمري</p></div>
+  <div class="character"><img src="ali4.jpg" alt="مادلين"><p>مادلين</p></div>
+  <div class="character"><img src="n5.jpg" alt="ميار"><p>ميار</p></div>
+  <div class="character"><img src="n6.jpg" alt="لهب"><p>لهب</p></div>
+  <div class="character"><img src="br6.jpg" alt="مايكل"><p>مايكل</p></div>
+  <div class="character"><img src="n7.jpg" alt="زينة"><p>زينة</p></div>
+  <div class="character"><img src="al1.jpg" alt="لارين"><p>لارين</p></div>
+  <div class="character"><img src="ali10.jpg" alt="كارمن"><p>كارمن</p></div>
+  <div class="character"><img src="ali15.jpg" alt="براون"><p>براون</p></div>
+  <div class="character"><img src="al6.jpg" alt="بيلا"><p>بيلا</p></div>
+  <div class="character"><img src="n8.jpg" alt="هولاند"><p>هولاند</p></div>
+</div>
+<div class="episodes">
+  <div class="episode"><h3>الحلقة 1 <span>⬇</span></h3><div class="desc">نور فتاة بسيطة تسكن مع عائلتها في فلسطين، تهتم بدراستها ومستقبلها، تعيش حياة معقدة في أرجاء الاحتلال، فترى العالم كظلام نحوها.</div></div>
+  <div class="episode"><h3>الحلقة 2 <span>⬇</span></h3><div class="desc">أثناء عودتها من مدرستها تنقلب حياتها رأسا على عقب عند اختطافها، لتدرك بأنها هدف هام عند العدو، حيث لوالدها مشاكل معهم تتضح فيما بعد.</div></div>
+  <div class="episode"><h3>الحلقة 3 <span>⬇</span></h3><div class="desc">حياتها في السجن تتحول من ساعة لأيام، يتشارك معها شاب في ذات عمرها وأخيه الصغير الذي يقتل أمام عينيهما عندما حاول أن يهرب، لتزيد من استحالة فرصة النجاة.</div></div>
+  <div class="episode"><h3>الحلقة 4 <span>⬇</span></h3><div class="desc">خرجت من السجن بحالتها التعبة المذرية، وتبدأ رحلة علاجها النفسي، حتى تبدأ تعود لحالتها بعد مرور شهر.</div></div>
+  <div class="episode"><h3>الحلقة 5 <span>⬇</span></h3><div class="desc">عند عودتها من البقالة، تصدم برؤية عمارتها مهدومة بالكامل جراء صاروخ دمر كل شيء، بما فيهم عائلتها بالكامل عدا أخيها الكبير، تنهار وتدرك لاحقا قتل أخيها من قبل عصابة من الأعداء.</div></div>
+  <div class="episode"><h3>الحلقة 6 <span>⬇</span></h3><div class="desc">يأتي عمها، فتبدأ حكايتها معه في أمريكا، تكرهه وتحمل تجاهه حقدا قديما، تتعرف على عائلته وابنته المستفزة، تبدأ مدرستها وتذهب لأول يوم. </div></div>
+  <div class="episode"><h3>الحلقة 7 <span>⬇</span></h3><div class="desc">تصطدم بآدم، تراه مألوفا، ثم تتعرف على جيني، تبدأ معاناتها بالتنمر الذي يرافقها في المدرسة لأنها فلسطينية في مدرسة يترأسها آدم الإسرائيلي الذي تكتشف أنه ابن عدو العائلة الذي قتل أملها.</div></div>
+  <div class="episode"><h3>الحلقة 8 <span>⬇</span></h3><div class="desc">تبدأ انتقامها منهم، تضربهم وتفشي أسرارهم! كعلاقة بيلا بوالدها السادي، وكشفت أن نوا يخون صديقته روز. متسببة في حرب مدرسية!</div></div>
+  <div class="episode"><h3>الحلقة 9 <span>⬇</span></h3><div class="desc">بدأ آدم يميل لتصديق نور، بطريقة ما سحرته فأوقعته بحبها، اكتشف حقيقة والده وبدأت نور تطري العلاقات في هذه الصحبة المدرسية.</div></div>
+  <div class="episode"><h3>الحلقة 10 <span>⬇</span></h3><div class="desc">تعود الأمور لمجاريها، تصبح نور محبوبة في هذه المدرسة، تتواصل مع صديقتها في فلسطين فلا تجيبها،مما يسبب له القلق وتقرر النزول لرؤيتها.</div></div>
+  <div class="episode"><h3>الحلقة 11 <span>⬇</span></h3><div class="desc">رافقها آدم على فلسطين دون علمها، بدأ والد آدم باستهداف نور تلقائيا، لكن آدم يلحق الموقف ويقتل والده، متسببا بسجنه، تعيش نور في أمريكا منتظرة خروجه، فيخرج لها بعد خمس سنوات، ليحققا الحياة التي حلما بها، ربما سترى النور بعد سنوات الظلام. </div></div>
+</div>
+<div class="lightbox-overlay" id="lightbox"><img id="lightbox-img" src="" alt=""></div>
 <div class="star-rating" aria-label="تقييم النجوم">
-  <button data-value="1" aria-label="تقييم 1 نجمة" type="button" class="star-btn">
-    <svg viewBox="0 0 24 24" class="star-icon">
-      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
-        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-    </svg>
-  </button>
-  <button data-value="2" aria-label="تقييم 2 نجمتين" type="button" class="star-btn">
-    <svg viewBox="0 0 24 24" class="star-icon">
-      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
-        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-    </svg>
-  </button>
-  <button data-value="3" aria-label="تقييم 3 نجوم" type="button" class="star-btn">
-    <svg viewBox="0 0 24 24" class="star-icon">
-      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
-        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-    </svg>
-  </button>
-  <button data-value="4" aria-label="تقييم 4 نجوم" type="button" class="star-btn">
-    <svg viewBox="0 0 24 24" class="star-icon">
-      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
-        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-    </svg>
-  </button>
-  <button data-value="5" aria-label="تقييم 5 نجوم" type="button" class="star-btn">
-    <svg viewBox="0 0 24 24" class="star-icon">
-      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
-        9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-    </svg>
-  </button>
+  <button data-value="1" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
+  <button data-value="2" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
+  <button data-value="3" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
+  <button data-value="4" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
+  <button data-value="5" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
 </div>
-
-<div class="gallery">
-  <div class="item"><img src="n2.jpg" alt="نور"><p>نور</p></div>
-  <div class="item"><img src="n3.jpg" alt="جولدي"><p>جولدي</p></div>
-  <div class="item"><img src="n4.jpg" alt="لينا"><p>لينا</p></div>
-  <div class="item"><img src="n1.jpg" alt="ايمري"><p>ايمري</p></div>
-  <div class="item"><img src="ali4.jpg" alt="مادلين"><p>مادلين</p></div>
-  <div class="item"><img src="n5.jpg" alt="ميار"><p>ميار</p></div>
-  <div class="item"><img src="n6.jpg" alt="لهب"><p>لهب</p></div>
-  <div class="item"><img src="ali4.jpg" alt="مايكل"><p>مايكل</p></div>
-  <div class="item"><img src="n7.jpg" alt="زينة"><p>زينة</p></div>
-  <div class="item"><img src="al1.jpg" alt="لارين"><p>لارين</p></div>
-  <div class="item"><img src="ali10.jpg" alt="كارمن"><p>كارمن</p></div>
-  <div class="item"><img src="ali15.jpg" alt="براون"><p>براون</p></div>
-  <div class="item"><img src="al6.jpg" alt="بيلا"><p>بيلا</p></div>
-  <div class="item"><img src="n8.jpg" alt="هولاند"><p>هولاند</p></div>
-</div>
-
-<!-- 🔙 Back Button -->
-<div class="back-link">
-  <a href="index.html">← Back to Main Page</a>
-</div>
-
-<!-- ✅ Lightbox Container -->
-<div class="lightbox-overlay" id="lightbox">
-  <img id="lightbox-img" src="" alt="Lightbox Image">
-</div>
-
 <script>
+  // Lightbox
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
-
-  document.querySelectorAll('.item img').forEach(img => {
+  document.querySelectorAll('.character img').forEach(img => {
     img.addEventListener('click', () => {
       lightboxImg.src = img.src;
       lightbox.style.display = 'flex';
     });
   });
+  lightbox.addEventListener('click', () => lightbox.style.display = 'none');
 
-  lightbox.addEventListener('click', () => {
-    lightbox.style.display = 'none';
-  });
-
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      lightbox.style.display = 'none';
-    }
-  });
-// ⭐ Star Rating Script
-(function() {
-  const stars = document.querySelectorAll('.star-rating .star-btn');
-  const storageKey = `rating-${location.pathname}`; // unique per page
-
-  // Load saved rating
-  let savedRating = localStorage.getItem(storageKey);
-  if (savedRating) {
-    savedRating = parseInt(savedRating);
-    setRating(savedRating);
-  }
-
-  stars.forEach(star => {
-    star.addEventListener('click', () => {
-      const val = parseInt(star.getAttribute('data-value'));
-      setRating(val);
-      localStorage.setItem(storageKey, val);
+  // Episodes Toggle
+  document.querySelectorAll('.episode h3').forEach(header => {
+    header.addEventListener('click', () => {
+      const desc = header.nextElementSibling;
+      const arrow = header.querySelector('span');
+      const isVisible = desc.style.display === 'block';
+      desc.style.display = isVisible ? 'none' : 'block';
+      arrow.textContent = isVisible ? '⬇' : '⬆';
     });
   });
 
-  function setRating(rating) {
+  // Star Rating
+  (function() {
+    const stars = document.querySelectorAll('.star-btn');
+    const storageKey = `rating-${location.pathname}`;
+    let savedRating = localStorage.getItem(storageKey);
+    if (savedRating) setRating(parseInt(savedRating));
     stars.forEach(star => {
-      const val = parseInt(star.getAttribute('data-value'));
-      if (val <= rating) {
-        star.classList.add('active');
-        star.querySelector('svg').style.fill = 'gold';
-      } else {
-        star.classList.remove('active');
-        star.querySelector('svg').style.fill = '#999';
-      }
+      star.addEventListener('click', () => {
+        const val = parseInt(star.getAttribute('data-value'));
+        setRating(val);
+        localStorage.setItem(storageKey, val);
+      });
     });
-  }
-})();
+    function setRating(rating) {
+      stars.forEach(star => {
+        const val = parseInt(star.getAttribute('data-value'));
+        star.classList.toggle('active', val <= rating);
+      });
+    }
+  })();
 </script>
-
+<!-- 📌 معلومات العمل -->
+<footer class="info-section">
+  <h2>معلومات العمل</h2>
+  <ul>
+    <li><strong>الكاتب:</strong> ماسة الأديب</li>
+    <li><strong>القصة:</strong> مستوحاة تماما من رواية نور في ظلام الاجتماعية السياسية.</li>
+    <li><strong>تاريخ النشر:</strong> مارس 2024</li>
+  </ul>
+</footer>
 </body>
 </html>
+
