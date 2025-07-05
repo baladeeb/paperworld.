@@ -178,6 +178,105 @@ body.dark .poll-option {
 body.dark .poll-option.voted {
   background: #444;
 }
+.carousel-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  display: flex;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.carousel-track {
+  display: flex;
+  flex-wrap: nowrap;
+  scroll-behavior: smooth;
+}
+
+.carousel-item {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 0.5rem;
+}
+
+.carousel-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.carousel-caption {
+  margin-top: 5px;
+  font-size: 15px;
+  text-align: center;
+  color: #555;
+}
+
+body.dark .carousel-caption {
+  color: #ccc;
+}
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.4s ease;
+  scroll-behavior: smooth;
+}
+
+.carousel-item {
+  min-width: 100%;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+}
+
+.carousel-caption {
+  text-align: center;
+  font-size: 15px;
+  padding: 8px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border: none;
+  font-size: 24px;
+  padding: 8px 12px;
+  cursor: pointer;
+  z-index: 1;
+  border-radius: 50%;
+}
+
+.carousel-arrow.left { left: 10px; }
+.carousel-arrow.right { right: 10px; }
+
+.carousel-arrow:hover {
+  background: rgba(0,0,0,0.8);
+}
   </style>
 </head>
 <body>
@@ -193,9 +292,55 @@ body.dark .poll-option.voted {
   <button onclick="filterPosts('romance')">رومانسي</button>
 </div>
 <div class="feed" id="feed">
+<div class="post" data-category="entertainment">
+  <div class="carousel-container">
+    <button class="carousel-arrow left">‹</button>
+    <div class="carousel-track">
+      <div class="carousel-item">
+        <img src="fahita2.jpg" alt="صورة 1" class="carousel-image">
+        <div class="carousel-caption">ضيوف حلقة أبلة فاهيتا الثانية هما إيمري ولينا!</div>
+      </div>
+      <div class="carousel-item">
+        <img src="kkk.jpg" alt="صورة 2" class="carousel-image">
+        <div class="carousel-caption">انضمامات جديدة لمسلسل الخياط، بيلا واليخاندرو وعز سيظهرون في الحلقة الثانية!</div>
+      </div>
+      <div class="carousel-item">
+        <img src="photo19.jpg" alt="صورة 3" class="carousel-image">
+        <div class="carousel-caption">أنباء عن تجديد مسلسل الخياط لموسم ثاني رغم عدم صدور سوى الحلقة الأولى، برأيكم هل سيكمل نجاحه؟</div>
+      </div>
+      <div class="carousel-item">
+        <img src="photo20.jpg" alt="صورة 4" class="carousel-image">
+        <div class="carousel-caption">تسريبات عن مسلسل جديد بعنوان البراعم الذابلة، المسلسل مكتوب بالكامل، ولم يتم تحديد الممثلين بعد!</div>
+      </div>
+      <div class="carousel-item">
+        <img src="photo11.jpg" alt="صورة 5" class="carousel-image">
+        <div class="carousel-caption">تسريبات عن إمكانية بدأ موسم جديد من ذا ماسكد سينغر لكن بلجنة حكام جديدة غير محددة بعد!</div>
+      </div>
+      <div class="carousel-item">
+        <img src="essa.jpg" alt="صورة 6" class="carousel-image">
+        <div class="carousel-caption">علاقة حب مع عصام، بعد تصريحاته الغامضة، غير معروف من هي الفتاة بعد، لكن قريبا سيعلن خبرهما!</div>
+      </div>
+      <div class="carousel-item">
+        <img src="bella.jpg" alt="صورة 6" class="carousel-image">
+        <div class="carousel-caption">بيلا تأخذ شكلا جديدا لتعود ثانية بأعمالها الجذابة!</div>
+      </div>
+    </div>
+    <button class="carousel-arrow right">›</button>
+  </div>
+  <div class="actions">
+    <button class="like-btn"></button>
+    <button class="comment-btn">💬</button>
+    <button class="fav-btn"></button>
+  </div>
+  <div class="comment-box">
+    <textarea rows="2" placeholder="أضف تعليقك..."></textarea>
+    <button class="send-comment">إرسال</button>
+  </div>
+  <div class="comments-list" id="comments-carousel1"></div>
+</div>
   <!-- Poll Post -->
   <div class="post" data-category="entertainment">
-    <div class="caption">🗳️ من تتوقع ضيف الحلقة الأولى من برنامج أبلة فاهيتا غدًا؟</div>
+    <div class="caption">🗳️ من تتوقع ضيف الحلقة الثانية من برنامج أبلة فاهيتا غدًا؟</div>
     <div id="poll">
       <div class="poll-option" data-id="0">مراد ونيلي <span class="vote-count">0</span></div>
       <div class="poll-option" data-id="1">كان وديفا <span class="vote-count">0</span></div>
@@ -381,6 +526,26 @@ body.dark .poll-option.voted {
       post.style.display = (type === 'all' || post.dataset.category === type) ? 'block' : 'none';
     });
   }
+// Carousel arrow functionality
+document.querySelectorAll('.carousel-container').forEach(container => {
+  const track = container.querySelector('.carousel-track');
+  const leftBtn = container.querySelector('.carousel-arrow.left');
+  const rightBtn = container.querySelector('.carousel-arrow.right');
+
+  leftBtn.addEventListener('click', () => {
+    track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' });
+  });
+
+  rightBtn.addEventListener('click', () => {
+    track.scrollBy({ left: track.clientWidth, behavior: 'smooth' });
+  });
+});
+document.querySelectorAll('.carousel-image').forEach(img => {
+  img.addEventListener('click', () => {
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox').style.display = 'flex';
+  });
+});
 </script>
 </body>
 </html>
