@@ -179,34 +179,40 @@ body.dark .poll-option.voted {
   background: #444;
 }
 .carousel-container {
+  position: relative;
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-snap-type: x mandatory;
   display: flex;
+  scroll-snap-type: x mandatory;
   border-radius: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+}
+.carousel-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .carousel-track {
   display: flex;
   flex-wrap: nowrap;
   scroll-behavior: smooth;
+  transition: transform 0.4s ease;
 }
 
 .carousel-item {
   flex: 0 0 100%;
   scroll-snap-align: start;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 0.5rem;
+  position: relative;
 }
 
 .carousel-image {
   width: 100%;
-  height: auto;
-  border-radius: 8px;
+  height: 200px;
+  object-fit: cover;
+  display: block;
   cursor: pointer;
+  border-radius: 8px;
 }
 
 .carousel-caption {
@@ -276,6 +282,11 @@ body.dark .carousel-caption {
 
 .carousel-arrow:hover {
   background: rgba(0,0,0,0.8);
+}
+@media (max-width: 768px) {
+  .carousel-arrow {
+    display: none;
+  }
 }
   </style>
 </head>
