@@ -179,25 +179,17 @@ body.dark .poll-option.voted {
   background: #444;
 }
 .carousel-container {
-  position: relative;
   overflow-x: auto;
-  overflow-y: hidden;
-  display: flex;
   scroll-snap-type: x mandatory;
-  border-radius: 12px;
-  margin-bottom: 15px;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-}
-.carousel-container::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: flex;
+  border-radius: 12px;
+  margin-bottom: 10px;
 }
 
 .carousel-track {
   display: flex;
-  flex-wrap: nowrap;
-  scroll-behavior: smooth;
-  transition: transform 0.4s ease;
+  gap: 8px;
 }
 
 .carousel-item {
@@ -210,37 +202,25 @@ body.dark .poll-option.voted {
   width: 100%;
   height: 200px;
   object-fit: cover;
-  display: block;
+  border-radius: 10px;
   cursor: pointer;
-  border-radius: 8px;
 }
 
 .carousel-caption {
-  margin-top: 5px;
-  font-size: 15px;
   text-align: center;
-  color: #555;
-}
-
-body.dark .carousel-caption {
-  color: #ccc;
-}
-.carousel-container {
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-  margin-bottom: 15px;
-}
-
-.carousel-track {
-  display: flex;
-  transition: transform 0.4s ease;
-  scroll-behavior: smooth;
+  font-size: 14px;
+  padding: 6px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border-radius: 0 0 10px 10px;
 }
 
 .carousel-item {
-  min-width: 100%;
-  flex-shrink: 0;
+  flex: 0 0 100%;
+  scroll-snap-align: start;
   position: relative;
 }
 
@@ -248,7 +228,7 @@ body.dark .carousel-caption {
   width: 100%;
   height: 220px;
   object-fit: cover;
-  display: block;
+  border-radius: 8px;
   cursor: pointer;
 }
 
@@ -256,18 +236,19 @@ body.dark .carousel-caption {
   text-align: center;
   font-size: 15px;
   padding: 8px;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   color: #fff;
   position: absolute;
   bottom: 0;
   width: 100%;
+  border-radius: 0 0 8px 8px;
 }
 
 .carousel-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   color: #fff;
   border: none;
   font-size: 24px;
@@ -275,18 +256,15 @@ body.dark .carousel-caption {
   cursor: pointer;
   z-index: 1;
   border-radius: 50%;
+  user-select: none;
 }
 
-.carousel-arrow.left { left: 10px; }
-.carousel-arrow.right { right: 10px; }
-
-.carousel-arrow:hover {
-  background: rgba(0,0,0,0.8);
+.carousel-arrow.left {
+  left: 10px;
 }
-@media (max-width: 768px) {
-  .carousel-arrow {
-    display: none;
-  }
+
+.carousel-arrow.right {
+  right: 10px;
 }
   </style>
 </head>
@@ -304,40 +282,39 @@ body.dark .carousel-caption {
 </div>
 <div class="feed" id="feed">
 <div class="post" data-category="entertainment">
-  <div class="carousel-container">
-    <button class="carousel-arrow left">‹</button>
-    <div class="carousel-track">
-      <div class="carousel-item">
-        <img src="fahita2.jpg" alt="صورة 1" class="carousel-image">
-        <div class="carousel-caption">ضيوف حلقة أبلة فاهيتا الثانية هما إيمري ولينا!</div>
-      </div>
-      <div class="carousel-item">
-        <img src="kkk.jpg" alt="صورة 2" class="carousel-image">
-        <div class="carousel-caption">انضمامات جديدة لمسلسل الخياط، بيلا واليخاندرو وعز سيظهرون في الحلقة الثانية!</div>
-      </div>
-      <div class="carousel-item">
-        <img src="photo19.jpg" alt="صورة 3" class="carousel-image">
-        <div class="carousel-caption">أنباء عن تجديد مسلسل الخياط لموسم ثاني رغم عدم صدور سوى الحلقة الأولى، برأيكم هل سيكمل نجاحه؟</div>
-      </div>
-      <div class="carousel-item">
-        <img src="photo20.jpg" alt="صورة 4" class="carousel-image">
-        <div class="carousel-caption">تسريبات عن مسلسل جديد بعنوان البراعم الذابلة، المسلسل مكتوب بالكامل، ولم يتم تحديد الممثلين بعد!</div>
-      </div>
-      <div class="carousel-item">
-        <img src="photo11.jpg" alt="صورة 5" class="carousel-image">
-        <div class="carousel-caption">تسريبات عن إمكانية بدأ موسم جديد من ذا ماسكد سينغر لكن بلجنة حكام جديدة غير محددة بعد!</div>
-      </div>
-      <div class="carousel-item">
-        <img src="essa.jpg" alt="صورة 6" class="carousel-image">
-        <div class="carousel-caption">علاقة حب مع عصام، بعد تصريحاته الغامضة، غير معروف من هي الفتاة بعد، لكن قريبا سيعلن خبرهما!</div>
-      </div>
-      <div class="carousel-item">
-        <img src="bella.jpg" alt="صورة 6" class="carousel-image">
-        <div class="carousel-caption">بيلا تأخذ شكلا جديدا لتعود ثانية بأعمالها الجذابة!</div>
-      </div>
+<div class="carousel-container">
+  <div class="carousel-track">
+    <div class="carousel-item">
+      <img src="fahita2.jpg" alt="صورة 1" class="carousel-image">
+      <div class="carousel-caption">ضيوف حلقة أبلة فاهيتا الثانية هما إيمري ولينا!</div>
     </div>
-    <button class="carousel-arrow right">›</button>
+    <div class="carousel-item">
+      <img src="kkk.jpg" alt="صورة 2" class="carousel-image">
+      <div class="carousel-caption">انضمامات جديدة لمسلسل الخياط، بيلا واليخاندرو وعز سيظهرون في الحلقة الثانية!</div>
+    </div>
+    <div class="carousel-item">
+      <img src="photo19.jpg" alt="صورة 3" class="carousel-image">
+      <div class="carousel-caption">أنباء عن تجديد مسلسل الخياط لموسم ثاني رغم عدم صدور سوى الحلقة الأولى، برأيكم هل سيكمل نجاحه؟</div>
+    </div>
+    <div class="carousel-item">
+      <img src="photo20.jpg" alt="صورة 4" class="carousel-image">
+      <div class="carousel-caption">تسريبات عن مسلسل جديد بعنوان البراعم الذابلة، المسلسل مكتوب بالكامل، ولم يتم تحديد الممثلين بعد!</div>
+    </div>
+    <div class="carousel-item">
+      <img src="photo11.jpg" alt="صورة 5" class="carousel-image">
+      <div class="carousel-caption">تسريبات عن إمكانية بدأ موسم جديد من ذا ماسكد سينغر لكن بلجنة حكام جديدة غير محددة بعد!</div>
+    </div>
+    <div class="carousel-item">
+      <img src="essa.jpg" alt="صورة 6" class="carousel-image">
+      <div class="carousel-caption">علاقة حب مع عصام، بعد تصريحاته الغامضة، غير معروف من هي الفتاة بعد، لكن قريبا سيعلن خبرهما!</div>
+    </div>
+    <div class="carousel-item">
+      <img src="bella.jpg" alt="صورة 7" class="carousel-image">
+      <div class="carousel-caption">بيلا تأخذ شكلا جديدا لتعود ثانية بأعمالها الجذابة!</div>
+    </div>
   </div>
+  <button class="carousel-arrow right">›</button>
+</div>
   <div class="actions">
     <button class="like-btn"></button>
     <button class="comment-btn">💬</button>
