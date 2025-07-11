@@ -243,8 +243,9 @@
 <div id="sideMenu" class="side-menu">
   <button id="darkModeBtn">تبديل الوضع الداكن</button>
   <button id="newsBtn">الأخبار</button>
-  <button id="translateBtn">الترجمة</button>
   <button id="favsBtn">المفضلة</button>
+  <button id="actorsBtn">مكتبة النجوم</button>
+   <button id="beeBtn">النحلة الذهبية</button>
 </div>
 
 <h1>بحث في الأعمال الدرامية</h1>
@@ -284,6 +285,7 @@
     { name: "أمنية الدم", photo: "photo17.jpg", profile: "profile17.html", type: "films", isNew: true },
     { name: "مستشفى الحب", photo: "photo18.jpg", profile: "profile18.html", type: "series", isNew: true },
     { name: "الخياط", photo: "photo19.jpg", profile: "profile19.html", type: "series", isNew: true },
+    { name: "البراعم الذابلة", photo: "photo20.jpg", profile: "profile20.html", type: "series", isSoon: true },
   ];
 
   const container = document.getElementById('cardsContainer');
@@ -370,7 +372,6 @@
   const sideMenu = document.getElementById('sideMenu');
   const darkModeBtn = document.getElementById('darkModeBtn');
   const newsBtn = document.getElementById('newsBtn');
-  const translateBtn = document.getElementById('translateBtn');
   const favsBtn = document.getElementById('favsBtn');
 
   // Load saved theme
@@ -394,12 +395,15 @@
   newsBtn.addEventListener('click', () => {
     window.location.href = 'news.html';
   });
-  translateBtn.addEventListener('click', () => {
-    alert('ميزة الترجمة تحت التطوير!');
-  });
+document.getElementById('actorsBtn').addEventListener('click', () => {
+  window.location.href = 'act.html';
+});
     document.getElementById('favsBtn').addEventListener('click', () => {
       window.location.href = 'favorites.html';
     });
+document.getElementById('beeBtn').addEventListener('click', () => {
+  window.location.href = 'bee.html';
+});
 
 </script>
 
