@@ -56,49 +56,49 @@
       margin: auto;
     }
     .post {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto 30px;
       background: white;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
       overflow: hidden;
       transition: background 0.3s;
     }
-    .post img { width: 100%; height: auto; cursor: pointer; }
+    .post img {
+      width: 100%;
+      height: 600px;
+      object-fit: cover;
+      object-position: center;
+      cursor: pointer;
+    }
     .caption {
       padding: 1rem;
       font-size: 16px;
       line-height: 1.5;
       position: relative;
+      background: #f0f0f0;
+      font-style: italic;
+      text-align: justify;
     }
-    .actions {
-      display: flex;
-      gap: 10px;
+    body.dark .caption {
+      background: #1a1a1a;
+    }
+    .actions, .comment-box, .comments-list {
       padding: 0 1rem 1rem;
-      align-items: center;
     }
-    .like-btn, .fav-btn {
+    .like-btn, .fav-btn, .comment-btn {
       font-size: 22px;
       background: none;
       border: none;
       cursor: pointer;
       font-family: inherit;
-      position: relative;
-      color: transparent;
     }
+    .like-btn::before { content: "♡"; color: gray; }
     .like-btn.liked::before { content: "♥"; color: red; }
-    .like-btn:not(.liked)::before { content: "♡"; color: gray; }
+    .fav-btn::before { content: "☆"; color: gray; }
     .fav-btn.favorited::before { content: "★"; color: gold; }
-    .fav-btn:not(.favorited)::before { content: "☆"; color: gray; }
-    .comment-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 20px;
-      color: #555;
-    }
-    .comment-box {
-      padding: 0 1rem 1rem;
-    }
+    .comment-btn { color: #555; font-size: 20px; }
     .comment-box textarea {
       width: 100%;
       padding: 8px;
@@ -117,16 +117,12 @@
       color: white;
       cursor: pointer;
     }
-    .comments-list {
-      padding: 0 1rem 1rem;
-      font-size: 14px;
-      color: #444;
-    }
-    .comment-entry {
+    .comments-list .comment-entry {
       padding: 5px 0;
       border-bottom: 1px solid #ddd;
     }
     body.dark .post { background: #1e1e1e; }
+    body.dark .comment-box textarea { background: #2a2a2a; color: #eee; border-color: #555; }
     .lightbox {
       display: none;
       position: fixed;
@@ -147,376 +143,138 @@
       from { transform: scale(0.7); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
-    .poll-option {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #eef2f7;
-      padding: 10px 15px;
-      border-radius: 10px;
-      margin: 6px 15px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background 0.2s;
-      border: 1px solid #ccc;
-    }
-    .poll-option:hover { background: #dce4ec; }
-    .poll-option.voted { background: #cce5ff; pointer-events: none; font-weight: bold; }
-    .vote-count {
-      background: #3498db;
-      color: white;
-      border-radius: 8px;
-      padding: 2px 8px;
-      font-size: 13px;
-    }
-body.dark .poll-option {
-  background: #2c2c2c;
-  color: #eee;
-  border-color: #555;
-}
-
-body.dark .poll-option.voted {
-  background: #444;
-}
-.carousel-container {
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  display: flex;
-  border-radius: 12px;
-  margin-bottom: 10px;
-}
-
-.carousel-track {
-  display: flex;
-  gap: 8px;
-}
-
-.carousel-item {
-  flex: 0 0 100%;
-  scroll-snap-align: start;
-  position: relative;
-}
-
-.carousel-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.carousel-caption {
-  text-align: center;
-  font-size: 14px;
-  padding: 6px;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.6);
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  border-radius: 0 0 10px 10px;
-}
-
-.carousel-item {
-  flex: 0 0 100%;
-  scroll-snap-align: start;
-  position: relative;
-}
-
-.carousel-image {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.carousel-caption {
-  text-align: center;
-  font-size: 15px;
-  padding: 8px;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  border-radius: 0 0 8px 8px;
-}
-
-.carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  border: none;
-  font-size: 24px;
-  padding: 8px 12px;
-  cursor: pointer;
-  z-index: 1;
-  border-radius: 50%;
-  user-select: none;
-}
-
-.carousel-arrow.left {
-  left: 10px;
-}
-
-.carousel-arrow.right {
-  right: 10px;
-}
   </style>
 </head>
 <body>
-<div class="top-bar">
-  <button class="toggle-btn" id="toggleMode">🌙 الوضع الداكن</button>
-  <button class="return-btn" onclick="location.href='index.html'">⬅️ العودة</button>
-</div>
-<h1>📰 صفحة الأخبار</h1>
-<div class="filters">
-  <button onclick="filterPosts('all')">الكل</button>
-  <button onclick="filterPosts('entertainment')">ترفيه</button>
-  <button onclick="filterPosts('sports')">رياضة</button>
-  <button onclick="filterPosts('romance')">رومانسي</button>
-</div>
-  <!-- Original Post 8 -->
-  <div class="post" data-category="entertainment">
-    <img src="women1o.jpg" alt="خبر 8" class="post-image">
-    <div class="caption">بداية أخبار ممثلات البراعم الذابلة، حسب الأخبار ستكون البطلة ليلى ممثلة جديدة غير معلنة بعد، ومع ذلك ستشاركها بطولة المسلسل بعض الممثلات مثل آنا، روجين، داريا، ورد، وكورال كأول دور لها</div>
-    <div class="actions">
-      <button class="like-btn"></button>
-      <button class="comment-btn">💬</button>
-      <button class="fav-btn"></button>
-    </div>
-    <div class="comment-box">
-      <textarea rows="2" placeholder="أضف تعليقك..."></textarea>
-      <button class="send-comment">إرسال</button>
-    </div>
-    <div class="comments-list" id="comments-1"></div>
+  <div class="top-bar">
+    <button class="toggle-btn" id="toggleMode">🌙 الوضع الداكن</button>
+    <button class="return-btn" onclick="location.href='index.html'">⬅️ العودة</button>
   </div>
-  <!-- Original Post 7 -->
-  <div class="post" data-category="entertainment">
-    <img src="men1o.jpg" alt="خبر 7" class="post-image">
-    <div class="caption">بداية اختيار ممثلين البراعم الذابلة الذي سيحكي عن تحالف مجرم ونقيب.. من المقرر أن تكون هذه اللائحة للمثلين إن لم يتم تعديلها، ومع ذلك يأخذ ليو دور البطولة مع ممثل جديد يسمى إياد لم يظهر إلى الساحة بعد.. أما البطولات الجانبية فهي لمارك، المدير، براون، يونس، ريدر، توماس، عز، وغيرهم</div>
-    <div class="actions">
-      <button class="like-btn"></button>
-      <button class="comment-btn">💬</button>
-      <button class="fav-btn"></button>
-    </div>
-    <div class="comment-box">
-      <textarea rows="2" placeholder="أضف تعليقك..."></textarea>
-      <button class="send-comment">إرسال</button>
-    </div>
-    <div class="comments-list" id="comments-1"></div>
-  <!-- Poll Post -->
-  <div class="post" data-category="entertainment">
-    <div class="caption">🗳️ من تتوقع ضيف الحلقة الثانية من برنامج أبلة فاهيتا غدًا؟</div>
-    <div id="poll">
-      <div class="poll-option" data-id="0">مراد ونيلي <span class="vote-count">0</span></div>
-      <div class="poll-option" data-id="1">كان وديفا <span class="vote-count">0</span></div>
-      <div class="poll-option" data-id="2">ايمري ولينا <span class="vote-count">0</span></div>
-      <div class="poll-option" data-id="3">توم ومادلين <span class="vote-count">0</span></div>
-    </div>
-    <div class="actions">
-      <button class="like-btn"></button>
-      <button class="comment-btn">💬</button>
-      <button class="fav-btn"></button>
-    </div>
-  <!-- Original Post 6 -->
-  <div class="post" data-category="entertainment">
-    <img src="photo19.jpg" alt="خبر 6" class="post-image">
-    <div class="caption">تسريبات عن مسلسل عملي رومانسي جديد بعنوان الخياط، سيتناول قضايا تصميم الأزياء وعالم الشهرة والتريند، بطولة كان وهيام وغيرهما من الممثلين!</div>
-    <div class="actions">
-      <button class="like-btn"></button>
-      <button class="comment-btn">💬</button>
-      <button class="fav-btn"></button>
-    </div>
-    <div class="comment-box">
-      <textarea rows="2" placeholder="أضف تعليقك..."></textarea>
-      <button class="send-comment">إرسال</button>
-    </div>
-    <div class="comments-list" id="comments-1"></div>
+  <h1>📰 صفحة الأخبار</h1>
+  <div class="filters">
+    <button onclick="filterPosts('all')">الكل</button>
+    <button onclick="filterPosts('entertainment')">ترفيه</button>
+    <button onclick="filterPosts('sports')">رياضة</button>
+    <button onclick="filterPosts('romance')">رومانسي</button>
   </div>
-  <!-- Original Post 5 -->
-  <div class="post" data-category="entertainment">
-    <img src="photo18.jpg" alt="خبر 5" class="post-image">
-    <div class="caption">تسريبات عن مسلسل عملي حيوي جديد بعنوان مستشفى الحب، سيتناول قصة جراحية والعالم الجامعي، سيكون من بطولة توم ومالك وغيرهما من الممثلين!</div>
-    <div class="actions">
-      <button class="like-btn"></button>
-      <button class="comment-btn">💬</button>
-      <button class="fav-btn"></button>
-    </div>
-    <div class="comment-box">
-      <textarea rows="2" placeholder="أضف تعليقك..."></textarea>
-      <button class="send-comment">إرسال</button>
-    </div>
-    <div class="comments-list" id="comments-1"></div>
+  <div class="feed" id="feed"></div>
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="صورة">
   </div>
-  <!-- Original Post 4 -->
-  <div class="post" data-category="entertainment">
-    <img src="fahita1.jpg" alt="خبر 4" class="post-image">
-    <div class="caption">الحلقة الأولى من أبلة فاهيتا تعرض الليلة مع مايكل! بسبب نجاحاته مؤخرا وجماهريته العالية. انتظروها!!!</div>
-    <div class="actions">
-      <button class="like-btn"></button>
-      <button class="comment-btn">💬</button>
-      <button class="fav-btn"></button>
-    </div>
-    <div class="comment-box">
-      <textarea rows="2" placeholder="أضف تعليقك..."></textarea>
-      <button class="send-comment">إرسال</button>
-    </div>
-    <div class="comments-list" id="comments-1"></div>
-  </div>
+  <script>
+    const posts = [
+      { id: 1, img: 'fahita3.jpg', caption: 'الحلقة الثالثة من أبلة فاهيتا تعرض الليلة مع هيام، بسبب نجاحاتها المؤخرة وقصصها الشيقة، انتظروها!!' },
+      { id: 2, img: 'women1o.jpg', caption: 'بداية أخبار ممثلات البراعم الذابلة، حسب الأخبار ستكون البطلة ليلى ممثلة جديدة غير معلنة بعد، ومع ذلك ستشاركها بطولة المسلسل بعض الممثلات مثل آنا، روجين، داريا، ورد، وكورال كأول دور لها' },
+      { id: 3, img: 'men1o.jpg', caption: 'بداية اختيار ممثلين البراعم الذابلة الذي سيحكي عن تحالف مجرم ونقيب.. من المقرر أن تكون هذه اللائحة للمثلين إن لم يتم تعديلها، ومع ذلك يأخذ ليو دور البطولة مع ممثل جديد يسمى إياد لم يظهر إلى الساحة بعد.. أما البطولات الجانبية فهي لمارك، المدير، براون، يونس، ريدر، توماس، عز، وغيرهم' },
+      { id: 4, img: 'kkk.jpg', caption: 'إشاعات حول انضمام كل من عز، اليخاندرو وبيلا إلى مسلسل الخياط، سيظهرون في الحلقة الثانية' },
+      { id: 5, img: 'photo20.jpg', caption: 'تسريبات عن عرض مسلسل جديد مقتبس من رواية البراعم الذابلة ويحمل ذات الاسم، لا تزال الأمور غير واضحة بعد' },
+      { id: 6, img: 'bella.jpg', caption: 'بيلا تحصل على إطلالة جديدة لتعود بأعمالها الجديدة والمتميزة' },
+      { id: 7, img: 'fahita2.jpg', caption: 'الحلقة الثانية من أبلة فاهيتا تعرض الليلة مع لينا وإيمري! بسبب علاقتهما المميزة ونجاحاتهما المؤخرة، انتظروها!!' },
+      { id: 9, img: 'photo19.jpg', caption: 'تسريبات عن مسلسل عملي رومانسي جديد بعنوان الخياط، سيتناول قضايا تصميم الأزياء وعالم الشهرة والتريند، بطولة كان وهيام وغيرهما من الممثلين!' },
+      { id: 10, img: 'photo18.jpg', caption: 'تسريبات عن مسلسل عملي حيوي جديد بعنوان مستشفى الحب، سيتناول قصة جراحية والعالم الجامعي، سيكون من بطولة توم ومالك وغيرهما من الممثلين' },
+      { id: 11, img: 'fahita1.jpg', caption: 'لحلقة الأولى من أبلة فاهيتا تعرض الليلة مع مايكل! بسبب نجاحاته مؤخرا وجماهريته العالية. انتظروها!!!' },
+      { id: 12, img: 'news1.jpg', caption: '!البوستر التشويقي لفيلم أمنية الدم!! بالإضافة إلى نزول قائمة الممثلين المطروحة التي تشمل نخبة أكشن رائعة!!' },
+      { id: 13, img: 'news2.jpg', caption: 'تسريبات عن فيلم جديد قادم إلى الساحات، فيلم رومانسي أكشن ببطولات جديدة ومشوقة' },
+      { id: 14, img: 'photo17.jpg', caption: 'بدأ عرض مسلسل صيفي جديد من بطولة يونس ولينا وآخرين' },
+    ];
 
-  <!-- Original Post 3 -->
-  <div class="post" data-category="entertainment">
-    <img src="photo17.jpg" alt="خبر 3" class="post-image">
-    <div class="caption">البوستر التشويقي لفيلم أمنية الدم!! بالإضافة إلى نزول قائمة الممثلين المطروحة التي تشمل نخبة أكشن رائعة!!</div>
-    <div class="actions">
-      <button class="like-btn"></button>
-      <button class="comment-btn">💬</button>
-      <button class="fav-btn"></button>
-    </div>
-    <div class="comment-box">
-      <textarea rows="2" placeholder="أضف تعليقك..."></textarea>
-      <button class="send-comment">إرسال</button>
-    </div>
-    <div class="comments-list" id="comments-1"></div>
-  </div>
-  <!-- Original Post 1 -->
-  <div class="post" data-category="entertainment">
-    <img src="news1.jpg" alt="خبر 1" class="post-image">
-    <div class="caption">بدأ عرض مسلسل صيفي جديد من بطولة يونس ولينا وآخرين!</div>
-    <div class="actions">
-      <button class="like-btn"></button>
-      <button class="comment-btn">💬</button>
-      <button class="fav-btn"></button>
-    </div>
-    <div class="comment-box">
-      <textarea rows="2" placeholder="أضف تعليقك..."></textarea>
-      <button class="send-comment">إرسال</button>
-    </div>
-    <div class="comments-list" id="comments-1"></div>
-  </div>
+    const feed = document.getElementById('feed');
 
-  <!-- Original Post 2 -->
-  <div class="post" data-category="entertainment">
-    <img src="news2.jpg" alt="خبر 2" class="post-image">
-    <div class="caption">تسريبات عن فيلم جديد قادم إلى الساحات، فيلم رومانسي أكشن ببطولات جديدة ومشوقة</div>
-    <div class="actions">
-      <button class="like-btn"></button>
-      <button class="comment-btn">💬</button>
-      <button class="fav-btn"></button>
-    </div>
-    <div class="comment-box">
-      <textarea rows="2" placeholder="أضف تعليقك..."></textarea>
-      <button class="send-comment">إرسال</button>
-    </div>
-    <div class="comments-list" id="comments-2"></div>
-  </div>
-</div>
-<div class="lightbox" id="lightbox">
-  <img id="lightbox-img" src="" alt="صورة">
-</div>
-<script>
-  const toggleBtn = document.getElementById('toggleMode');
-  if (localStorage.getItem('theme') === 'dark') {
-    document.body.classList.add('dark');
-    toggleBtn.textContent = '☀️ الوضع الفاتح';
-  }
-  toggleBtn.addEventListener('click', () => {
-    const isDark = document.body.classList.toggle('dark');
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    toggleBtn.textContent = isDark ? '☀️ الوضع الفاتح' : '🌙 الوضع الداكن';
-  });
+    function loadComments(postId) {
+      return JSON.parse(localStorage.getItem(`comments-${postId}`)) || [];
+    }
 
-  // Poll Voting Logic
-  const pollOptions = document.querySelectorAll('.poll-option');
-  const pollKey = 'poll-vote-apla';
-  const voteCounts = JSON.parse(localStorage.getItem('poll-counts') || '[0,0,0,0]');
-  const votedIndex = localStorage.getItem(pollKey);
+    function saveComment(postId, text) {
+      const comments = loadComments(postId);
+      comments.push(text);
+      localStorage.setItem(`comments-${postId}`, JSON.stringify(comments));
+    }
 
-  if (votedIndex !== null) {
-    pollOptions[+votedIndex].classList.add('voted');
-  }
+    posts.forEach((post, index) => {
+      const div = document.createElement('div');
+      div.className = 'post';
+      div.dataset.category = 'entertainment';
+      div.innerHTML = `
+        <img src="${post.img}" class="post-image" alt="صورة الخبر">
+        <div class="caption">${post.caption}</div>
+        <div class="actions">
+          <button class="like-btn"></button>
+          <button class="comment-btn">💬</button>
+          <button class="fav-btn"></button>
+        </div>
+        <div class="comment-box" style="display:none;">
+          <textarea rows="2" placeholder="أضف تعليقك..."></textarea>
+          <button class="send-comment">إرسال</button>
+        </div>
+        <div class="comments-list" id="comments-${index}"></div>
+      `;
+      feed.appendChild(div);
 
-  pollOptions.forEach((option, idx) => {
-    const countSpan = option.querySelector('.vote-count');
-    countSpan.textContent = voteCounts[idx];
-    option.addEventListener('click', () => {
-      if (localStorage.getItem(pollKey)) return;
-      voteCounts[idx]++;
-      countSpan.textContent = voteCounts[idx];
-      option.classList.add('voted');
-      localStorage.setItem('poll-counts', JSON.stringify(voteCounts));
-      localStorage.setItem(pollKey, idx);
-    });
-  });
-
-  document.querySelectorAll('.post-image').forEach(img => {
-    img.addEventListener('click', () => {
-      document.getElementById('lightbox-img').src = img.src;
-      document.getElementById('lightbox').style.display = 'flex';
-    });
-  });
-  document.getElementById('lightbox').addEventListener('click', () => {
-    document.getElementById('lightbox').style.display = 'none';
-  });
-
-  document.querySelectorAll('.like-btn').forEach(btn => {
-    btn.addEventListener('click', () => btn.classList.toggle('liked'));
-  });
-  document.querySelectorAll('.fav-btn').forEach(btn => {
-    btn.addEventListener('click', () => btn.classList.toggle('favorited'));
-  });
-
-  document.querySelectorAll('.comment-btn').forEach((btn, i) => {
-    btn.addEventListener('click', () => {
-      const box = document.querySelectorAll('.comment-box')[i];
-      box.style.display = box.style.display === 'block' ? 'none' : 'block';
-    });
-  });
-
-  document.querySelectorAll('.send-comment').forEach((sendBtn, i) => {
-    sendBtn.addEventListener('click', () => {
-      const textarea = document.querySelectorAll('.comment-box textarea')[i];
-      const commentText = textarea.value.trim();
-      if (commentText) {
+      // Load saved comments
+      const commentList = div.querySelector(`#comments-${index}`);
+      loadComments(index).forEach(comment => {
         const commentDiv = document.createElement('div');
         commentDiv.className = 'comment-entry';
-        commentDiv.textContent = commentText;
-        document.getElementById(`comments-${i}`).appendChild(commentDiv);
-        textarea.value = "";
-      }
+        commentDiv.textContent = comment;
+        commentList.appendChild(commentDiv);
+      });
     });
-  });
 
-  function filterPosts(type) {
-    document.querySelectorAll('.post').forEach(post => {
-      post.style.display = (type === 'all' || post.dataset.category === type) ? 'block' : 'none';
+    document.querySelectorAll('.post-image').forEach(img => {
+      img.addEventListener('click', () => {
+        document.getElementById('lightbox-img').src = img.src;
+        document.getElementById('lightbox').style.display = 'flex';
+      });
     });
-  }
-// Carousel arrow functionality
-document.querySelectorAll('.carousel-container').forEach(container => {
-  const track = container.querySelector('.carousel-track');
-  const leftBtn = container.querySelector('.carousel-arrow.left');
-  const rightBtn = container.querySelector('.carousel-arrow.right');
+    document.getElementById('lightbox').addEventListener('click', () => {
+      document.getElementById('lightbox').style.display = 'none';
+    });
 
-  leftBtn.addEventListener('click', () => {
-    track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' });
-  });
+    document.querySelectorAll('.like-btn').forEach(btn => {
+      btn.addEventListener('click', () => btn.classList.toggle('liked'));
+    });
+    document.querySelectorAll('.fav-btn').forEach(btn => {
+      btn.addEventListener('click', () => btn.classList.toggle('favorited'));
+    });
 
-  rightBtn.addEventListener('click', () => {
-    track.scrollBy({ left: track.clientWidth, behavior: 'smooth' });
-  });
-});
-document.querySelectorAll('.carousel-image').forEach(img => {
-  img.addEventListener('click', () => {
-    document.getElementById('lightbox-img').src = img.src;
-    document.getElementById('lightbox').style.display = 'flex';
-  });
-});
-</script>
+    document.querySelectorAll('.comment-btn').forEach((btn, i) => {
+      btn.addEventListener('click', () => {
+        const box = document.querySelectorAll('.comment-box')[i];
+        box.style.display = box.style.display === 'block' ? 'none' : 'block';
+      });
+    });
+
+    document.querySelectorAll('.send-comment').forEach((sendBtn, i) => {
+      sendBtn.addEventListener('click', () => {
+        const textarea = document.querySelectorAll('.comment-box textarea')[i];
+        const commentText = textarea.value.trim();
+        if (commentText) {
+          const commentDiv = document.createElement('div');
+          commentDiv.className = 'comment-entry';
+          commentDiv.textContent = commentText;
+          document.getElementById(`comments-${i}`).appendChild(commentDiv);
+          saveComment(i, commentText);
+          textarea.value = "";
+        }
+      });
+    });
+
+    function filterPosts(type) {
+      document.querySelectorAll('.post').forEach(post => {
+        post.style.display = (type === 'all' || post.dataset.category === type) ? 'block' : 'none';
+      });
+    }
+
+    const toggleBtn = document.getElementById('toggleMode');
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+      toggleBtn.textContent = '☀️ الوضع الفاتح';
+    }
+    toggleBtn.addEventListener('click', () => {
+      const isDark = document.body.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      toggleBtn.textContent = isDark ? '☀️ الوضع الفاتح' : '🌙 الوضع الداكن';
+    });
+  </script>
 </body>
 </html>

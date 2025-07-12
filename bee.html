@@ -123,6 +123,52 @@
     body.dark .display-box {
       background: #1f1f1f;
     }
+@media (max-width: 768px) {
+  .main {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .prize-list {
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .prize-item {
+    width: 45%;
+    margin: 5px;
+    font-size: 14px;
+  }
+
+  .display-box {
+    padding: 1.5rem 1rem;
+  }
+
+  .display-box img {
+    width: 90vw;
+    height: 90vw;
+  }
+
+  .caption {
+    font-size: 18px;
+  }
+
+  header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .back-btn, .toggle-btn {
+    font-size: 18px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+}
   </style>
 </head>
 <body>

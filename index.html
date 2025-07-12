@@ -277,7 +277,7 @@
     { name: "الياقة المغبرة", photo: "photo9.jpg", profile: "profile9.html", type: "series" },
     { name: "بوليفارد المواهب", photo: "photo10.jpg", profile: "profile10.html", type: "programs" },
     { name: "ذا ماسكد سينغر", photo: "photo11.jpg", profile: "profile11.html", type: "programs" },
-    { name: "أبلة فاهيتا", photo: "photo12.jpg", profile: "profile12.html", type: "programs" },
+    { name: "أبلة فاهيتا", photo: "photo12.jpg", profile: "profile12.html", type: "programs", isNow: true },
     { name: "توأمي", photo: "photo13.jpg", profile: "profile13.html", type: "series" },
     { name: "أرض زيكولا", photo: "photo14.jpg", profile: "profile14.html", type: "films" },
     { name: "لعبة زواج", photo: "news1.jpg", profile: "profile15.html", type: "series", isNew: true },
@@ -304,10 +304,13 @@
     // العلامة قريبًا
     const newSoon = person.isSoon ? `<span style="color:#e74c3c; font-weight:bold; font-size:14px; margin-left:6px;"> قريبًا</span>` : '';
 
+ // العلامة يعرض الآن
+    const newyellow = person.isNow ? `<span style="color:#c9cf4c; font-weight:bold; font-size:14px; margin-left:6px;"> يعرض الآن</span>` : '';
+
     card.innerHTML = `
       <a href="${person.profile}" style="text-decoration:none;color:inherit;display:block;position:relative;">
         <img src="${person.photo}" alt="${person.name}" />
-        <h3>${person.name}${newTag}${newSoon}</h3>
+        <h3>${person.name}${newTag}${newSoon}${newyellow}</h3>
       </a>
       <button class="like-btn" aria-label="Like button" title="أعجبني" type="button">
         <svg viewBox="0 0 24 24">
