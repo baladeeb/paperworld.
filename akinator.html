@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>خمن الشخصية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .akinator {
+      width: 200px;
+      margin: 1rem auto;
+      animation: float 3s ease-in-out infinite;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+
+    .question {
+      font-size: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .buttons button {
+      background-color: #ffcc00;
+      border: none;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .buttons button:hover {
+      background-color: #ffaa00;
+      transform: scale(1.05);
+    }
+
+    #returnBtn {
+      display: none;
+      background-color: #00c0ff;
+      color: white;
+    }
+
+    #returnBtn:hover {
+      background-color: #0098cc;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎩 خمن الشخصية 🔮</h1>
+
+  <img src="https://cdn-icons-png.flaticon.com/512/6543/6543527.png" alt="akinator" class="akinator" />
+
+  <div class="question" id="question">هل مثل في مسلسل معين؟</div>
+
+  <div class="buttons">
+    <button onclick="answer('yes')" id="yesBtn">نعم</button>
+    <button onclick="answer('no')" id="noBtn">لا</button>
+    <button onclick="skipQuestion()" id="maybeBtn">ربما</button>
+    <button onclick="skipQuestion()" id="unknownBtn">لا أعلم</button>
+    <button id="returnBtn" onclick="restart()">🔁 إعادة المحاولة</button>
+  </div>
+
+  <script>
+    const characters = [
+      {
+        name: "هيام",
+        series: ["الخياط", "السوار"],
+        programs: [],
+        films: [],
+        gender: true,
+        traits: ["شعرها قصير" ,"فستان"],
+        old: false,
+        fahita: true,
+        stylish: false
+      },
+      {
+        name: "كارلوس",
+        series: ["شلة بنات", "مستشفى الحب", "حادث رباعي", "السوار"],
+        programs: ["بوليفارد المواهب", "ذا ماسكد سينغر"],
+        films: [],
+        gender: false,
+        traits: [ "حقيبة", "فم", "كتف", "قبل", "نظارات", "لباس شارعي"],
+        old: true,
+        fahita: false,
+        stylish: true
+      },
+      {
+        name: "كان",
+        series: ["الخياط"],
+        programs: ["عالم الترفيه"],
+        films: ["أمنية الدم"],
+        gender: false,
+        traits: ["جيب", "بدلة"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "مادلين",
+        series: ["توأمي"],
+        programs: [],
+        films: [],
+        gender: true,
+        traits: ["شعرها قصير", "قبل", "كتف"],
+        old: false,
+        fahita: false,
+        stylish: true
+      },
+      {
+        name: "عائشة",
+        series: [],
+        programs: ["عالم الترفيه"],
+        films: ["أمنية الدم"],
+        gender: true,
+        traits: ["معطف", "جيب"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "وايت",
+        series: ["كذبة وحقيقة"],
+        programs: ["عالم الترفيه"],
+        films: ["أمنية الدم"],
+        gender: false,
+        traits: [ "صفة", "قبل", "بدلة"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "المدير",
+        series: ["نور في ظلام"],
+        programs: [],
+        films: ["أمنية الدم"],
+        gender: false,
+        traits: [ "صفة", "معطف", "قبل"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "آنا",
+        series: ["لعبة زواج"],
+        programs: [],
+        films: ["أرض زيكولا"],
+        gender: true,
+        traits: ["قبل", "مضحكة", "زهر"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "أليخاندرو",
+        series: ["الخياط"],
+        programs: [],
+        films: [],
+        gender: false,
+        traits: ["طويل", "قبل", "لباس شارعي", "كتف", "أبيض"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "بيلا",
+        series: ["الخياط"],
+        programs: [],
+        films: ["درس"],
+        gender: true,
+        traits: ["أخضر", "شعرها قصير", "قبل"],
+        old: true,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "مايكل",
+        series: ["لعبة زواج"],
+        programs: [],
+        films: ["أمنية الدم"],
+        gender: false,
+        traits: ["طويل", "قبل"],
+        old: false,
+        fahita: true,
+        stylish: false
+      },
+      {
+        name: "ميليس",
+        series: ["لعبة زواج"],
+        programs: [],
+        films: ["درس"],
+        gender: true,
+        traits: ["أخضر", "قبل", "كتف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "ميليسا",
+        series: ["لعبة زواج"],
+        programs: [],
+        films: [],
+        gender: true,
+        traits: ["نظارات", "قبل", "فستان", "معطف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "لارين",
+        series: ["لعبة زواج"],
+        programs: [],
+        films: [],
+        gender: true,
+        traits: ["لون", "قبل"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "إيمري",
+        series: ["توأمي"],
+        programs: ["ذا ماسكد سينغر"],
+        films: [],
+        gender: false,
+        traits: ["بعلاقة", "قبل"],
+        old: false,
+        fahita: true,
+        stylish: false
+      },
+      {
+        name: "يونس",
+        series: ["لعبة زواج"],
+        programs: [],
+        films: ["أرض زيكولا"],
+        gender: false,
+        traits: ["لون", "جيب"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "رامز",
+        series: ["لعبة زواج"],
+        programs: [],
+        films: ["أرض زيكولا"],
+        gender: false,
+        traits: [ "فم", "عضلاته بارزة", "قبل", "كتف"],
+        old: true,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "ليو",
+        series: [],
+        programs: ["عالم الترفيه"],
+        films: ["أرض زيكولا"],
+        gender: false,
+        traits: ["جيب", "أبيض"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "لينا",
+        series: ["لعبة زواج"],
+        programs: [],
+        films: [],
+        gender: true,
+        traits: ["بيريه", "فستان", "بعلاقة", "قبل", "زهر"],
+        old: true,
+        fahita: true,
+        stylish: false
+      },
+      {
+        name: "نور",
+        series: ["نور في ظلام"],
+        programs: [],
+        films: [],
+        gender: true,
+        traits: [ "حقيبة", "فستان", "قبل", "بيريه"],
+        old: true,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "يابانية",
+        series: ["نور في ظلام"],
+        programs: ["بوليفارد"],
+        films: [],
+        gender: true,
+        traits: ["لون", "قبل", "صفة"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "جزار",
+        series: ["كذبة وحقيقة"],
+        programs: ["بوليفارد"],
+        films: ["الدم"],
+        gender: false,
+        traits: ["صفة", "كتف", "لباس شارعي", "قبل", "أبيض"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "عز",
+        series: ["السوار"],
+        programs: [],
+        films: [],
+        gender: false,
+        traits: ["جيب", "نظارات", "قبعة" ],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "بربل",
+        series: ["كذبة وحقيقة"],
+        programs: ["بوليفارد"],
+        films: [],
+        gender: true,
+        traits: [ "صفة" ,"لباس شارعي", "قبل", "قبعة" ,"لون", "كتف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "ضياء",
+        series: ["السوار"],
+        programs: [],
+        films: ["الدم"],
+        gender: false,
+        traits: [ "حقيبة" ,"قبعة"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "سيركان",
+        series: ["الفريق الخطأ"],
+        programs: [],
+        films: ["الدم"],
+        gender: false,
+        traits: ["فم" ,"جيب" , "نظارات" ,"قبل"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "توم",
+        series: ["السوار"],
+        programs: [],
+        films: [],
+        gender: false,
+        traits: ["فم" , "نظارات"],
+        old: false,
+        fahita: false,
+        stylish: true
+      },
+      {
+        name: "كارمن",
+        series: ["السوار"],
+        programs: ["ذا"],
+        films: [],
+        gender: true,
+        traits: ["كتف" ,"فستان" , "زهر" ,"قبل"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "ثور",
+        series: ["السوار"],
+        programs: [],
+        films: [],
+        gender: false,
+        traits: ["بدلة" , "يد" ,"قبل"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "روجين",
+        series: ["السوار"],
+        programs: [],
+        films: ["نن"],
+        gender: true,
+        traits: ["لباس شارعي" ,"نظارات" ,"شعرها قصير", "كتف"],
+        old: false,
+        fahita: true,
+        stylish: false
+      },
+      {
+        name: "أوندار",
+        series: ["السوار"],
+        programs: [],
+        films: [],
+        gender: true,
+        traits: ["قبعة" ,"لباس شارعي" ,"قبل", "كتف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "جيني",
+        series: ["الخياط"],
+        programs: ["عالم"],
+        films: ["درس"],
+        gender: true,
+        traits: ["كتف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "عزيز",
+        series: ["السوار"],
+        programs: [],
+        films: ["درس"],
+        gender: false,
+        traits: ["فم" ,"لباس شارعي" ,"أبيض", "كتف", "جيب"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "براون",
+        series: ["السوار"],
+        programs: [],
+        films: ["درس"],
+        gender: false,
+        traits: ["لون" ,"صفة" ,"قبل", "نظارات", "جيب"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "ليلى",
+        series: ["الخياط"],
+        programs: [],
+        films: [],
+        gender: true,
+        traits: ["لون" ,"كتف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "شهاب",
+        series: ["الخياط"],
+        programs: [],
+        films: [],
+        gender: false,
+        traits: ["أبيض" ,"معطف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "ديما",
+        series: ["الخياط"],
+        programs: [],
+        films: ["درس"],
+        gender: true,
+        traits: ["فستان"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "يعقوب",
+        series: ["الخياط"],
+        programs: [],
+        films: ["درس"],
+        gender: false,
+        traits: ["أخضر" ,"نظارات", "أبيض", "فم", "جيب", "قبل"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "ميار",
+        series: ["الخياط"],
+        programs: ["ذا"],
+        films: ["زيكولا"],
+        gender: true,
+        traits: ["أخضر" ,"فستان", "قبل"],
+        old: false,
+        fahita: false,
+        stylish: true
+      },
+      {
+        name: "قادر",
+        series: ["الخياط"],
+        programs: [],
+        films: [],
+        gender: false,
+        traits: ["أخضر" ,"نظارات", "أبيض", "لون", "جيب", "معطف", "قبل"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "ولي",
+        series: ["الخياط"],
+        programs: [],
+        films: ["الدم"],
+        gender: false,
+        traits: ["بدلة" ,"نظارات", "قبل", "معطف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "ديفا",
+        series: [],
+        programs: ["عالم"],
+        films: ["الدم"],
+        gender: true,
+        traits: ["أخضر" ,"فستان", "صفة", "كتف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "زينب",
+        series: ["حادث"],
+        programs: [],
+        films: ["درس"],
+        gender: true,
+        traits: ["نظارات" ,"فستان", "بيريه", "معطف", "قبل"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "سلوى",
+        series: ["شلة"],
+        programs: [],
+        films: ["درس"],
+        gender: true,
+        traits: ["أخضر" ,"فستان", "قبل", "قبعة"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "عصام",
+        series: ["لعبة"],
+        programs: ["عالم"],
+        films: [],
+        gender: false,
+        traits: ["نظارات", "فم", "شورت"],
+        old: false,
+        fahita: true,
+        stylish: false
+      },
+      {
+        name: "ألبيران",
+        series: ["لعبة"],
+        programs: [],
+        films: [],
+        gender: false,
+        traits: ["أبيض" ,"نظارات", "جيب", "كتف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "برونو",
+        series: ["توأمي"],
+        programs: [],
+        films: [],
+        gender: false,
+        traits: ["لون", "قبل"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "ويليام",
+        series: ["شلة"],
+        programs: [],
+        films: ["الدم"],
+        gender: false,
+        traits: ["أبيض" ,"نظارات", "قبل", "معطف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "أدهم",
+        series: ["شلة"],
+        programs: [],
+        films: [],
+        gender: false,
+        traits: ["قبل" ,"نظارات"],
+        old: true,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "كرم",
+        series: ["توزلو"],
+        programs: [],
+        films: [],
+        gender: false,
+        traits: ["قبل" ,"عضلاته بارزة"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "ماركر",
+        series: ["شلة"],
+        programs: [],
+        films: ["زيكولا"],
+        gender: false,
+        traits: ["قبل" ,"نظارات", "معطف", "أبيض"],
+        old: true,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "بينار",
+        series: ["مستشفى"],
+        programs: [],
+        films: [],
+        gender: true,
+        traits: [],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "جولدي",
+        series: ["مستشفى"],
+        programs: [],
+        films: ["الدم"],
+        gender: false,
+        traits: ["نظارات", "صفة", "قبل", "معطف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "رلا",
+        series: [],
+        programs: [],
+        films: ["درس"],
+        gender: true,
+        traits: ["فستان", "كتف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "شاهين",
+        series: ["توزلو"],
+        programs: [],
+        films: [],
+        gender: false,
+        traits: ["قبل"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "ريف",
+        series: [],
+        programs: ["عالم"],
+        films: [],
+        gender: true,
+        traits: ["فستان", "كتف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "عبلة",
+        series: ["حادث"],
+        programs: [],
+        films: [],
+        gender: true,
+        traits: ["فستان", "نظارة", "شعرها قصير", "قبل", "زهر"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "ريدر",
+        series: ["الخياط"],
+        programs: [],
+        films: ["زيكولا"],
+        gender: false,
+        traits: ["لون", "كتف", "صفة", "فم"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "عجوز",
+        series: ["توأمي"],
+        programs: [],
+        films: [],
+        gender: true,
+        traits: ["فستان", "معطف", "قبل", "شعرها قصير"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "سامر",
+        series: ["الفريق"],
+        programs: [],
+        films: ["زيكولا"],
+        gender: false,
+        traits: ["شورت", "نظارات"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "يسرى",
+        series: ["لعبة"],
+        programs: ["عالم"],
+        films: [],
+        gender: true,
+        traits: ["زهر"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "لهب",
+        series: ["نور"],
+        programs: [],
+        films: ["الدم"],
+        gender: false,
+        traits: ["فم", "طويل", "صفة", "قبل", "أخضر"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "إدريس",
+        series: ["كذبة"],
+        programs: [],
+        films: [],
+        gender: false,
+        traits: ["قبل", "شورت", "كتف", "أخضر"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "إبراهيم",
+        series: [],
+        programs: [],
+        films: ["درس"],
+        gender: false,
+        traits: ["بدلة", "نظارات", "جيب", "أبيض"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "دولا",
+        series: [],
+        programs: [],
+        films: ["درس"],
+        gender: false,
+        traits: ["فم", "شورت", "لون", "نظارات"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "جو",
+        series: ["شلة"],
+        programs: [],
+        films: ["أمنية"],
+        gender: false,
+        traits: ["قبل", "جيب", "نظارات", "معطف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+    ];
+
+    const questions = [
+      { text: "هل مثل في مسلسل معين؟", key: "series" },
+      { text: "هل شارك في أي برنامج؟", key: "programs" },
+      { text: "هل شارك في أي فيلم؟", key: "films" },
+      { text: "هل الشخصية فتاة؟", key: "gender" },
+      { text: "هل حاز على إطلالة طويلة؟", key: "old" },
+      { text: "هل نال على إطلالة جديدة تماما عن إطلالته السابقة؟", key: "stylish" },
+      { text: "هل شارك في إحدى حلقات أبلة فاهيتا؟", key: "fahita" },
+      { text: "هل يرتدي نظارات؟", key: "traits", value: "نظارات" },
+      { text: "هل يرتدي بدلة؟", key: "traits", value: "بدلة" },
+      { text: "هل الشخصية بنت شعرها قصير؟", key: "traits", value: "شعرها قصير" },
+      { text: "هل الشخصية غالبا لون واحد بدرجات مختلفة؟", key: "traits", value: "لون" },
+      { text: "هل للشخصية عضلات بطن ظاهرة كليا؟", key: "traits", value: "عضلاته بارزة" },
+      { text: "هل ترتدي الشخصية معطف أو جاكيت ارتداء تام فوق قطعة داخلية ،إن كان يرتدي معطفا على جلده فاكتب لا؟", key: "traits", value: "معطف" },
+      { text: "هل الشخصية ترتدي فستان أو تنورة؟", key: "traits", value: "فستان" },
+      { text: "هل الشخصية تضع يديها الاثنتين أو واحدة فقط في جيبها؟", key: "traits", value: "جيب" },
+      { text: "هل الشخصية ظهرت في أي عمل قبل أو في مسلسل حادث رباعي؟", key: "traits", value: "قبل" },
+      { text: "هل الشخصية بعلاقة عاطفية ؟", key: "traits", value: "بعلاقة" },
+      { text: "هل للشخصية كتف ظاهر؟", key: "traits", value: "كتف" },
+      { text: "هل في ملابس الشخصية لون زهري؟", key: "traits", value: "زهر" },
+      { text: "هل في ملابس الشخصية لون أخضر؟", key: "traits", value: "أخضر" },
+      { text: "هل الشخصية شب شعره طويل؟", key: "traits", value: "طويل" },
+      { text: "هل الشخصية ترتدي قميص داخلي\بلوزة أبيض؟", key: "traits", value: "أبيض" },
+      { text: "هل الشخصية ترتدي بيريه؟", key: "traits", value: "بيريه" },
+      { text: "هل اسم الشخصية يدل على صفته؟", key: "traits", value: "صفة" },
+      { text: "هل ترتدي الشخصية قبعة صيفية؟", key: "traits", value: "قبعة" },
+      { text: "هل ترتدي الشخصية حقيبة ظهر مدرسية؟", key: "traits", value: "حقيبة" },
+      { text: "هل ترتدي الشخصية شورت؟", key: "traits", value: "شورت" },
+    ];
+
+    let currentQuestion = 0;
+    let possible = [...characters];
+
+    const questionEl = document.getElementById("question");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const returnBtn = document.getElementById("returnBtn");
+
+    function answer(ans) {
+      const q = questions[currentQuestion];
+
+      if (q.key === "traits") {
+        possible = possible.filter(c =>
+          ans === "yes" ? c.traits.includes(q.value) : !c.traits.includes(q.value)
+        );
+      } else if (typeof characters[0][q.key] === "boolean") {
+        possible = possible.filter(c => (ans === "yes" ? c[q.key] : !c[q.key]));
+      } else {
+        possible = possible.filter(c =>
+          ans === "yes" ? c[q.key]?.length > 0 : c[q.key]?.length === 0
+        );
+      }
+
+      nextQuestion();
+    }
+
+    function skipQuestion() {
+      nextQuestion();
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+
+      if (possible.length === 1) {
+        questionEl.innerText = `🎯 تم التخمين! الشخصية هي: ${possible[0].name}`;
+        hideAllButtons();
+      } else if (currentQuestion < questions.length && possible.length > 1) {
+        questionEl.innerText = questions[currentQuestion].text;
+      } else {
+        questionEl.innerText = "❌ لم أتمكن من تخمين الشخصية.";
+        hideAllButtons();
+      }
+    }
+
+    function hideAllButtons() {
+      yesBtn.style.display = "none";
+      noBtn.style.display = "none";
+      document.getElementById("maybeBtn").style.display = "none";
+      document.getElementById("unknownBtn").style.display = "none";
+      returnBtn.style.display = "inline-block";
+    }
+
+    function restart() {
+      currentQuestion = 0;
+      possible = [...characters];
+      questionEl.innerText = questions[currentQuestion].text;
+      yesBtn.style.display = "inline-block";
+      noBtn.style.display = "inline-block";
+      document.getElementById("maybeBtn").style.display = "inline-block";
+      document.getElementById("unknownBtn").style.display = "inline-block";
+      returnBtn.style.display = "none";
+    }
+  </script>
+</body>
+</html>

@@ -246,6 +246,7 @@
   <button id="favsBtn">المفضلة</button>
   <button id="actorsBtn">مكتبة النجوم</button>
    <button id="beeBtn">النحلة الذهبية</button>
+   <button id="akinator">لعبة المحقق</button>
 </div>
 
 <h1>بحث في الأعمال الدرامية</h1>
@@ -282,11 +283,13 @@
     { name: "أرض زيكولا", photo: "photo14.jpg", profile: "profile14.html", type: "films" },
     { name: "لعبة زواج", photo: "news1.jpg", profile: "profile15.html", type: "series" },
     { name: "عالم التسلية", photo: "photo16.jpg", profile: "profile16.html", type: "programs" },
-    { name: "أمنية الدم", photo: "photo17.jpg", profile: "profile17.html", type: "films", isNew: true },
+    { name: "أمنية الدم", photo: "photo17.jpg", profile: "profile17.html", type: "films" },
     { name: "مستشفى الحب", photo: "photo18.jpg", profile: "profile18.html", type: "series", isNew: true },
     { name: "الخياط", photo: "photo19.jpg", profile: "profile19.html", type: "series", isNew: true },
     { name: "البراعم الذابلة", photo: "photo20.jpg", profile: "profile20.html", type: "series", isSoon: true },
-    { name: "درس خصوصي", photo: "photo21.jpg", profile: "profile21.html", type: "films", isSoon: true },
+    { name: "درس خصوصي", photo: "photo21.jpg", profile: "profile21.html", type: "films" },
+    { name: "حكاية خرافية", photo: "photo22.jpg", profile: "profile22.html", type: "series", isSoon: true },
+
   ];
 
   const container = document.getElementById('cardsContainer');
@@ -407,6 +410,9 @@ document.getElementById('actorsBtn').addEventListener('click', () => {
     });
 document.getElementById('beeBtn').addEventListener('click', () => {
   window.location.href = 'bee.html';
+});
+document.getElementById('akinator').addEventListener('click', () => {
+  window.location.href = 'akinator.html';
 });
 
 </script>
