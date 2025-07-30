@@ -468,7 +468,7 @@
         programs: [],
         films: [],
         gender: true,
-        traits: ["لون" ,"كتف"],
+        traits: ["لون" ,"كتف", "جيب"],
         old: false,
         fahita: false,
         stylish: false
@@ -814,6 +814,61 @@
         fahita: false,
         stylish: false
       },
+      {
+        name: "توماس",
+        series: ["براعم"],
+        programs: ["عالم"],
+        films: [],
+        gender: false,
+        traits: ["فم", "جيب", "نظارات", "أبيض", "قبعة"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "مارت",
+        series: ["براعم"],
+        programs: [],
+        films: [],
+        gender: false,
+        traits: ["جيب"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "تالا",
+        series: ["براعم"],
+        programs: [],
+        films: [],
+        gender: true,
+        traits: ["جيب", "نظارات", "معطف", "بيريه"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "كورال",
+        series: ["براعم"],
+        programs: [],
+        films: ["درس"],
+        gender: true,
+        traits: ["جيب", "حقيبة", "شورت", "زهر"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
+      {
+        name: "ربيع",
+        series: ["براعم"],
+        programs: [],
+        films: [],
+        gender: false,
+        traits: ["أبيض", "فم", "معطف"],
+        old: false,
+        fahita: false,
+        stylish: false
+      },
     ];
 
     const questions = [
@@ -831,15 +886,17 @@
       { text: "هل للشخصية عضلات بطن ظاهرة كليا؟", key: "traits", value: "عضلاته بارزة" },
       { text: "هل ترتدي الشخصية معطف أو جاكيت ارتداء تام فوق قطعة داخلية ،إن كان يرتدي معطفا على جلده فاكتب لا؟", key: "traits", value: "معطف" },
       { text: "هل الشخصية ترتدي فستان أو تنورة؟", key: "traits", value: "فستان" },
-      { text: "هل الشخصية تضع يديها الاثنتين أو واحدة فقط في جيبها؟", key: "traits", value: "جيب" },
       { text: "هل الشخصية ظهرت في أي عمل قبل أو في مسلسل حادث رباعي؟", key: "traits", value: "قبل" },
       { text: "هل الشخصية بعلاقة عاطفية ؟", key: "traits", value: "بعلاقة" },
       { text: "هل للشخصية كتف ظاهر؟", key: "traits", value: "كتف" },
       { text: "هل في ملابس الشخصية لون زهري؟", key: "traits", value: "زهر" },
       { text: "هل في ملابس الشخصية لون أخضر؟", key: "traits", value: "أخضر" },
       { text: "هل الشخصية شب شعره طويل؟", key: "traits", value: "طويل" },
-      { text: "هل الشخصية ترتدي قميص داخلي\بلوزة أبيض؟", key: "traits", value: "أبيض" },
+      { text: "هل الشخصية ترتدي قميص داخلي أو بلوزة باللون الأبيض؟", key: "traits", value: "أبيض" },
       { text: "هل الشخصية ترتدي بيريه؟", key: "traits", value: "بيريه" },
+      { text: "هل الشخصية تضع يديها الاثنتين أو واحدة فقط في جيبها؟", key: "traits", value: "جيب" },
+      { text: "هل الشخصية تضع شيء ما في فمها؟", key: "traits", value: "فم" },
+
       { text: "هل اسم الشخصية يدل على صفته؟", key: "traits", value: "صفة" },
       { text: "هل ترتدي الشخصية قبعة صيفية؟", key: "traits", value: "قبعة" },
       { text: "هل ترتدي الشخصية حقيبة ظهر مدرسية؟", key: "traits", value: "حقيبة" },
