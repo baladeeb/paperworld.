@@ -1,0 +1,328 @@
+<!-- Monthly Calendar - Single file HTML/CSS/JS
+     Features:
+     - Responsive month grid (7 columns)
+     - Squares with date header and tasks list
+     - Some squares intentionally empty
+     - Click a square to add/remove tasks (client-side only)
+     - Lightweight, no external libs
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Monthly Calendar</title>
+  <style>
+    :root{
+      --bg:#0f1724; /* dark navy */
+      --card:#0b1220;
+      --accent:#7dd3fc;
+      --muted:#94a3b8;
+      --card-2:#071228;
+      --glass: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: linear-gradient(180deg,var(--bg), #071332);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:28px;
+    }
+
+    .app{
+      max-width:1100px; margin:0 auto;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px; padding:18px; box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    }
+
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px;
+    }
+    .month-nav{display:flex; gap:8px; align-items:center}
+    button.btn{
+      background:var(--glass); border:1px solid rgba(255,255,255,0.04);
+      color:var(--accent); padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:600;
+    }
+    h1{margin:0; font-size:20px}
+    .subtitle{color:var(--muted); font-size:13px}
+
+    .calendar{
+      display:grid; grid-template-columns:repeat(7,1fr); gap:10px;
+    }
+
+    .weekday{
+      text-align:center; padding:10px 6px; color:var(--muted); font-weight:700; font-size:12px;
+    }
+
+    .day{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.015));
+      min-height:110px; border-radius:10px; padding:10px; position:relative; overflow:hidden;
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex; flex-direction:column;
+    }
+    .day.empty{opacity:0.35}
+    .date{
+      font-weight:700; color:#dbeafe; font-size:14px; display:flex; justify-content:space-between; align-items:center;
+    }
+    .tasks{margin-top:8px; display:flex; flex-direction:column; gap:6px; overflow:auto; padding-right:6px}
+    .task{
+      background:rgba(255,255,255,0.03); padding:6px 8px; border-radius:8px; font-size:13px; color:#e6eef8; display:flex; gap:8px; align-items:center;
+    }
+    .task .dot{width:8px; height:8px; border-radius:50%; background:var(--accent); flex:0 0 8px}
+
+    .add-btn{
+      margin-top:auto; text-align:center; font-size:12px; padding-top:8px; opacity:0.9;
+    }
+    .add-btn a{color:var(--muted); cursor:pointer}
+
+    /* modal */
+    .modal-backdrop{position:fixed; inset:0; background:rgba(2,6,23,0.6); display:none; place-items:center; z-index:60}
+    .modal{background:#071126; padding:18px; border-radius:12px; width:360px; box-shadow:0 10px 40px rgba(2,6,23,0.7); border:1px solid rgba(255,255,255,0.03)}
+    .modal h3{margin:0 0 8px 0}
+    .modal textarea{width:100%; height:80px; padding:8px; border-radius:8px; background:transparent; color:inherit; border:1px solid rgba(255,255,255,0.04)}
+    .modal .row{display:flex; gap:8px; margin-top:10px}
+    .chip{background:rgba(125,211,252,0.08); padding:6px 8px; border-radius:999px; color:var(--accent); font-weight:600}
+
+    /* small screens */
+    @media (max-width:720px){
+      .calendar{gap:6px}
+      .day{min-height:90px; padding:8px}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app" role="application">
+    <header>
+      <div>
+        <h1 id="monthTitle">August 2025</h1>
+        <div class="subtitle">Monthly view — click a day to add tasks</div>
+      </div>
+      <div class="month-nav">
+        <button class="btn" id="prev">◀ Prev</button>
+        <button class="btn" id="today">Today</button>
+        <button class="btn" id="next">Next ▶</button>
+      </div>
+    </header>
+
+    <!-- weekday headings -->
+    <div class="calendar" id="weekHead">
+      <div class="weekday">Sun</div>
+      <div class="weekday">Mon</div>
+      <div class="weekday">Tue</div>
+      <div class="weekday">Wed</div>
+      <div class="weekday">Thu</div>
+      <div class="weekday">Fri</div>
+      <div class="weekday">Sat</div>
+    </div>
+
+    <!-- days grid -->
+    <div class="calendar" id="daysGrid" style="margin-top:8px"></div>
+  </div>
+
+  <!-- modal -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h3 id="modalTitle">Tasks for <span id="modalDate">1 Aug 2025</span></h3>
+      <textarea id="taskText" placeholder="New task description..."></textarea>
+      <div class="row">
+        <button class="btn" id="saveTask">Save task</button>
+        <button class="btn" id="closeModal">Close</button>
+      </div>
+      <div style="margin-top:12px">
+        <div class="subtitle">Existing tasks:</div>
+        <div id="existingList" style="margin-top:8px; display:flex; flex-direction:column; gap:6px"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Simple client-side monthly calendar renderer with in-memory tasks.
+       Replace or adapt data persistence to connect to backend APIs as needed.
+    */
+
+    // sample tasks (day -> array of strings). Some days intentionally empty.
+    const sampleTasks = {
+      // 'YYYY-MM-DD': [..tasks]
+      '2025-08-01':['Episode 5 Abla Fahita'],
+      '2025-08-08':['Episode 6 Abla Fahita'],
+      '2025-08-09':['Episode 11 The Trailor','Episode 1 love hospital'],
+      '2025-08-11':['Episode 12 The Trailor'],
+      '2025-08-15':['Episode 7 Abla Fahita'],
+      '2025-08-16':['Fall Dance Film'],
+      '2025-08-17':['Episode 13 The Trailor "final"', 'Episode 2 love Hospital'],
+      '2025-08-22':['Episode 8 Abla Fahita'],
+      '2025-08-23':['Episode 1 withered buds', 'Episode 3 love hospital'],
+      '2025-08-24':['Episode 2 withered buds'],
+      '2025-08-29':['Episode 9 Abla Fahita'],
+      '2025-08-30':['Episode 3 withered buds', 'Episode 4 love hospital'],
+      '2025-08-31':['Episode 4 withered buds'],
+    };
+
+    // app state
+    const state = {
+      viewYear: new Date().getFullYear(),
+      viewMonth: new Date().getMonth(), // 0-indexed
+      tasks: {...sampleTasks}
+    };
+
+    const daysGrid = document.getElementById('daysGrid');
+    const monthTitle = document.getElementById('monthTitle');
+    const modal = document.getElementById('modal');
+    const modalDate = document.getElementById('modalDate');
+    const taskText = document.getElementById('taskText');
+    const existingList = document.getElementById('existingList');
+
+    function formatYMD(y,m,d){
+      const mm = String(m+1).padStart(2,'0');
+      const dd = String(d).padStart(2,'0');
+      return `${y}-${mm}-${dd}`;
+    }
+
+    function renderCalendar(){
+      daysGrid.innerHTML='';
+      const y = state.viewYear;
+      const m = state.viewMonth;
+      const first = new Date(y,m,1);
+      const firstWeekday = first.getDay();
+      const daysInMonth = new Date(y,m+1,0).getDate();
+
+      // show month title
+      const monthLabel = first.toLocaleString('en',{month:'long'});
+      monthTitle.textContent = `${monthLabel} ${y}`;
+
+      // we render 6 rows x 7 = 42 cells to cover all months
+      const totalCells = 42;
+      let dayCounter = 1 - firstWeekday; // start from negative or zero to fill previous-month blanks
+
+      for(let i=0;i<totalCells;i++){
+        const cell = document.createElement('div');
+        cell.className = 'day';
+
+        if(dayCounter < 1 || dayCounter > daysInMonth){
+          // empty/placeholder
+          cell.classList.add('empty');
+          cell.innerHTML = `<div class="date">&nbsp;</div>`;
+        } else {
+          const ymd = formatYMD(y,m,dayCounter);
+          const tasks = state.tasks[ymd] || [];
+
+          // date header
+          const header = document.createElement('div');
+          header.className='date';
+          header.innerHTML = `<div>${dayCounter}</div><div style="font-size:11px;color:var(--muted)">${tasks.length} tasks</div>`;
+          cell.appendChild(header);
+
+          // tasks list (show up to 3, rest hidden with +n)
+          const tasksWrap = document.createElement('div');
+          tasksWrap.className='tasks';
+
+          if(tasks.length===0){
+            // show nothing (user wanted some squares to be empty)
+            // show a subtle hint
+            const hint = document.createElement('div');
+            hint.className='task';
+            hint.style.opacity = 0.6;
+            hint.textContent = 'No tasks';
+            tasksWrap.appendChild(hint);
+          } else {
+            const maxShow = 3;
+            tasks.slice(0,maxShow).forEach(t=>{
+              const tEl = document.createElement('div');
+              tEl.className='task';
+              tEl.innerHTML = `<span class="dot"></span><div style="flex:1">${escapeHtml(t)}</div>`;
+              tasksWrap.appendChild(tEl);
+            });
+            if(tasks.length>maxShow){
+              const more = document.createElement('div');
+              more.className='task';
+              more.textContent = `+${tasks.length-maxShow} more`;
+              tasksWrap.appendChild(more);
+            }
+          }
+
+          cell.appendChild(tasksWrap);
+
+          // click handler to open modal for this date
+          cell.addEventListener('click',()=>openModal(ymd,dayCounter));
+        }
+
+        daysGrid.appendChild(cell);
+        dayCounter++;
+      }
+    }
+
+    function openModal(ymd,dayNumber){
+      modal.style.display='grid';
+      modalDate.textContent = `${dayNumber} ${new Date(ymd).toLocaleString('en',{month:'short'})} ${new Date(ymd).getFullYear()}`;
+      taskText.value='';
+      // fill existing tasks
+      existingList.innerHTML='';
+      const tasks = state.tasks[ymd] || [];
+      tasks.forEach((t,idx)=>{
+        const row = document.createElement('div');
+        row.style.display='flex'; row.style.justifyContent='space-between'; row.style.alignItems='center';
+        row.innerHTML = `<div style="font-size:13px">${escapeHtml(t)}</div>`;
+        const del = document.createElement('button');
+        del.className='btn'; del.style.padding='6px 8px'; del.textContent='Delete';
+        del.addEventListener('click', (e)=>{ e.stopPropagation(); deleteTask(ymd, idx); });
+        row.appendChild(del);
+        existingList.appendChild(row);
+      });
+
+      // save task handler
+      document.getElementById('saveTask').onclick = function(){
+        const v = taskText.value.trim();
+        if(!v) return;
+        if(!state.tasks[ymd]) state.tasks[ymd]=[];
+        state.tasks[ymd].push(v);
+        renderCalendar();
+        openModal(ymd,dayNumber); // refresh modal list
+      }
+
+      // close handler
+      document.getElementById('closeModal').onclick = ()=>{ modal.style.display='none'; };
+    }
+
+    function deleteTask(ymd, index){
+      if(!state.tasks[ymd]) return;
+      state.tasks[ymd].splice(index,1);
+      renderCalendar();
+      // refresh modal if still open
+      if(modal.style.display!=='none'){
+        // reopen modal for same date
+        const parts = ymd.split('-');
+        openModal(parseInt(parts[0]), parseInt(parts[2]));
+      }
+    }
+
+    // utilities
+    function escapeHtml(s){ return String(s).replace(/[&<>\"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+
+    // nav buttons
+    document.getElementById('prev').addEventListener('click', ()=>{
+      state.viewMonth--;
+      if(state.viewMonth<0){ state.viewMonth=11; state.viewYear--; }
+      renderCalendar();
+    });
+    document.getElementById('next').addEventListener('click', ()=>{
+      state.viewMonth++;
+      if(state.viewMonth>11){ state.viewMonth=0; state.viewYear++; }
+      renderCalendar();
+    });
+    document.getElementById('today').addEventListener('click', ()=>{
+      const now = new Date(); state.viewYear = now.getFullYear(); state.viewMonth = now.getMonth(); renderCalendar();
+    });
+
+    // close modal by clicking backdrop
+    document.getElementById('modal').addEventListener('click', (e)=>{ if(e.target.id==='modal') modal.style.display='none'; });
+
+    // initial render: show sample month from state
+    renderCalendar();
+
+  </script>
+</body>
+</html>
