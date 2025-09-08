@@ -13,13 +13,26 @@
   </script>
 
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: #f2f2f2;
-      margin: 0; padding: 20px;
-      direction: rtl;
-      transition: background 0.3s, color 0.3s;
-    }
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 1rem;
+  color: #333;
+  transition: background 0.3s, color 0.3s;
+  position: relative; /* allow pseudo-element layering */
+  z-index: 0;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: -10px; left: -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 20px);
+  background: url("photo12.jpg") no-repeat center center/cover;
+  filter: blur(6px) brightness(0.6);
+  z-index: -1;
+}
 
     h1 {
       text-align: center;
@@ -195,7 +208,7 @@
     { title: "الحلقة السابعة", image: "fahita7.jpg", caption: "رامز هو ضيف حلقة أبلة فاهيتا السابعة، وكالعادة الحديث عن أدواره المميزة والقادمة، مع بعض المعاكسات والتحديات والعقوبات والفضائح، وأيضا أغنية حماسية من صوته" },
     { title: "الحلقة الثامنة", image: "fahita8.jpg", caption: "كان هو ضيف حلقة أبلة فاهيتا الثامنة، الأمر لا يخلو كالعادة من ضحك وفضائح، مع بعض التحديات والتسريبات، وفي النهاية تحدي الثقة مع زوجته الديفا الذي انتهى مأساويا" },
     { title: "الحلقة التاسعة", image: "fahita9.jpg", caption: "كارمن هي ضيفة الحلقة التاسعة من أبلة فاهيتا، الحلقة برعاية من الأجمل، مع بعض التحديات والمنافسات.. الأمر لا يخلو من الفضائح والضحك بالتأكيد." },
-    { title: "الحلقة العاشرة", image: "ep10final.jpg", caption: "..." },
+    { title: "الحلقة العاشرة", image: "fahita10.jpg", caption: "توم هو ضيف حلقة أبلة فاهيتا العاشرة من أبلة فاهيتا، الحلقة تدور حول نقاش بين أعماله المتعددة، مع بعض الفضائح والأسرار والتحديات.. وفي النهاية الأغنية الخاصة به. " },
     { title: "الحلقة الحادية عشر", image: "ep11.jpg", caption: "..." },
     { title: "الحلقة الثانية عشر", image: "ep12.jpg", caption: "..." },
     { title: "الحلقة الثالثة عشر", image: "ep13.jpg", caption: "..." },
