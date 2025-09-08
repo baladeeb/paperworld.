@@ -10,14 +10,26 @@
     }
   </script>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f4f8;
-      margin: 0;
-      padding: 1rem;
-      color: #333;
-      transition: background 0.3s, color 0.3s;
-    }
+ body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 1rem;
+  color: #333;
+  transition: background 0.3s, color 0.3s;
+  position: relative; /* allow pseudo-element layering */
+  z-index: 0;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: -10px; left: -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 20px);
+  background: url("photo20.jpg") no-repeat center center/cover;
+  filter: blur(6px) brightness(0.6);
+  z-index: -1;
+}
     html.dark body {
       background: #1e1e1e;
       color: #eee;
