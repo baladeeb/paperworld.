@@ -18,6 +18,16 @@
       color: #333;
       transition: background 0.3s, color 0.3s;
     }
+body::before {
+  content: "";
+  position: fixed;
+  top: -10px; left: -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 20px);
+  background: url("photo11.jpg") no-repeat center center/cover;
+  filter: blur(6px) brightness(0.6);
+  z-index: -1;
+}
     html.dark body {
       background: #1e1e1e;
       color: #eee;
@@ -137,79 +147,110 @@
       max-width: 90%;
       max-height: 90%;
     }
-.info-section {
-  background: #ecf0f1;
-  padding: 30px 20px;
-  margin-top: 60px;
-  font-size: 16px;
-  border-top: 2px solid #bdc3c7;
-  direction: rtl;
-}
-
-.info-section h2 {
-  margin-top: 0;
-  color: #2c3e50;
-  font-size: 22px;
-  margin-bottom: 15px;
-}
-
-.info-section ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.info-section li {
-  margin-bottom: 10px;
-  color: #34495e;
-}
-
-.info-section strong {
-  color: #000;
-}
-
-/* الوضع الليلي */
-html.dark .info-section {
-  background: #2c2c2c;
-  border-top-color: #444;
-}
-
-html.dark .info-section h2 {
-  color: #fff;
-}
-
-html.dark .info-section li {
-  color: #ccc;
-}
-
-html.dark .info-section strong {
-  color: #fff;
-}
+    .info-section {
+      background: #ecf0f1;
+      padding: 30px 20px;
+      margin-top: 60px;
+      font-size: 16px;
+      border-top: 2px solid #bdc3c7;
+      direction: rtl;
+    }
+    .info-section h2 {
+      margin-top: 0;
+      color: #2c3e50;
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+    .info-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .info-section li {
+      margin-bottom: 10px;
+      color: #34495e;
+    }
+    .info-section strong {
+      color: #000;
+    }
+    html.dark .info-section {
+      background: #2c2c2c;
+      border-top-color: #444;
+    }
+    html.dark .info-section h2 {
+      color: #fff;
+    }
+    html.dark .info-section li {
+      color: #ccc;
+    }
+    html.dark .info-section strong {
+      color: #fff;
+    }
+    /* Masked Characters Section */
+    .masked-character {
+      flex: 1 1 300px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .masked-character img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    html.dark .masked-character {
+      background: #2c2c2c;
+    }
   </style>
 </head>
 <body>
 <div class="back-link"><a href="index.html">← العودة</a></div>
 <h1>ذا ماسكد سينغر</h1>
+
 <!-- 👨‍⚖️ Judges Section -->
 <h2 class="section-title">لجنة الحكام</h2>
 <div class="gallery-scroll">
-  <div class="character"><img src="masked.jpg" alt="مغنية" /><p>مغنية</p></div>
-  <div class="character"><img src="al2.jpg" alt="وايت" /><p>وايت</p></div>
+  <div class="character"><img src="kaan.jpg" alt="كان" /><p>كان</p></div>
+  <div class="character"><img src="lara.jpg" alt="لارا" /><p>لارا</p></div>
   <div class="character"><img src="br2.jpg" alt="كارلوس" /><p>كارلوس</p></div>
-  <div class="character"><img src="n5.jpg" alt="ميار" /><p>ميار</p></div>
+  <div class="character"><img src="zl3.jpg" alt="ليو" /><p>ليو</p></div>
 </div>
 
 <!-- 🎙️ Hosts Section -->
 <h2 class="section-title">المذيعين</h2>
 <div class="gallery-scroll">
   <div class="character"><img src="ali10.jpg" alt="كارمن" /><p>كارمن</p></div>
-  <div class="character"><img src="n1.jpg" alt="إيمري" /><p>إيمري</p></div>
 </div>
+
+<!-- 🎙️ masked Section -->
+<h2 class="section-title">المذيعين</h2>
+<div class="gallery-scroll">
+  <div class="character"><img src="watch.jpg" alt="الساعة" /><p>الساعة</p></div>
+  <div class="character"><img src="deer.jpg" alt="الغزالة" /><p>الغزالة</p></div>
+  <div class="character"><img src="duck.jpg" alt="البط" /><p>البط</p></div>
+  <div class="character"><img src="giraffe.jpg" alt="الزرافة" /><p>الزرافة</p></div>
+  <div class="character"><img src="cheesecake.jpg" alt="تشيز كيك" /><p>تشيز كيك</p></div>
+  <div class="character"><img src="chefpasta.jpg" alt="شيف باستا" /><p>شيف باستا</p></div>
+  <div class="character"><img src="kopra.jpg" alt="كوبرا" /><p>كوبرا</p></div>
+  <div class="character"><img src="mouse.jpg" alt="الفأر" /><p>الفأر</p></div>
+  <div class="character"><img src="croissant.jpg" alt="الكرواسان" /><p>الكرواسان</p></div>
+  <div class="character"><img src="flamingo.jpg" alt="الفلامينجو" /><p>الفلامينجو</p></div>
+
+</div>
+
+
 <div class="episodes">
   <div class="episode"><h3>فكرة البرنامج <span>⬇</span></h3><div class="desc"> ذا ماسكد سينغر هو برنامج مسابقات غنائي ترفيهي بدأ في كوريا الجنوبية وانتشر عالميًا، وأشهر نسخه النسخة الأمريكية. يتنافس فيه مشاهير من مختلف المجالات مثل المغنين والممثلين والرياضيين، وهم يرتدون أزياء تنكرية ضخمة تغطي كامل أجسادهم لإخفاء هويتهم. الهدف هو أن يؤدي المتسابقون أغاني حيّة دون أن يعرف الجمهور أو لجنة التحكيم من هم. يتم تقديم أدلة غامضة عن كل شخصية قبل العرض على شكل مقاطع فيديو مليئة بالرموز. الأصوات تكون معدّلة عند الحديث، مما يزيد من صعوبة التخمين. بعد أداء جميع المشاركين، يُصوّت الجمهور ولجنة التحكيم، ويخرج متسابق واحد كل حلقة. المتسابق الذي يُستبعد يخلع القناع، وغالبًا ما تكون هويته مفاجِئة للجميع. لحظة الكشف عن الهوية تُعد من أكثر اللحظات إثارة في كل حلقة. يجمع البرنامج بين الغناء والغموض والكوميديا والعروض المسرحية مما يجذب جمهورًا واسعًا. يستمر الموسم حتى تبقى شخصية واحدة تُتوَّج "الفائز المقنع" بعد الكشف النهائي عن هويته.
 </div></div>
 </div>
+
 <div class="lightbox-overlay" id="lightbox"><img id="lightbox-img" src="" alt=""></div>
+
 <div class="star-rating" aria-label="تقييم النجوم">
   <button data-value="1" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
   <button data-value="2" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
@@ -217,6 +258,7 @@ html.dark .info-section strong {
   <button data-value="4" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
   <button data-value="5" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
 </div>
+
 <script>
   // Lightbox
   const lightbox = document.getElementById('lightbox');
@@ -260,7 +302,29 @@ html.dark .info-section strong {
       });
     }
   })();
+
+  // Search button functionality: opens act.html with name
+  document.querySelectorAll('.masked-character').forEach(card => {
+    const input = card.querySelector('.search-name');
+    const btn = card.querySelector('.search-btn');
+    btn.addEventListener('click', () => {
+      const name = input.value.trim();
+      if(name) {
+        window.open('act.html?name=' + encodeURIComponent(name), '_blank');
+      }
+    });
+  });
+
+  // Drop a Name (no response)
+  function dropName() {
+    const val = document.getElementById('drop-name').value.trim();
+    if(val) {
+      console.log('Guessed Name:', val); // optional logging
+      document.getElementById('drop-name').value = ''; // clear input
+    }
+  }
 </script>
+
 <!-- 📌 معلومات العمل -->
 <footer class="info-section">
   <h2>معلومات العمل</h2>
@@ -272,4 +336,3 @@ html.dark .info-section strong {
 </footer>
 </body>
 </html>
-
