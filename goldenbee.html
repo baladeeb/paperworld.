@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Golden Bee — التصويت السنوي</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#f6c84c;
+      --muted:#9aa4b2;
+      --glass: rgba(255,255,255,0.03);
+      --gap:16px;
+      --tile-size:110px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Segoe UI", Tahoma, Arial, "Noto Kufi Arabic", sans-serif;
+      background: linear-gradient(180deg,#07101a 0%, #0b1622 100%);
+      color:#e6eef6;
+      padding:20px;
+      direction:rtl;
+    }
+    header{display:flex;gap:12px;align-items:center;margin-bottom:18px}
+    .title{font-size:20px;font-weight:700}
+    .subtitle{color:var(--muted);font-size:13px}
+    main{max-width:1100px;margin:0 auto}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+      gap:var(--gap);
+    }
+    .tile{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;align-items:center;
+      justify-content:center;text-align:center;cursor:pointer;min-height:170px;border:1px solid rgba(255,255,255,0.03)
+    }
+    .tile:active{transform:scale(.995)}
+    .circle{
+      width:var(--tile-size);height:var(--tile-size);
+      border-radius:999px;overflow:hidden;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg, rgba(246,200,76,0.08), rgba(246,200,76,0.03));
+      border:2px solid rgba(246,200,76,0.06);position:relative;
+    }
+    /* important: crop to show top of image (face) */
+    .circle img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+    .cat-title{font-size:14px;font-weight:600;color:gold}
+    .cat-year{font-size:12px;color:var(--muted)}
+    /* modal */
+    .overlay{position:fixed;inset:0;background:rgba(2,6,12,0.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}
+    .overlay.open{display:flex}
+    .modal{width:100%;max-width:920px;background:linear-gradient(180deg,#071622,#07101a);border-radius:12px;padding:16px;max-height:90vh;overflow:auto;border:1px solid rgba(255,255,255,0.04)}
+    .modal-head{display:flex;align-items:center;justify-content:space-between}
+    .modal-title{font-size:18px;font-weight:700}
+    .close-btn{background:transparent;border:0;color:var(--muted);font-size:18px;cursor:pointer}
+    .candidates{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:14px}
+    .candidate{background:var(--glass);padding:10px;border-radius:12px;display:flex;gap:10px;align-items:center}
+    .avatar{width:72px;height:72px;border-radius:8px;overflow:hidden;flex-shrink:0}
+    .avatar img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+    .candidate .name{font-weight:700}
+    .vote{background:var(--accent);color:#072029;border:0;padding:8px 10px;border-radius:8px;font-weight:700;cursor:pointer}
+    .candidate input[type=radio]{display:none}
+    footer{margin-top:18px;display:flex;gap:10px;justify-content:space-between;align-items:center}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 12px;border-radius:10px;color:var(--muted);cursor:pointer}
+    .btn.primary{background:var(--accent);color:#072029;border:0}
+    @media (max-width:640px){
+      :root{--tile-size:86px}
+      .grid{grid-template-columns:repeat(3,1fr)}
+      .candidate{flex-direction:column;align-items:flex-start}
+      .avatar{width:100%;height:120px;border-radius:8px}
+    }
+    .note{font-size:13px;color:var(--muted);margin:14px 0}
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div style="display:flex;align-items:center;gap:12px">
+        <img src="goldenbeelogo.jpg" alt="Golden Bee" style="width:48px;height:48px;border-radius:8px;object-fit:cover;object-position:top center">
+        <div>
+          <div class="title">Golden Bee — جوائز الدراما</div>
+          <div class="subtitle">اختَر الأفضل من كل فئة — صفحة واحدة فقط</div>
+        </div>
+      </div>
+    </header>
+
+    <p class="note">اضغط على أي فئة لفتح قائمة المرشحين. يمكنك اختيار مرشح واحد لكل فئة.</p>
+
+    <section class="grid" id="categories"></section>
+
+    <footer>
+      <div class="subtitle">عدد الفئات: <span id="count">0</span></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" id="clearAll">مسح الاختيارات</button>
+        <button class="btn primary" id="submitVotes">إرسال التصويت</button>
+      </div>
+    </footer>
+
+    <!-- modal -->
+    <div class="overlay" id="overlay" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title" id="modalTitle">الفئة</div>
+            <div class="subtitle" id="modalSubtitle"></div>
+          </div>
+          <div>
+            <button class="close-btn" id="closeModal" aria-label="إغلاق">✕</button>
+          </div>
+        </div>
+        <div class="candidates" id="candidatesList"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    /* ==========================
+       بيانات الفئات — عدّل هنا كما تريد
+       كل فئة = { id, title, year, candidates: [ {id,name,subtitle,image}... ] }
+       ضع صور المرشحين في نفس مجلد الملف أو استخدم روابط مطلقة.
+       الصورة الافتراضية لكل فئة: goldenbeelogo.jpg
+       ========================== */
+
+    // مثال: ننشئ 23 فئة افتراضية. غيّر العناوين/المرشحين كما تريد.
+    const categories = (() => {
+      const arr = [];
+      // أمثلة فعلية على أول 3 فئات — عدِّل الأسماء والصور هنا
+      arr.push({
+        id: 'best_actor',
+        title: 'أفضل ممثل مسلسلات',
+        year: 2025,
+        candidates: [
+          { id: 'actor1', name: 'يونس', subtitle: 'في لعبة زواج', image: 'zl2.jpg' },
+          { id: 'actor2', name: 'بوران', subtitle: 'في البراعم الذابلة', image: 'buran.jpg' },
+          { id: 'actor3', name: 'توم', subtitle: 'في مستشفى الحب', image: 'ali11.jpg' },
+          { id: 'actor4', name: 'عزيز', subtitle: 'في الفريق الخطأ', image: 'FT1.jpg' },
+          { id: 'actor5', name: 'كان', subtitle: 'في الخياط والغراب', image: 'kaan.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_actress',
+        title: 'أفضل ممثلة مسلسلات',
+        year: 2025,
+        candidates: [
+          { id: 'actress1', name: 'ليلى', subtitle: 'في البراعم الذابلة', image: 'leyla.jpg' },
+          { id: 'actress2', name: 'هيام', subtitle: 'في الخياط', image: 'ali3.jpg' },
+          { id: 'actress3', name: 'بينار', subtitle: 'في مستشفى الحب', image: 'pinar.jpg' },
+          { id: 'actress4', name: 'مادلين', subtitle: 'في مستشفى الحب والفريق الخطأ', image: 'ali4.jpg' },
+          { id: 'actress5', name: 'لارا', subtitle: 'في كما يطير الغراب', image: 'lara.jpg' },
+          { id: 'actress6', name: 'لينا', subtitle: 'في الغراب ولعبة زواج', image: 'n4.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_digital_actor',
+        title: 'أفضل ممثل رقميات',
+        year: 2025,
+        candidates: [
+          { id: 'dactor1', name: 'يونس', subtitle: 'مسلسل عشق101', image: 'zl2.jpg' },
+          { id: 'dactor2', name: 'رامز', subtitle: 'مسلسل الممثلة', image: 'zl1.jpg' },
+          { id: 'dactor3', name: 'بوران', subtitle: 'مسلسل الممثلة و عشق 101', image: 'buran.jpg' },
+          { id: 'dactor4', name: 'كريم', subtitle: 'مسلسل عشق101', image: 'karim.jpg' },
+          { id: 'dactor5', name: 'عمر', subtitle: 'مسلسل عشق101', image: 'omar.jpg' }
+        ]
+      });
+      arr.push({
+        id: 'best_digital_actress',
+        title: 'أفضل ممثلة رقميات',
+        year: 2025,
+        candidates: [
+          { id: 'dactress1', name: 'لينا', subtitle: 'مسلسل عشق101', image: 'n4.jpg' },
+          { id: 'dactress2', name: 'مادلين', subtitle: 'مسلسل عشق101', image: 'ali4.jpg' },
+          { id: 'dactress3', name: 'ليلى', subtitle: 'مسلسل الممثلة و عشق 101', image: 'leyla.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_film_actor',
+        title: 'أفضل ممثل أفلام',
+        year: 2025,
+        candidates: [
+          { id: 'factor1', name: 'أليكس', subtitle: 'فيلم فريق الأرشيف', image: 'alex.jpg' },
+          { id: 'factor2', name: 'إبراهيم', subtitle: 'فيلم درس خصوصي', image: 'ibrahim.jpg' },
+          { id: 'factor3', name: 'توماس', subtitle: 'فيلم رقصة الخريف', image: 'tomas.jpg' },
+          { id: 'factor4', name: 'كان', subtitle: 'فيلم أمنية الدم', image: 'kaan.jpg' },
+          { id: 'factor5', name: 'ليو', subtitle: 'فيلم أرض زيكولا', image: 'zl3.jpg' }
+
+        ]
+      });
+      arr.push({
+        id: 'best_film_actress',
+        title: 'أفضل ممثلة أفلام',
+        year: 2025,
+        candidates: [
+          { id: 'factress1', name: 'لارا', subtitle: 'فيلم فريق الأرشيف', image: 'lara.jpg' },
+          { id: 'factress2', name: 'زينب', subtitle: 'فيلم درس خصوصي', image: 'hr5.jpg' },
+          { id: 'factress3', name: 'سلوى', subtitle: 'فيلم درس خصوصي', image: 'br5.jpg' },
+          { id: 'factress4', name: 'مادلين', subtitle: 'فيلم رقصة الخريف', image: 'ali4.jpg' },
+          { id: 'factress4', name: 'ميار', subtitle: 'فيلم أرض زيكولا', image: 'n5.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_series',
+        title: 'أفضل مسلسل',
+        year: 2025,
+        candidates: [
+          { id: 'series1', name: 'الفريق الخطأ', subtitle: 'بطولة عزيز ومادلين', image: 'photo7.jpg' },
+          { id: 'series2', name: 'لعبة زواج', subtitle: 'بطولة يونس ولينا', image: 'news1.jpg' },
+          { id: 'series3', name: 'الخياط', subtitle: 'بطولة كان وهيام', image: 'photo19.jpg' },
+          { id: 'series4', name: 'البراعم الذابلة', subtitle: 'بطولة بوران وليلى', image: 'photo20.jpg' },
+          { id: 'series5', name: 'كما يطير الغراب', subtitle: 'بطولة لارا ولينا', image: 'photo28.jpg' },
+          { id: 'series6', name: 'مستشفى الحب', subtitle: 'بطولة توم ومادلين وبينار', image: 'photo18.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_digital_series',
+        title: 'أفضل مسلسل رقمي',
+        year: 2025,
+        candidates: [
+          { id: 'dseries1', name: 'الممثلة', subtitle: 'بطولة بوران وليلى ورامز', image: 'photo23.jpg' },
+          { id: 'dseries2', name: 'عشق101', subtitle: 'بطولة بوران ولينا ومادلين ويونس وكريم', image: 'photo25.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_film',
+        title: 'أفضل فيلم',
+        year: 2025,
+        candidates: [
+          { id: 'film1', name: 'أمنية الدم', subtitle: 'بطولة كان وديفا', image: 'photo17.jpg' },
+          { id: 'film2', name: 'أرض زيكولا', subtitle: 'بطولة ليو وميار', image: 'photo14.jpg' },
+          { id: 'film3', name: 'درس خصوصي', subtitle: 'بطولة زينب وسلوى وإبراهيم', image: 'photo21.jpg' },
+          { id: 'film4', name: 'رقصة الخريف', subtitle: 'بطولة مادلين وتوماس', image: 'photo24.jpg' },
+          { id: 'film5', name: 'فريق الأرشيف', subtitle: 'بطولة لارا وأليكس وآنا', image: 'photo26.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_evil',
+        title: 'أفضل دور شرير',
+        year: 2025,
+        candidates: [
+          { id: 'evil1', name: 'المدير', subtitle: 'في دور البراعم الذابلة', image: 'al3.jpg' },
+          { id: 'evil2', name: 'لينا', subtitle: 'في دور كما يطير الغراب', image: 'n4.jpg' },
+          { id: 'evil3', name: 'ليو', subtitle: 'في دور الممثلة', image: 'zl3.jpg' },
+          { id: 'evil4', name: 'عزيز', subtitle: 'في دور درس خصوصي', image: 'FT1.jpg' },
+          { id: 'evil5', name: 'سيركان', subtitle: 'في دور فريق الأرشيف', image: 'ali9.jpg' },
+          { id: 'evil6', name: 'شكري', subtitle: 'في دور عشق 101', image: 'shokry.jpg' },
+
+        ]
+      });
+      arr.push({
+        id: 'best_comedy',
+        title: 'أفضل دور كوميدي ',
+        year: 2025,
+        candidates: [
+          { id: 'comedy1', name: 'كارلوس', subtitle: 'في دور مستشفى الحب', image: 'ali2.jpg' },
+          { id: 'comedy2', name: 'آنا', subtitle: 'في دور الخياط', image: 'ali5.jpg' },
+          { id: 'comedy3', name: 'ألبيران', subtitle: 'في دور لعبة زواج', image: 'lg2.jpg' },
+          { id: 'comedy4', name: 'كارمن', subtitle: 'في دور لعبة زواج', image: 'ali10.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_drama',
+        title: 'أفضل دور دراما ',
+        year: 2025,
+        candidates: [
+          { id: 'drama1', name: 'توماس', subtitle: 'في دور مروان (رقصة الخريف)', image: 'tomas.jpg' },
+          { id: 'drama2', name: 'إسماعيل', subtitle: 'في دور إياد (البراعم الذابلة)', image: 'ismail.jpg' },
+          { id: 'drama3', name: 'بوران', subtitle: 'في دور سنان (عشق 101)', image: 'buran.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_action',
+        title: 'أفضل دور أكشن ',
+        year: 2025,
+        candidates: [
+          { id: 'action1', name: 'أليكس', subtitle: 'في دور فريق الأرشيف ', image: 'alex.jpg' },
+          { id: 'action2', name: 'لارا', subtitle: 'في دور فريق الأرشيف ', image: 'lara.jpg' },
+          { id: 'action3', name: 'كان', subtitle: 'في دور أمنية الدم ', image: 'kaan.jpg' },
+          { id: 'action4', name: 'رامز', subtitle: 'في دور الممثلة ', image: 'zl1.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_boy',
+        title: 'أفضل طفل صبي ',
+        year: 2025,
+        candidates: [
+          { id: 'boy1', name: 'عامر', subtitle: 'في دور عمر', image: 'omarkid.jpg' },
+          { id: 'boy2', name: 'وايت', subtitle: 'في دور طفل الميتم', image: 'white.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_girl',
+        title: 'أفضل طفلة بنت ',
+        year: 2025,
+        candidates: [
+          { id: 'girl1', name: 'لولو', subtitle: 'في دور فريق الأشريف', image: 'lulu.jpg' },
+          { id: 'girl2', name: 'سلوى', subtitle: 'في دور الممثلة', image: 'hr2.jpg' },
+          { id: 'girl3', name: 'ريمي', subtitle: 'في دور كما يطير الغراب', image: 'rimi.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_old_man',
+        title: 'أفضل عجوز ',
+        year: 2025,
+        candidates: [
+          { id: 'oldm1', name: 'ماركر', subtitle: 'في دور فريق الأشريف', image: 'hr8.jpg' },
+          { id: 'oldm2', name: 'شكري', subtitle: 'في دور عشق101', image: 'shokry.jpg' },
+          { id: 'oldm3', name: 'ماجيك', subtitle: 'في دور الممثلة', image: 'majic.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_old_woman',
+        title: 'أفضل عجوزة ',
+        year: 2025,
+        candidates: [
+          { id: 'oldw1', name: 'عبلة', subtitle: 'في دور الفريق الخطأ', image: 'hr3.jpg' },
+          { id: 'oldw2', name: 'ورد', subtitle: 'في دور البراعم الذابلة', image: 'FT2.jpg' },
+          { id: 'oldw3', name: 'عجوز', subtitle: 'في دور درس خصوصي', image: 't5.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_middle_man',
+        title: 'أفضل رجل منتصف العمر ',
+        year: 2025,
+        candidates: [
+          { id: 'middlem1', name: 'مايكل', subtitle: 'في أدوار متعددة', image: 'ali8.jpg' },
+          { id: 'middlem2', name: 'المدير', subtitle: 'في أدوار متعددة', image: 'ali7.jpg' },
+          { id: 'middlem3', name: 'أوندار', subtitle: 'في لعبة زواج', image: 'ali14.jpg' },
+          { id: 'middlem4', name: 'براون', subtitle: 'في الممثلة', image: 'ali15.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_middle_woman',
+        title: 'أفضل سيدة منتصف العمر ',
+        year: 2025,
+        candidates: [
+          { id: 'middlew1', name: 'داريا', subtitle: 'في دور مستشفى الحب', image: 'Tz2.jpg' },
+          { id: 'middlew2', name: 'يابانية', subtitle: 'في دور لعبة زواج', image: 'al9.jpg' },
+          { id: 'middlew3', name: 'لبنى', subtitle: 'في دور كما يطير الغراب وفريق الأرشيف', image: 'lubna.jpg' },
+          { id: 'middlew4', name: 'كارمن', subtitle: 'في دور لعبة زواج والخياط', image: 'ali10.jpg' },
+          { id: 'middlew5', name: 'يسرى', subtitle: 'في دور لعبة زواج', image: 'lg1.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_ascending_actor',
+        title: 'أفضل ممثل صاعد ',
+        year: 2025,
+        candidates: [
+          { id: 'ma1', name: 'عصام', subtitle: 'في دور لعبة زواج', image: 'lg3.jpg' },
+          { id: 'ma2', name: 'سيركان', subtitle: 'في دور الخياط وفريق الأرشيف', image: 'ali9.jpg' },
+          { id: 'ma3', name: 'ريدر', subtitle: 'في دور الممثلة والخياط', image: 'FT3.jpg' },
+          { id: 'ma4', name: 'يعقوب', subtitle: 'في دور الخياط', image: 'ali16.jpg' },
+          { id: 'ma5', name: 'شهاب', subtitle: 'في دور البراعم الذابلة', image: 'shihab.jpg' },
+          { id: 'ma6', name: 'جوني', subtitle: 'في دور عشق 101 والخياط', image: 'john.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_ascending_actress',
+        title: 'أفضل ممثلة صاعدة ',
+        year: 2025,
+        candidates: [
+          { id: 'woma1', name: 'لجين', subtitle: 'في دور كما يطير الغراب', image: 'br3.jpg' },
+          { id: 'woma2', name: 'ديما', subtitle: 'في دور مستشفى الحب', image: 'FT4.jpg' },
+          { id: 'woma3', name: 'نهى', subtitle: 'في دور البراعم الذابلة', image: 'nuha.jpg' },
+          { id: 'woma4', name: 'كورال', subtitle: 'في دور البراعم الذابلة والممثلة', image: 'coral.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_program',
+        title: 'أفضل برنامج ',
+        year: 2025,
+        candidates: [
+          { id: 'pro1', name: 'أبلة فاهيتا', subtitle: 'يعرض كل جمعة', image: 'photo12.jpg' },
+          { id: 'pro2', name: 'مرتبة الشرف', subtitle: 'يعرض كل أحد', image: 'photo27.jpg' },
+          { id: 'pro3', name: 'عالم التسلية', subtitle: 'يعرض عشوائيا', image: 'photo16.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_introducer',
+        title: 'أفضل مقدم برامج ',
+        year: 2025,
+        candidates: [
+          { id: 'int1', name: 'أبلة فاهيتا', subtitle: 'في برنامج أبلة فاهيتا', image: 'photo12.jpg' },
+          { id: 'int2', name: 'إبراهيم', subtitle: 'في برنامج مرتبة الشرف', image: 'ibrahim.jpg' },
+          { id: 'int3', name: 'ميار', subtitle: 'في برنامج مرتبة الشرف', image: 'n5.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_poster',
+        title: 'أفضل بوستر ',
+        year: 2025,
+        candidates: [
+          { id: 'post1', name: 'الخياط', subtitle: '', image: 'photo19.jpg' },
+          { id: 'post2', name: 'لعبة زواج', subtitle: '', image: 'news1.jpg' },
+          { id: 'post3', name: 'مستشفى الحب', subtitle: '', image: 'photo18.jpg' },
+          { id: 'post4', name: 'الممثلة', subtitle: '', image: 'photo23.jpg' },
+          { id: 'post6', name: 'عشق101', subtitle: '', image: 'photo25.jpg' },
+          { id: 'post7', name: 'رقصة الخريف', subtitle: '', image: 'photo24.jpg' },
+          { id: 'post9', name: 'كما يطير الغراب', subtitle: '', image: 'photo28.jpg' },
+          { id: 'post10', name: 'فريق الأرشيف', subtitle: '', image: 'photo26.jpg' },
+          { id: 'post12', name: 'أرض زيكولا', subtitle: '', image: 'photo14.jpg' },
+          { id: 'post13', name: 'البراعم الذابلة', subtitle: '', image: 'photo20.jpg' },
+          { id: 'post14', name: 'درس خصوصي', subtitle: '', image: 'photo21.jpg' },
+          { id: 'post15', name: 'أمنية الدم', subtitle: '', image: 'photo17.jpg' },
+        ]
+      });
+      arr.push({
+        id: 'best_couple',
+        title: 'أفضل ثنائي ',
+        year: 2025,
+        candidates: [
+          { id: 'co1', name: 'كان وهيام', subtitle: 'في مسلسل الخياط', image: 'kahu.jpg' },
+          { id: 'co2', name: 'توماس ومادلين', subtitle: 'في فيلم رقصة الخريف', image: 'toma.jpg' },
+          { id: 'co3', name: 'بوران وليلى', subtitle: 'في مسلسل البراعم الذابلة والممثلة', image: 'bula.jpg' },
+          { id: 'co4', name: 'زينب وإبراهيم', subtitle: 'في فيلم درس خصوصي', image: 'ibza.jpg' },
+          { id: 'co5', name: 'بينار وجولدي', subtitle: 'في مسلسل مستشفى الحب', image: 'gopi.jpg' },
+          { id: 'co6', name: 'يونس ولينا', subtitle: 'في مسلسل لعبة زواج', image: 'yuli.jpg' },
+          { id: 'co7', name: 'ليو وميار', subtitle: 'في فيلم أرض زيكولا', image: 'lema.jpg' },
+        ]
+      });
+
+
+
+
+
+      // إذا أردت 23 فئة، نكمل البقية كعناوين افتراضية (يمكنك استبدالها)
+for (let i = 4; i <= 0; i++) {
+        arr.push({
+          id: 'cat' + i,
+          title: `فئة ${i}`,
+          year: 2025,
+          candidates: [
+            { id: `c${i}_1`, name: `مرشح 1`, subtitle: 'وصف 1', image: 'goldenbeelogo.jpg' },
+            { id: `c${i}_2`, name: `مرشح 2`, subtitle: 'وصف 2', image: 'goldenbeelogo.jpg' },
+            { id: `c${i}_3`, name: `مرشح 3`, subtitle: 'وصف 3', image: 'goldenbeelogo.jpg' },
+            { id: `c${i}_4`, name: `مرشح 4`, subtitle: 'وصف 4', image: 'goldenbeelogo.jpg' }
+          ]
+        });
+      }
+
+      return arr;
+    })();
+
+    // حالة التخزين (يُخزَّن اختيار كل فئة في localStorage)
+    const STORAGE_KEY = 'goldenBeeSelections';
+    const state = {
+      selections: JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')
+    };
+
+    const grid = document.getElementById('categories');
+    const countEl = document.getElementById('count');
+    const overlay = document.getElementById('overlay');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSubtitle = document.getElementById('modalSubtitle');
+    const candidatesList = document.getElementById('candidatesList');
+    let activeCatId = null;
+
+    // render grid of categories
+    function renderGrid() {
+      grid.innerHTML = '';
+      categories.forEach(cat => {
+        const sel = state.selections[cat.id];
+        const tile = document.createElement('button');
+        tile.className = 'tile';
+        tile.type = 'button';
+        tile.setAttribute('data-id', cat.id);
+        tile.setAttribute('aria-haspopup', 'dialog');
+
+        const circle = document.createElement('div');
+        circle.className = 'circle';
+
+        const img = document.createElement('img');
+        if (sel && sel.image) {
+          img.src = sel.image;
+          img.alt = sel.name || cat.title;
+        } else {
+          // default category image = goldenbeelogo.jpg
+          img.src = 'goldenbeelogo.jpg';
+          img.alt = cat.title + ' - شعار';
+        }
+        circle.appendChild(img);
+
+        const title = document.createElement('div');
+        title.className = 'cat-title';
+        title.textContent = cat.title;
+
+        const year = document.createElement('div');
+        year.className = 'cat-year';
+        year.textContent = cat.year;
+
+        tile.appendChild(circle);
+        tile.appendChild(title);
+        tile.appendChild(year);
+
+        tile.addEventListener('click', () => openModal(cat.id));
+
+        grid.appendChild(tile);
+      });
+
+      countEl.textContent = categories.length;
+    }
+
+    // open modal for category
+    function openModal(catId) {
+      activeCatId = catId;
+      const cat = categories.find(c => c.id === catId);
+      if (!cat) return;
+      modalTitle.textContent = cat.title;
+      modalSubtitle.textContent = `عدد المرشحين: ${cat.candidates.length}`;
+
+      candidatesList.innerHTML = '';
+      const selectedId = state.selections[catId] && state.selections[catId].id;
+
+      // name for radio group unique per category
+      const radioGroupName = 'candidate_' + catId;
+
+      cat.candidates.forEach(c => {
+        const item = document.createElement('label');
+        item.className = 'candidate';
+        item.setAttribute('tabindex', '0');
+
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = radioGroupName;
+        input.value = c.id;
+        if (selectedId === c.id) input.checked = true;
+
+        input.addEventListener('change', () => {
+          // store selection for this category
+          state.selections[catId] = { id: c.id, name: c.name, image: c.image, subtitle: c.subtitle || '' };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state.selections));
+          renderGrid();
+          closeModal();
+        });
+
+        const avatar = document.createElement('div');
+        avatar.className = 'avatar';
+        const aImg = document.createElement('img');
+        // if image missing, fallback to golden bee logo
+        aImg.src = c.image || 'goldenbeelogo.jpg';
+        aImg.alt = c.name;
+        avatar.appendChild(aImg);
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        meta.innerHTML = `<div class="name">${c.name}</div><div class="subtitle" style="color:var(--muted);font-size:13px">${c.subtitle || ''}</div>`;
+
+        const voteWrap = document.createElement('div');
+        const voteBtn = document.createElement('button');
+        voteBtn.className = 'vote';
+        voteBtn.type = 'button';
+        voteBtn.textContent = 'تصويت';
+        voteBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          input.checked = true;
+          input.dispatchEvent(new Event('change'));
+        });
+
+        voteWrap.appendChild(voteBtn);
+
+        item.appendChild(input);
+        item.appendChild(avatar);
+        item.appendChild(meta);
+        item.appendChild(voteWrap);
+
+        candidatesList.appendChild(item);
+      });
+
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden','false');
+    }
+
+    function closeModal() {
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden','true');
+      activeCatId = null;
+    }
+
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+    // actions
+    document.getElementById('clearAll').addEventListener('click', () => {
+      if (confirm('هل أنت متأكد أنك تريد مسح جميع الاختيارات؟')) {
+        state.selections = {};
+        localStorage.removeItem(STORAGE_KEY);
+        renderGrid();
+      }
+    });
+
+    document.getElementById('submitVotes').addEventListener('click', () => {
+      const keys = Object.keys(state.selections);
+      if (keys.length === 0) { alert('لم تختر أي مرشح بعد.'); return; }
+      // هنا يمكنك استبدال alert بعملية إرسال للـ server عبر fetch
+      const lines = keys.map(k => {
+        const s = state.selections[k];
+        const cat = categories.find(c => c.id === k) || { title: k };
+        return `${cat.title}: ${s.name}`;
+      });
+      alert('قائمة اختياراتك:\n' + lines.join('\n'));
+    });
+
+    // أول تشغيل
+    renderGrid();
+  </script>
+</body>
+</html>
