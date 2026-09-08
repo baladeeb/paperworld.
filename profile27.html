@@ -1,294 +1,2015 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>مرتبة الشرف</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>مرتبة الشرف - الجزء الثاني</title>
+
   <script>
-    if (localStorage.getItem('theme') === 'dark') {
-      document.documentElement.classList.add('dark');
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark");
     }
   </script>
-  <style>
-body {
-  font-family: 'Segoe UI', sans-serif;
-  margin: 0;
-  padding: 1rem;
-  color: #333;
-  transition: background 0.3s, color 0.3s;
-  position: relative; /* allow pseudo-element layering */
-  z-index: 0;
-}
 
-body::before {
-  content: "";
-  position: fixed;
-  top: -10px; left: -10px;
-  width: calc(100% + 20px);
-  height: calc(100% + 20px);
-  background: url("photo27.jpg") no-repeat center center/cover;
-  filter: blur(6px) brightness(0.6);
-  z-index: -1;
-}
-    html.dark body {
-      background: #1e1e1e;
-      color: #eee;
+  <style>
+    * {
+      box-sizing: border-box;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    .back-link {
-      margin: 1rem;
-      text-align: left;
-    }
-    .back-link a {
-      background: #3498db;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-    .gallery-scroll {
-      display: flex;
-      overflow-x: auto;
-      gap: 10px;
-      padding: 1rem 0;
+
+    html {
       scroll-behavior: smooth;
     }
-    .character {
-      flex: 0 0 auto;
-      width: 120px;
-      text-align: center;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .character img {
-      width: 100%;
-      height: 80px;
-      object-fit: cover;
-      object-position: top;
-      border-radius: 8px 8px 0 0;
-      cursor: pointer;
-    }
-    .character p {
-      margin: 5px 0;
-      font-weight: bold;
-    }
-    html.dark .character {
-      background: #2c2c2c;
-    }
-    html.dark .character p {
-      color: #eee;
-    }
-    .episodes {
-      max-width: 600px;
-      margin: 2rem auto;
-    }
-    .episode {
-      background: #fff;
-      border-radius: 6px;
-      margin-bottom: 10px;
-      padding: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      position: relative;
-    }
-    .episode h3 {
+
+    body {
       margin: 0;
-      cursor: pointer;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      color: #222;
+      min-height: 100vh;
+      position: relative;
+      background: #111;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -20px;
+      background: url("martaba.jpg") center center / cover no-repeat;
+      filter: blur(12px) brightness(0.38);
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.25);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* =========================
+       TOP BAR
+    ========================= */
+
+    .top-bar {
+      width: 100%;
+      padding: 18px 25px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 15px;
     }
-    .episode .desc {
-      margin-top: 10px;
+
+    .back-btn,
+    .part-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: white;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: bold;
+      transition: 0.25s;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .back-btn {
+      background: rgba(52, 152, 219, 0.95);
+    }
+
+    .back-btn:hover {
+      transform: translateY(-2px);
+      background: #2980b9;
+    }
+
+    .part-btn {
+      background: rgba(155, 89, 182, 0.95);
+    }
+
+    .part-btn:hover {
+      transform: translateY(-2px);
+      background: #8e44ad;
+    }
+
+    /* =========================
+       PART SWITCHER
+    ========================= */
+
+    .part-switcher {
+      width: min(1100px, 94%);
+      margin: 0 auto 22px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .part-tab {
+      border: none;
+      cursor: pointer;
+      padding: 11px 22px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.88);
+      color: #555;
+      font-weight: bold;
+      font-size: 15px;
+      transition: 0.25s;
+    }
+
+    .part-tab:hover {
+      transform: translateY(-2px);
+    }
+
+    .part-tab.active {
+      background: #3498db;
+      color: white;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      width: min(1100px, 94%);
+      margin: 10px auto 30px;
+      padding: 30px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.93);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      gap: 35px;
+      direction: rtl;
+    }
+
+    .poster-wrapper {
+      flex: 0 0 280px;
+    }
+
+    .main-poster {
+      width: 280px;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 17px;
+      display: block;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: 0.3s;
+    }
+
+    .main-poster:hover {
+      transform: scale(1.02);
+    }
+
+    .hero-content {
+      flex: 1;
+    }
+
+    .work-type {
+      display: inline-block;
+      background: #3498db;
+      color: white;
+      padding: 6px 13px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: 42px;
+      color: #1f2933;
+    }
+
+    .subtitle {
+      color: #777;
+      font-size: 17px;
+      margin-bottom: 18px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      background: #f0f2f5;
+      color: #444;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .status {
+      background: #2ecc71;
+      color: white;
+    }
+
+    .rating-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 15px;
+      padding: 14px 18px;
+      background: #f7f7f7;
+      border-radius: 13px;
+      width: fit-content;
+    }
+
+    .rating-number {
+      font-size: 27px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .rating-stars {
+      color: #f1c40f;
+      font-size: 24px;
+      letter-spacing: 2px;
+    }
+
+    .rating-label {
+      color: #777;
+      font-size: 13px;
+    }
+
+    /* =========================
+       GENERAL SECTION
+    ========================= */
+
+    .section {
+      width: min(1000px, 94%);
+      margin: 25px auto;
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.22);
+    }
+
+    .section-title {
+      margin: 0 0 20px;
+      font-size: 25px;
+      color: #2c3e50;
+      border-right: 5px solid #3498db;
+      padding-right: 12px;
+    }
+
+    /* =========================
+       STORY
+    ========================= */
+
+    .story {
+      font-size: 17px;
+      line-height: 2;
+      color: #444;
+      margin: 0;
+    }
+
+    /* =========================
+       INFO CARDS
+    ========================= */
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 13px;
+    }
+
+    .info-card {
+      background: #f5f7f9;
+      border-radius: 13px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .info-icon {
+      font-size: 25px;
+      margin-bottom: 7px;
+    }
+
+    .info-label {
+      color: #888;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .info-value {
+      font-size: 15px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    /* =========================
+       CAST
+    ========================= */
+
+    .cast-scroll {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding: 5px 3px 15px;
+      scroll-behavior: smooth;
+    }
+
+    .cast-scroll::-webkit-scrollbar {
+      height: 7px;
+    }
+
+    .cast-scroll::-webkit-scrollbar-thumb {
+      background: #bbb;
+      border-radius: 10px;
+    }
+
+    .cast-card {
+      flex: 0 0 145px;
+      background: #f6f7f8;
+      border-radius: 14px;
+      overflow: hidden;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      transition: 0.25s;
+    }
+
+    .cast-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .cast-card img {
+      width: 100%;
+      height: 145px;
+      object-fit: cover;
+      object-position: top;
+      cursor: pointer;
+    }
+
+    .actor-name {
+      font-weight: bold;
+      margin: 9px 5px 2px;
+      color: #222;
+    }
+
+    .character-name {
+      font-size: 13px;
+      color: #777;
+      margin: 0 5px 10px;
+    }
+
+    /* =========================
+       EPISODES
+    ========================= */
+
+    .episodes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .episode {
+      background: #f5f6f7;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .episode-header {
+      width: 100%;
+      border: none;
+      background: transparent;
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      text-align: right;
+    }
+
+    .episode-header:hover {
+      background: rgba(52, 152, 219, 0.08);
+    }
+
+    .episode-desc {
       display: none;
+      padding: 0 18px 17px;
+      color: #666;
+      line-height: 1.8;
     }
+
+    .episode.open .episode-desc {
+      display: block;
+    }
+
+    .arrow {
+      transition: 0.2s;
+    }
+
+    .episode.open .arrow {
+      transform: rotate(180deg);
+    }
+
+    /* =========================
+       POSTERS
+    ========================= */
+
+    .poster-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .poster-gallery img {
+      width: 180px;
+      max-height: 270px;
+      object-fit: cover;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.25s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .poster-gallery img:hover {
+      transform: scale(1.04);
+    }
+
+    /* =========================
+       USER RATING
+    ========================= */
+
+    .user-rating {
+      text-align: center;
+    }
+
+    .user-rating .section-title {
+      text-align: right;
+    }
+
+    .user-rating p {
+      color: #777;
+      margin-top: 0;
+    }
+
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      direction: ltr;
+    }
+
+    .star-btn {
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 2px;
+      transition: 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .star-btn svg {
+      width: 38px;
+      height: 38px;
+      fill: #ccc;
+      transition: 0.2s;
+      pointer-events: none;
+    }
+
+    .star-btn.active svg {
+      fill: #f1c40f;
+    }
+
+    .star-btn:hover {
+      transform: scale(1.15);
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .footer-info {
+      width: min(1000px, 94%);
+      margin: 25px auto 40px;
+      background: rgba(236, 240, 241, 0.95);
+      border-radius: 18px;
+      padding: 25px;
+    }
+
+    .footer-info h2 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+
+    .footer-info ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-info li {
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    .footer-info strong {
+      color: #222;
+    }
+
+    /* =========================
+       LIGHTBOX
+    ========================= */
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .lightbox img {
+      max-width: 92%;
+      max-height: 88vh;
+      border-radius: 10px;
+      object-fit: contain;
+      cursor: default;
+    }
+
+    .close-lightbox {
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 10000;
+    }
+
+    /* =========================
+       DARK MODE
+    ========================= */
+
+    html.dark body {
+      color: #eee;
+    }
+
+    html.dark body::after {
+      background: rgba(0, 0, 0, 0.48);
+    }
+
+    html.dark .hero,
+    html.dark .section {
+      background: rgba(35, 35, 35, 0.95);
+    }
+
+    html.dark .hero h1,
+    html.dark .section-title {
+      color: #fff;
+    }
+
+    html.dark .subtitle,
+    html.dark .story {
+      color: #ccc;
+    }
+
+    html.dark .badge {
+      background: #333;
+      color: #ddd;
+    }
+
+    html.dark .rating-box,
+    html.dark .info-card,
+    html.dark .cast-card,
     html.dark .episode {
       background: #2c2c2c;
     }
-    html.dark .episode .desc {
+
+    html.dark .rating-number,
+    html.dark .info-value,
+    html.dark .actor-name,
+    html.dark .episode-header {
+      color: #eee;
+    }
+
+    html.dark .rating-label,
+    html.dark .info-label,
+    html.dark .character-name,
+    html.dark .episode-desc {
+      color: #aaa;
+    }
+
+    html.dark .footer-info {
+      background: rgba(40, 40, 40, 0.95);
+    }
+
+    html.dark .footer-info h2 {
+      color: white;
+    }
+
+    html.dark .footer-info li {
+      color: #bbb;
+    }
+
+    html.dark .footer-info strong {
+      color: white;
+    }
+
+    html.dark .part-tab {
+      background: #333;
       color: #ddd;
     }
-    .star-rating {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      display: flex;
-      gap: 5px;
-      z-index: 1000;
+
+    html.dark .part-tab.active {
+      background: #3498db;
+      color: white;
     }
-    .star-btn {
-      background: none;
-      border: none;
-      width: 28px;
-      height: 28px;
-      cursor: pointer;
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 800px) {
+
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 22px;
+      }
+
+      .poster-wrapper {
+        flex: none;
+      }
+
+      .main-poster {
+        width: 220px;
+        height: 315px;
+      }
+
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .badges {
+        justify-content: center;
+      }
+
+      .rating-box {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .section {
+        padding: 20px;
+      }
     }
-    .star-icon {
-      fill: #999;
-      transition: fill 0.3s;
+
+    @media (max-width: 480px) {
+
+      .top-bar {
+        padding: 13px;
+      }
+
+      .back-btn,
+      .part-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+
+      .main-poster {
+        width: 190px;
+        height: 275px;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .cast-card {
+        flex-basis: 125px;
+      }
+
+      .cast-card img {
+        height: 125px;
+      }
+
+      .poster-gallery img {
+        width: 140px;
+      }
     }
-    .star-btn.active .star-icon {
-      fill: gold;
-    }
-    /* Lightbox */
-    .lightbox-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.8);
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-    .lightbox-overlay img {
-      max-width: 90%;
-      max-height: 90%;
-    }
-.info-section {
-  background: #ecf0f1;
-  padding: 30px 20px;
-  margin-top: 60px;
-  font-size: 16px;
-  border-top: 2px solid #bdc3c7;
-  direction: rtl;
-}
-
-.info-section h2 {
-  margin-top: 0;
-  color: #2c3e50;
-  font-size: 22px;
-  margin-bottom: 15px;
-}
-
-.info-section ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.info-section li {
-  margin-bottom: 10px;
-  color: #34495e;
-}
-
-.info-section strong {
-  color: #000;
-}
-
-/* الوضع الليلي */
-html.dark .info-section {
-  background: #2c2c2c;
-  border-top-color: #444;
-}
-
-html.dark .info-section h2 {
-  color: #fff;
-}
-
-html.dark .info-section li {
-  color: #ccc;
-}
-
-html.dark .info-section strong {
-  color: #fff;
-}
   </style>
 </head>
+
 <body>
-<div class="back-link"><a href="index.html">← العودة</a></div>
-<h1>مرتبة الشرف</h1>
-<h2 class="section-title">المقدمين</h2>
-<div class="gallery-scroll">
-  <div class="character"><img src="n5.jpg" alt="ميار"><p>ميار</p></div>
-  <div class="character"><img src="ibrahim.jpg" alt="إبراهيم"><p>إبراهيم</p></div>
-</div>
-<h2 class="section-title">ضيوف الشرف</h2>
-<div class="gallery-scroll">
-  <div class="character"><img src="buran.jpg" alt="بوران"><p>بوران</p></div>
-  <div class="character"><img src="ali4.jpg" alt="مادلين"><p>مادلين</p></div>
-  <div class="character"><img src="hr3.jpg" alt="عبلة"><p>عبلة</p></div>
-  <div class="character"><img src="lg3.jpg" alt="عصام"><p>عصام</p></div>
-  <div class="character"><img src="zl1.jpg" alt="رامز"><p>رامز</p></div>
-  <div class="character"><img src="ali3.jpg" alt="هيام"><p>هيام</p></div>
-  <div class="character"><img src="zl3.jpg" alt="ليو"><p>ليو</p></div>
-  <div class="character"><img src=".jpg" alt=""><p></p></div>
-  <div class="character"><img src=".jpg" alt=""><p></p></div>
-</div>
-<div class="episodes">
-  <div class="episode"><h3>الحلقة 1 <span>⬇</span></h3><div class="desc">بوران والمقدمين يقيمون الفواكه من نظرية تسميتها للصغار.. نسبة التطابق 50 بالمئة!</div></div>
-  <div class="episode"><h3>الحلقة 2 <span>⬇</span></h3><div class="desc">مادلين والمقدمين يقيمون الحيوانات من نظرية دعوتها لعيد ميلاد.. نسبة التطابق 50 بالمئة!</div></div>
-  <div class="episode"><h3>الحلقة 3 <span>⬇</span></h3><div class="desc">عبلة والمقدمين يقيمون الأفعال من نظرية رد فعل الأمهات.. نسبة التطابق 14 بالمئة!</div></div>
-  <div class="episode"><h3>الحلقة 4 <span>⬇</span></h3><div class="desc">عصام والمقدمين يقيمون الأدوات الرياضية من نظرية استخدامها في الشجارات... نسبة التطابق 42 بالمئة!</div></div>
-  <div class="episode"><h3>الحلقة 5 <span>⬇</span></h3><div class="desc">رامز والمقدمين يقيمون الملابس من نظرية الذهاب بها للحفلة... نسبة التطابق 29 بالمئة!</div></div>
-  <div class="episode"><h3>الحلقة 6 <span>⬇</span></h3><div class="desc">هيام والمقدمين يقيمون تسريحات الشعر من نظرية التقدم بها للخطبة... نسبة التطابق 38 بالمئة!</div></div>
-  <div class="episode"><h3>الحلقة 7 <span>⬇</span></h3><div class="desc">ليو والمقدمين يقيمون الوظائف من نظرية مقدار الصعوبة.. نسبة التطابق 25 بالمئة!</div></div>
-  <div class="episode"><h3>الحلقة 8 <span>⬇</span></h3><div class="desc"></div></div>
-</div>
-<div class="lightbox-overlay" id="lightbox"><img id="lightbox-img" src="" alt=""></div>
-<div class="star-rating" aria-label="تقييم النجوم">
-  <button data-value="1" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
-  <button data-value="2" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
-  <button data-value="3" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
-  <button data-value="4" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
-  <button data-value="5" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
-</div>
-<script>
-  // Lightbox
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img');
-  document.querySelectorAll('.character img').forEach(img => {
-    img.addEventListener('click', () => {
-      lightboxImg.src = img.src;
-      lightbox.style.display = 'flex';
-    });
-  });
-  lightbox.addEventListener('click', () => lightbox.style.display = 'none');
 
-  // Episodes Toggle
-  document.querySelectorAll('.episode h3').forEach(header => {
-    header.addEventListener('click', () => {
-      const desc = header.nextElementSibling;
-      const arrow = header.querySelector('span');
-      const isVisible = desc.style.display === 'block';
-      desc.style.display = isVisible ? 'none' : 'block';
-      arrow.textContent = isVisible ? '⬇' : '⬆';
-    });
-  });
+  <!-- ================================
+       TOP BAR
+  ================================= -->
 
-  // Star Rating
-  (function() {
-    const stars = document.querySelectorAll('.star-btn');
-    const storageKey = `rating-${location.pathname}`;
-    let savedRating = localStorage.getItem(storageKey);
-    if (savedRating) setRating(parseInt(savedRating));
-    stars.forEach(star => {
-      star.addEventListener('click', () => {
-        const val = parseInt(star.getAttribute('data-value'));
-        setRating(val);
-        localStorage.setItem(storageKey, val);
+  <div class="top-bar">
+
+    <a href="index.html" class="back-btn">
+      ← العودة
+    </a>
+
+    <button class="part-btn" id="partTopBtn" type="button">
+      الانتقال للجزء الأول
+    </button>
+
+  </div>
+
+
+  <!-- ================================
+       PART SWITCHER
+  ================================= -->
+
+  <div class="part-switcher">
+
+    <button
+      class="part-tab"
+      id="part1Tab"
+      type="button"
+      onclick="switchPart(1)"
+    >
+      الجزء الأول
+    </button>
+
+    <button
+      class="part-tab active"
+      id="part2Tab"
+      type="button"
+      onclick="switchPart(2)"
+    >
+      الجزء الثاني
+    </button>
+
+  </div>
+
+
+  <!-- ================================
+       HERO
+  ================================= -->
+
+  <section class="hero">
+
+    <div class="poster-wrapper">
+
+      <img
+        id="mainPoster"
+        class="main-poster"
+        src=""
+        alt="بوستر مرتبة الشرف"
+      >
+
+    </div>
+
+    <div class="hero-content">
+
+      <span class="work-type" id="workType">
+        برنامج
+      </span>
+
+      <h1 id="workTitle">
+        مرتبة الشرف
+      </h1>
+
+      <div class="subtitle" id="workSubtitle">
+        برنامج ترفيهي
+      </div>
+
+      <div class="badges">
+
+        <span class="badge" id="genreBadge">
+          ترفيهي
+        </span>
+
+        <span class="badge" id="yearBadge">
+          2026
+        </span>
+
+        <span class="badge" id="episodesBadge">
+          9 حلقات
+        </span>
+
+        <span class="badge status" id="statusBadge">
+          يعرض الآن
+        </span>
+
+      </div>
+
+      <div class="rating-box">
+
+        <div>
+
+          <div class="rating-number" id="workRating">
+            8.3
+          </div>
+
+          <div class="rating-label">
+            تقييم العمل
+          </div>
+
+        </div>
+
+        <div class="rating-stars">
+          ★★★★★
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================
+       STORY
+  ================================= -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      نبذة عن العمل
+    </h2>
+
+    <p class="story" id="storyText">
+    </p>
+
+  </section>
+
+
+  <!-- ================================
+       INFORMATION
+  ================================= -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      معلومات العمل
+    </h2>
+
+    <div class="info-grid">
+
+      <div class="info-card">
+        <div class="info-icon">🎬</div>
+        <div class="info-label">النوع</div>
+        <div class="info-value" id="infoType"></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">🎭</div>
+        <div class="info-label">التصنيف</div>
+        <div class="info-value" id="infoGenre"></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">📅</div>
+        <div class="info-label">سنة العرض</div>
+        <div class="info-value" id="infoYear"></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">🌍</div>
+        <div class="info-label">البلد</div>
+        <div class="info-value" id="infoCountry"></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">🎞️</div>
+        <div class="info-label">عدد الحلقات</div>
+        <div class="info-value" id="infoEpisodes"></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">⏱️</div>
+        <div class="info-label">مدة الحلقة</div>
+        <div class="info-value" id="infoDuration"></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">✍️</div>
+        <div class="info-label">الكاتب</div>
+        <div class="info-value" id="infoWriter"></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">📺</div>
+        <div class="info-label">الحالة</div>
+        <div class="info-value" id="infoStatus"></div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================
+       PRESENTERS
+  ================================= -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      المقدمين
+    </h2>
+
+    <div class="cast-scroll" id="presentersContainer"></div>
+
+  </section>
+
+
+  <!-- ================================
+       GUESTS
+  ================================= -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      ضيوف الشرف
+    </h2>
+
+    <div class="cast-scroll" id="guestsContainer"></div>
+
+  </section>
+
+
+  <!-- ================================
+       EPISODES
+  ================================= -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      الحلقات
+    </h2>
+
+    <div class="episodes" id="episodesContainer"></div>
+
+  </section>
+
+
+  <!-- ================================
+       POSTERS
+  ================================= -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      بوسترات العمل
+    </h2>
+
+    <div class="poster-gallery" id="posterGallery"></div>
+
+  </section>
+
+
+  <!-- ================================
+       USER RATING
+  ================================= -->
+
+  <section class="section user-rating">
+
+    <h2 class="section-title">
+      قيّم العمل
+    </h2>
+
+    <p>
+      اختر تقييمك للعمل
+    </p>
+
+    <div class="stars">
+
+      <button class="star-btn" data-value="1" type="button">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+      </button>
+
+      <button class="star-btn" data-value="2" type="button">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+      </button>
+
+      <button class="star-btn" data-value="3" type="button">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+      </button>
+
+      <button class="star-btn" data-value="4" type="button">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+      </button>
+
+      <button class="star-btn" data-value="5" type="button">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================
+       WORK INFORMATION
+  ================================= -->
+
+  <footer class="footer-info">
+
+    <h2>
+      معلومات العمل
+    </h2>
+
+    <ul>
+
+      <li>
+        <strong>الكاتب:</strong>
+        <span id="footerWriter"></span>
+      </li>
+
+      <li>
+        <strong>القصة:</strong>
+        <span id="footerStory"></span>
+      </li>
+
+      <li>
+        <strong>تاريخ النشر:</strong>
+        <span id="footerDate"></span>
+      </li>
+
+    </ul>
+
+  </footer>
+
+
+  <!-- ================================
+       LIGHTBOX
+  ================================= -->
+
+  <div class="lightbox" id="lightbox">
+
+    <button
+      class="close-lightbox"
+      id="closeLightbox"
+      type="button"
+    >
+      ✕
+    </button>
+
+    <img
+      id="lightboxImg"
+      src=""
+      alt="صورة مكبرة"
+    >
+
+  </div>
+
+
+  <!-- ================================
+       JAVASCRIPT
+  ================================= -->
+
+  <script>
+
+    /* =====================================================
+       PROGRAM DATA
+
+       ⭐⭐
+       الجزء الثاني هو الافتراضي حاليًا.
+       لذلك عند فتح الصفحة يظهر الجزء الثاني مباشرة.
+
+       لتعديل أي جزء، غيّر البيانات داخل هذا القسم فقط.
+    ===================================================== */
+
+    const WORK_PARTS = {
+
+      /* =====================================================
+         PART 1
+         الجزء الأول الأصلي
+      ===================================================== */
+
+      1: {
+
+        title: "مرتبة الشرف - الجزء الأول",
+
+        poster: "photo27.jpg",
+
+        type: "برنامج",
+
+        subtitle: "برنامج ترفيهي",
+
+        genre: "ترفيهي",
+
+        year: "2025",
+
+        episodes: "9",
+
+        status: "انتهى",
+
+        rating: "9.2",
+
+        country: "مصر",
+
+        duration: "15 دقيقة",
+
+        writer: "بشير الأديب",
+
+        publishDate: "سبتمبر 2025",
+
+        story:
+          "مستوحاة من برنامج مرتبة الشرف المصري، يقدم البرنامج مجموعة من الحلقات الترفيهية التي تجمع بين المقدمين وضيوف الشرف، حيث يتم تقييم مجموعة متنوعة من الأشياء والأفكار بطريقة كوميدية ومختلفة.",
+
+        presenters: [
+
+          {
+            image: "n5.jpg",
+            actor: "ميار",
+            character: "المقدمة"
+          },
+
+          {
+            image: "ibrahim.jpg",
+            actor: "إبراهيم",
+            character: "المقدم"
+          }
+
+        ],
+
+        guests: [
+
+          {
+            image: "buran.jpg",
+            actor: "بوران",
+            character: "ضيف الحلقة 1"
+          },
+
+          {
+            image: "ali4.jpg",
+            actor: "مادلين",
+            character: "ضيفة الحلقة 2"
+          },
+
+          {
+            image: "hr3.jpg",
+            actor: "عبلة",
+            character: "ضيفة الحلقة 3"
+          },
+
+          {
+            image: "lg3.jpg",
+            actor: "عصام",
+            character: "ضيف الحلقة 4"
+          },
+
+          {
+            image: "zl1.jpg",
+            actor: "رامز",
+            character: "ضيف الحلقة 5"
+          },
+
+          {
+            image: "ali3.jpg",
+            actor: "هيام",
+            character: "ضيفة الحلقة 6"
+          },
+
+          {
+            image: "zl3.jpg",
+            actor: "ليو",
+            character: "ضيف الحلقة 7"
+          },
+
+          {
+            image: "kaan.jpg",
+            actor: "كان",
+            character: "ضيف الحلقة 8"
+          },
+
+          {
+            image: "leyla.jpg",
+            actor: "ليلى",
+            character: "ضيفة الحلقة 9"
+          }
+
+        ],
+
+        episodesList: [
+
+          {
+            title: "الحلقة 1",
+            description:
+              "بوران والمقدمين يقيمون الفواكه من نظرية تسميتها للصغار.. نسبة التطابق 50 بالمئة!"
+          },
+
+          {
+            title: "الحلقة 2",
+            description:
+              "مادلين والمقدمين يقيمون الحيوانات من نظرية دعوتها لعيد ميلاد.. نسبة التطابق 50 بالمئة!"
+          },
+
+          {
+            title: "الحلقة 3",
+            description:
+              "عبلة والمقدمين يقيمون الأفعال من نظرية رد فعل الأمهات.. نسبة التطابق 14 بالمئة!"
+          },
+
+          {
+            title: "الحلقة 4",
+            description:
+              "عصام والمقدمين يقيمون الأدوات الرياضية من نظرية استخدامها في الشجارات... نسبة التطابق 42 بالمئة!"
+          },
+
+          {
+            title: "الحلقة 5",
+            description:
+              "رامز والمقدمين يقيمون الملابس من نظرية الذهاب بها للحفلة... نسبة التطابق 29 بالمئة!"
+          },
+
+          {
+            title: "الحلقة 6",
+            description:
+              "هيام والمقدمين يقيمون تسريحات الشعر من نظرية التقدم بها للخطبة... نسبة التطابق 38 بالمئة!"
+          },
+
+          {
+            title: "الحلقة 7",
+            description:
+              "ليو والمقدمين يقيمون الوظائف من نظرية مقدار الصعوبة.. نسبة التطابق 25 بالمئة!"
+          },
+
+          {
+            title: "الحلقة 8",
+            description:
+              "كان والمقدمين يقيمون الحركات الرومانسية من نظرية مقدار تلزيقها.. نسبة التطابق 62 بالمئة!"
+          },
+
+          {
+            title: "الحلقة 9",
+            description:
+              "ليلى والمقدمين يقيمون أميرات ديزني من نظرية شغل البيت.. نسبة التطابق 26 بالمئة!"
+          }
+
+        ],
+
+        posters: [
+          "photo27.jpg"
+        ]
+
+      },
+
+
+      /* =====================================================
+         PART 2
+         الجزء الثاني - الحالي
+         
+         ⭐ غيّر فقط البيانات والصور هنا عندما تجهزها.
+      ===================================================== */
+
+      2: {
+
+        title: "مرتبة الشرف - الجزء الثاني",
+
+        /*
+          ⭐ ضع اسم بوستر الجزء الثاني هنا
+          مثال:
+          poster: "martaba.jpg"
+        */
+        poster: "martaba.jpg",
+
+        type: "برنامج",
+
+        subtitle: "برنامج ترفيهي",
+
+        genre: "ترفيهي",
+
+        year: "2026",
+
+        episodes: "9",
+
+        status: "يعرض الآن",
+
+        rating: "8.3",
+
+        country: "مصر",
+
+        duration: "15 دقيقة",
+
+        writer: "بشير الأديب",
+
+        publishDate: "سبتمبر 2026",
+
+        story:
+          "الجزء الثاني من برنامج مرتبة الشرف، مع مقدمين وضيوف جدد وحلقات جديدة بنفس الفكرة الترفيهية للبرنامج.",
+
+
+        /*
+          =====================================================
+          المقدمين الجدد للجزء الثاني
+
+          ⭐ غيّر الصور والأسماء فقط
+        =====================================================
+        */
+
+        presenters: [
+
+          {
+            image: "ali3.jpg",
+            actor: "هيام",
+            character: "المقدمة"
+          },
+
+          {
+            image: "wael.jpg",
+            actor: "وائل",
+            character: "المقدم"
+          }
+
+        ],
+
+
+        /*
+          =====================================================
+          ضيوف الجزء الثاني
+
+          ⭐ أضف أو احذف الضيوف من هنا
+        =====================================================
+        */
+
+        guests: [
+
+          {
+            image: "semra.jpg",
+            actor: "سيمرا",
+            character: "ضيفة الحلقة 1"
+          },
+
+          {
+            image: "part2-guest2.jpg",
+            actor: "الضيف الجديد 2",
+            character: "ضيف الحلقة 2"
+          },
+
+          {
+            image: "part2-guest3.jpg",
+            actor: "الضيف الجديد 3",
+            character: "ضيف الحلقة 3"
+          }
+
+        ],
+
+
+        /*
+          =====================================================
+          حلقات الجزء الثاني
+        =====================================================
+        */
+
+        episodesList: [
+
+          {
+            title: "الحلقة 1",
+            description: "سيمرا والمقدمين يقيمون الأكلات|الوجبات من نظرية أول ديت."
+          },
+
+          {
+            title: "الحلقة 2",
+            description: "وصف الحلقة الثانية من الجزء الثاني يوضع هنا."
+          },
+
+          {
+            title: "الحلقة 3",
+            description: "وصف الحلقة الثالثة من الجزء الثاني يوضع هنا."
+          },
+
+          {
+            title: "الحلقة 4",
+            description: "وصف الحلقة الرابعة من الجزء الثاني يوضع هنا."
+          },
+
+          {
+            title: "الحلقة 5",
+            description: "وصف الحلقة الخامسة من الجزء الثاني يوضع هنا."
+          },
+
+          {
+            title: "الحلقة 6",
+            description: "وصف الحلقة السادسة من الجزء الثاني يوضع هنا."
+          },
+
+          {
+            title: "الحلقة 7",
+            description: "وصف الحلقة السابعة من الجزء الثاني يوضع هنا."
+          },
+
+          {
+            title: "الحلقة 8",
+            description: "وصف الحلقة الثامنة من الجزء الثاني يوضع هنا."
+          },
+
+          {
+            title: "الحلقة 9",
+            description: "وصف الحلقة التاسعة من الجزء الثاني يوضع هنا."
+          }
+
+        ],
+
+
+        posters: [
+          "martaba.jpg"
+        ]
+
+      }
+
+    };
+
+
+    /* =====================================================
+       CURRENT PART
+
+       ⭐ الجزء الثاني يظهر أول ما تدخل الصفحة
+    ===================================================== */
+
+    let currentPart = 2;
+
+
+    /* =====================================================
+       APPLY PART DATA
+    ===================================================== */
+
+    function loadPart(partNumber) {
+
+      const data = WORK_PARTS[partNumber];
+
+      if (!data) return;
+
+      currentPart = partNumber;
+
+      document.title = data.title;
+
+
+      /* =========================
+         HERO
+      ========================= */
+
+      document.getElementById("workTitle").textContent =
+        data.title;
+
+      document.getElementById("mainPoster").src =
+        data.poster;
+
+      document.getElementById("mainPoster").alt =
+        "بوستر " + data.title;
+
+      document.getElementById("workType").textContent =
+        data.type;
+
+      document.getElementById("workSubtitle").textContent =
+        data.subtitle;
+
+      document.getElementById("genreBadge").textContent =
+        data.genre;
+
+      document.getElementById("yearBadge").textContent =
+        data.year;
+
+      document.getElementById("episodesBadge").textContent =
+        data.episodes + " حلقات";
+
+      document.getElementById("statusBadge").textContent =
+        data.status;
+
+      document.getElementById("workRating").textContent =
+        data.rating;
+
+
+      /* =========================
+         STORY
+      ========================= */
+
+      document.getElementById("storyText").textContent =
+        data.story;
+
+
+      /* =========================
+         INFORMATION
+      ========================= */
+
+      document.getElementById("infoType").textContent =
+        data.type;
+
+      document.getElementById("infoGenre").textContent =
+        data.genre;
+
+      document.getElementById("infoYear").textContent =
+        data.year;
+
+      document.getElementById("infoCountry").textContent =
+        data.country;
+
+      document.getElementById("infoEpisodes").textContent =
+        data.episodes;
+
+      document.getElementById("infoDuration").textContent =
+        data.duration;
+
+      document.getElementById("infoWriter").textContent =
+        data.writer;
+
+      document.getElementById("infoStatus").textContent =
+        data.status;
+
+
+      /* =========================
+         FOOTER
+      ========================= */
+
+      document.getElementById("footerWriter").textContent =
+        data.writer;
+
+      document.getElementById("footerStory").textContent =
+        data.story;
+
+      document.getElementById("footerDate").textContent =
+        data.publishDate;
+
+
+      /* =========================
+         PRESENTERS
+      ========================= */
+
+      const presentersContainer =
+        document.getElementById("presentersContainer");
+
+      presentersContainer.innerHTML = "";
+
+      data.presenters.forEach(function(person) {
+
+        presentersContainer.innerHTML += `
+
+          <div class="cast-card">
+
+            <img
+              src="${person.image}"
+              alt="${person.actor}"
+            >
+
+            <div class="actor-name">
+              ${person.actor}
+            </div>
+
+            <div class="character-name">
+              ${person.character}
+            </div>
+
+          </div>
+
+        `;
+
       });
-    });
-    function setRating(rating) {
-      stars.forEach(star => {
-        const val = parseInt(star.getAttribute('data-value'));
-        star.classList.toggle('active', val <= rating);
+
+
+      /* =========================
+         GUESTS
+      ========================= */
+
+      const guestsContainer =
+        document.getElementById("guestsContainer");
+
+      guestsContainer.innerHTML = "";
+
+      data.guests.forEach(function(person) {
+
+        guestsContainer.innerHTML += `
+
+          <div class="cast-card">
+
+            <img
+              src="${person.image}"
+              alt="${person.actor}"
+            >
+
+            <div class="actor-name">
+              ${person.actor}
+            </div>
+
+            <div class="character-name">
+              ${person.character}
+            </div>
+
+          </div>
+
+        `;
+
       });
+
+
+      /* =========================
+         EPISODES
+      ========================= */
+
+      const episodesContainer =
+        document.getElementById("episodesContainer");
+
+      episodesContainer.innerHTML = "";
+
+      data.episodesList.forEach(function(episode) {
+
+        episodesContainer.innerHTML += `
+
+          <div class="episode">
+
+            <button
+              class="episode-header"
+              type="button"
+            >
+
+              <span>
+                ${episode.title}
+              </span>
+
+              <span class="arrow">
+                ▼
+              </span>
+
+            </button>
+
+            <div class="episode-desc">
+              ${episode.description}
+            </div>
+
+          </div>
+
+        `;
+
+      });
+
+
+      /* =========================
+         EPISODE CLICK EVENTS
+      ========================= */
+
+      document
+        .querySelectorAll(".episode-header")
+        .forEach(function(header) {
+
+          header.addEventListener(
+            "click",
+            function() {
+
+              const episode =
+                this.parentElement;
+
+              episode.classList.toggle("open");
+
+            }
+          );
+
+        });
+
+
+      /* =========================
+         POSTERS
+      ========================= */
+
+      const posterGallery =
+        document.getElementById("posterGallery");
+
+      posterGallery.innerHTML = "";
+
+      data.posters.forEach(function(poster) {
+
+        posterGallery.innerHTML += `
+
+          <img
+            src="${poster}"
+            alt="بوستر ${data.title}"
+          >
+
+        `;
+
+      });
+
+
+      /* =========================
+         ACTIVE PART TAB
+      ========================= */
+
+      document
+        .getElementById("part1Tab")
+        .classList.toggle(
+          "active",
+          partNumber === 1
+        );
+
+      document
+        .getElementById("part2Tab")
+        .classList.toggle(
+          "active",
+          partNumber === 2
+        );
+
+
+      /* =========================
+         TOP BUTTON
+      ========================= */
+
+      const topButton =
+        document.getElementById("partTopBtn");
+
+      if (partNumber === 1) {
+
+        topButton.textContent =
+          "الانتقال للجزء الثاني";
+
+      } else {
+
+        topButton.textContent =
+          "الانتقال للجزء الأول";
+
+      }
+
+
+      /* =========================
+         RATING
+      ========================= */
+
+      loadUserRating();
+
     }
-  })();
-</script>
-<!-- 📌 معلومات العمل -->
-<footer class="info-section">
-  <h2>معلومات العمل</h2>
-  <ul>
-    <li><strong>الكاتب:</strong> بشير الأديب</li>
-    <li><strong>القصة:</strong>مستوحاة من برنامج مرتبة الشرف المصري.</li>
-    <li><strong>تاريخ النشر:</strong> سبتمبر 2025</li>
-  </ul>
-</footer>
+
+
+    /* =====================================================
+       SWITCH PART
+    ===================================================== */
+
+    function switchPart(partNumber) {
+
+      loadPart(partNumber);
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    }
+
+
+    /* =====================================================
+       TOP PART BUTTON
+    ===================================================== */
+
+    document
+      .getElementById("partTopBtn")
+      .addEventListener(
+        "click",
+        function() {
+
+          if (currentPart === 1) {
+
+            switchPart(2);
+
+          } else {
+
+            switchPart(1);
+
+          }
+
+        }
+      );
+
+
+    /* =====================================================
+       LIGHTBOX
+
+       ⭐ كل الصور الموجودة في الصفحة قابلة للفتح
+    ===================================================== */
+
+    const lightbox =
+      document.getElementById("lightbox");
+
+    const lightboxImg =
+      document.getElementById("lightboxImg");
+
+    const closeLightbox =
+      document.getElementById("closeLightbox");
+
+
+    function openLightbox(
+      imageSrc,
+      imageAlt = ""
+    ) {
+
+      lightboxImg.src = imageSrc;
+
+      lightboxImg.alt = imageAlt;
+
+      lightbox.style.display = "flex";
+
+      document.body.style.overflow = "hidden";
+
+    }
+
+
+    function closeLightboxFunction() {
+
+      lightbox.style.display = "none";
+
+      lightboxImg.src = "";
+
+      document.body.style.overflow = "";
+
+    }
+
+
+    document.addEventListener(
+      "click",
+      function(event) {
+
+        const image =
+          event.target.closest("img");
+
+        if (!image) return;
+
+        if (image.id === "lightboxImg") {
+          return;
+        }
+
+        openLightbox(
+          image.src,
+          image.alt
+        );
+
+      }
+    );
+
+
+    closeLightbox.addEventListener(
+      "click",
+      function(event) {
+
+        event.stopPropagation();
+
+        closeLightboxFunction();
+
+      }
+    );
+
+
+    lightbox.addEventListener(
+      "click",
+      function(event) {
+
+        if (event.target === lightbox) {
+
+          closeLightboxFunction();
+
+        }
+
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "Escape" &&
+          lightbox.style.display === "flex"
+        ) {
+
+          closeLightboxFunction();
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       USER STAR RATING
+    ===================================================== */
+
+    const stars =
+      document.querySelectorAll(".star-btn");
+
+
+    const ratingStorageKey =
+      "rating-" +
+      window.location.pathname;
+
+
+    function setUserRating(rating) {
+
+      stars.forEach(function(star) {
+
+        const value =
+          Number(star.dataset.value);
+
+        if (value <= rating) {
+
+          star.classList.add("active");
+
+        } else {
+
+          star.classList.remove("active");
+
+        }
+
+      });
+
+    }
+
+
+    function loadUserRating() {
+
+      const savedRating =
+        localStorage.getItem(
+          ratingStorageKey
+        );
+
+      if (
+        savedRating !== null &&
+        !isNaN(savedRating)
+      ) {
+
+        setUserRating(
+          Number(savedRating)
+        );
+
+      } else {
+
+        setUserRating(0);
+
+      }
+
+    }
+
+
+    stars.forEach(function(star) {
+
+      star.addEventListener(
+        "click",
+        function(event) {
+
+          event.preventDefault();
+
+          event.stopPropagation();
+
+          const rating =
+            Number(this.dataset.value);
+
+          setUserRating(rating);
+
+          localStorage.setItem(
+            ratingStorageKey,
+            String(rating)
+          );
+
+        }
+      );
+
+    });
+
+
+    /* =====================================================
+       START PAGE
+       
+       ⭐ مهم:
+       الجزء الثاني هو أول شيء يظهر
+    ===================================================== */
+
+    loadPart(2);
+
+  </script>
+
 </body>
 </html>
