@@ -1,305 +1,1539 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
+
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>منزل صيفي</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <script>
-    if (localStorage.getItem('theme') === 'dark') {
-      document.documentElement.classList.add('dark');
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark");
     }
   </script>
-  <style>
-body {
-  font-family: 'Segoe UI', sans-serif;
-  margin: 0;
-  padding: 1rem;
-  color: #333;
-  transition: background 0.3s, color 0.3s;
-  position: relative; /* allow pseudo-element layering */
-  z-index: 0;
-}
 
-body::before {
-  content: "";
-  position: fixed;
-  top: -10px; left: -10px;
-  width: calc(100% + 20px);
-  height: calc(100% + 20px);
-  background: url("photo45.jpg") no-repeat center center/cover;
-  filter: blur(6px) brightness(0.6);
-  z-index: -1;
-}
-    html.dark body {
-      background: #1e1e1e;
-      color: #eee;
+  <style>
+    * {
+      box-sizing: border-box;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    .back-link {
-      margin: 1rem;
-      text-align: left;
-    }
-    .back-link a {
-      background: #3498db;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-    .gallery-scroll {
-      display: flex;
-      overflow-x: auto;
-      gap: 10px;
-      padding: 1rem 0;
+
+    html {
       scroll-behavior: smooth;
     }
-    .character {
-      flex: 0 0 auto;
-      width: 120px;
-      text-align: center;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .character img {
-      width: 100%;
-      height: 80px;
-      object-fit: cover;
-      object-position: top;
-      border-radius: 8px 8px 0 0;
-      cursor: pointer;
-    }
-    .character p {
-      margin: 5px 0;
-      font-weight: bold;
-    }
-    html.dark .character {
-      background: #2c2c2c;
-    }
-    html.dark .character p {
-      color: #eee;
-    }
-    .episodes {
-      max-width: 600px;
-      margin: 2rem auto;
-    }
-    .episode {
-      background: #fff;
-      border-radius: 6px;
-      margin-bottom: 10px;
-      padding: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      position: relative;
-    }
-    .episode h3 {
+
+    body {
       margin: 0;
-      cursor: pointer;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      color: #222;
+      min-height: 100vh;
+      position: relative;
+      background: #111;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -20px;
+      background: url("photo45.jpg") center center / cover no-repeat;
+      filter: blur(12px) brightness(0.38);
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.25);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* =========================
+       TOP BAR
+    ========================= */
+
+    .top-bar {
+      width: 100%;
+      padding: 18px 25px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 15px;
     }
-    .episode .desc {
-      margin-top: 10px;
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(52, 152, 219, 0.95);
+      color: white;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: bold;
+      transition: 0.25s;
+    }
+
+    .back-btn:hover {
+      transform: translateY(-2px);
+      background: #2980b9;
+    }
+
+    .favorite-btn {
+      border: none;
+      background: rgba(255, 255, 255, 0.95);
+      color: #555;
+      padding: 10px 17px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      transition: 0.25s;
+    }
+
+    .favorite-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .favorite-btn.active {
+      background: #e74c3c;
+      color: white;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      width: min(1100px, 94%);
+      margin: 10px auto 30px;
+      padding: 30px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.93);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      gap: 35px;
+      direction: rtl;
+    }
+
+    .poster-wrapper {
+      flex: 0 0 280px;
+    }
+
+    .main-poster {
+      width: 280px;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 17px;
+      display: block;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: 0.3s;
+    }
+
+    .main-poster:hover {
+      transform: scale(1.02);
+    }
+
+    .hero-content {
+      flex: 1;
+    }
+
+    .work-type {
+      display: inline-block;
+      background: #3498db;
+      color: white;
+      padding: 6px 13px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: 42px;
+      color: #1f2933;
+    }
+
+    .subtitle {
+      color: #777;
+      font-size: 17px;
+      margin-bottom: 18px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      background: #f0f2f5;
+      color: #444;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .status {
+      background: #2ecc71;
+      color: white;
+    }
+
+    .rating-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 15px;
+      padding: 14px 18px;
+      background: #f7f7f7;
+      border-radius: 13px;
+      width: fit-content;
+    }
+
+    .rating-number {
+      font-size: 27px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .rating-stars {
+      color: #f1c40f;
+      font-size: 24px;
+      letter-spacing: 2px;
+    }
+
+    .rating-label {
+      color: #777;
+      font-size: 13px;
+    }
+
+    /* =========================
+       GENERAL SECTION
+    ========================= */
+
+    .section {
+      width: min(1000px, 94%);
+      margin: 25px auto;
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.22);
+    }
+
+    .section-title {
+      margin: 0 0 20px;
+      font-size: 25px;
+      color: #2c3e50;
+      border-right: 5px solid #3498db;
+      padding-right: 12px;
+    }
+
+    /* =========================
+       STORY
+    ========================= */
+
+    .story {
+      font-size: 17px;
+      line-height: 2;
+      color: #444;
+      margin: 0;
+    }
+
+    /* =========================
+       INFO CARDS
+    ========================= */
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 13px;
+    }
+
+    .info-card {
+      background: #f5f7f9;
+      border-radius: 13px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .info-icon {
+      font-size: 25px;
+      margin-bottom: 7px;
+    }
+
+    .info-label {
+      color: #888;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .info-value {
+      font-size: 15px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    /* =========================
+       CAST
+    ========================= */
+
+    .cast-scroll {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding: 5px 3px 15px;
+      scroll-behavior: smooth;
+    }
+
+    .cast-scroll::-webkit-scrollbar {
+      height: 7px;
+    }
+
+    .cast-scroll::-webkit-scrollbar-thumb {
+      background: #bbb;
+      border-radius: 10px;
+    }
+
+    .cast-card {
+      flex: 0 0 145px;
+      background: #f6f7f8;
+      border-radius: 14px;
+      overflow: hidden;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      transition: 0.25s;
+    }
+
+    .cast-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .cast-card img {
+      width: 100%;
+      height: 145px;
+      object-fit: cover;
+      object-position: top;
+      cursor: pointer;
+    }
+
+    .actor-name {
+      font-weight: bold;
+      margin: 9px 5px 2px;
+      color: #222;
+    }
+
+    .character-name {
+      font-size: 13px;
+      color: #777;
+      margin: 0 5px 10px;
+    }
+
+    /* =========================
+       EPISODES
+    ========================= */
+
+    .episodes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .episode {
+      background: #f5f6f7;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .episode-header {
+      width: 100%;
+      border: none;
+      background: transparent;
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      text-align: right;
+    }
+
+    .episode-header:hover {
+      background: rgba(52, 152, 219, 0.08);
+    }
+
+    .episode-desc {
       display: none;
+      padding: 0 18px 17px;
+      color: #666;
+      line-height: 1.8;
     }
+
+    .episode.open .episode-desc {
+      display: block;
+    }
+
+    .arrow {
+      transition: 0.2s;
+    }
+
+    .episode.open .arrow {
+      transform: rotate(180deg);
+    }
+
+    /* =========================
+       POSTERS
+    ========================= */
+
+    .poster-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .poster-gallery img {
+      width: 180px;
+      max-height: 270px;
+      object-fit: cover;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.25s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .poster-gallery img:hover {
+      transform: scale(1.04);
+    }
+
+    /* =========================
+       USER RATING
+    ========================= */
+
+    .user-rating {
+      text-align: center;
+    }
+
+    .user-rating .section-title {
+      text-align: right;
+    }
+
+    .user-rating p {
+      color: #777;
+      margin-top: 0;
+    }
+
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      direction: ltr;
+    }
+
+    .star-btn {
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 2px;
+      transition: 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .star-btn svg {
+      width: 38px;
+      height: 38px;
+      fill: #ccc;
+      transition: 0.2s;
+      pointer-events: none;
+    }
+
+    .star-btn.active svg {
+      fill: #f1c40f;
+    }
+
+    .star-btn:hover {
+      transform: scale(1.15);
+    }
+
+    /* =========================
+       FOOTER INFO
+    ========================= */
+
+    .footer-info {
+      width: min(1000px, 94%);
+      margin: 25px auto 40px;
+      background: rgba(236, 240, 241, 0.95);
+      border-radius: 18px;
+      padding: 25px;
+    }
+
+    .footer-info h2 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+
+    .footer-info ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-info li {
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    .footer-info strong {
+      color: #222;
+    }
+
+    /* =========================
+       LIGHTBOX
+    ========================= */
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .lightbox img {
+      max-width: 92%;
+      max-height: 88vh;
+      border-radius: 10px;
+      object-fit: contain;
+      cursor: default;
+    }
+
+    .close-lightbox {
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 10000;
+    }
+
+    /* =========================
+       DARK MODE
+    ========================= */
+
+    html.dark body {
+      color: #eee;
+    }
+
+    html.dark body::after {
+      background: rgba(0, 0, 0, 0.48);
+    }
+
+    html.dark .hero,
+    html.dark .section {
+      background: rgba(35, 35, 35, 0.95);
+    }
+
+    html.dark .hero h1,
+    html.dark .section-title {
+      color: #fff;
+    }
+
+    html.dark .subtitle,
+    html.dark .story {
+      color: #ccc;
+    }
+
+    html.dark .badge {
+      background: #333;
+      color: #ddd;
+    }
+
+    html.dark .rating-box,
+    html.dark .info-card,
+    html.dark .cast-card,
     html.dark .episode {
       background: #2c2c2c;
     }
-    html.dark .episode .desc {
+
+    html.dark .rating-number,
+    html.dark .info-value,
+    html.dark .actor-name,
+    html.dark .episode-header {
+      color: #eee;
+    }
+
+    html.dark .rating-label,
+    html.dark .info-label,
+    html.dark .character-name,
+    html.dark .episode-desc {
+      color: #aaa;
+    }
+
+    html.dark .footer-info {
+      background: rgba(40, 40, 40, 0.95);
+    }
+
+    html.dark .footer-info h2 {
+      color: white;
+    }
+
+    html.dark .footer-info li {
+      color: #bbb;
+    }
+
+    html.dark .footer-info strong {
+      color: white;
+    }
+
+    html.dark .favorite-btn {
+      background: #333;
       color: #ddd;
     }
-    .star-rating {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      display: flex;
-      gap: 5px;
-      z-index: 1000;
+
+    html.dark .favorite-btn.active {
+      background: #e74c3c;
+      color: white;
     }
-    .star-btn {
-      background: none;
-      border: none;
-      width: 28px;
-      height: 28px;
-      cursor: pointer;
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 800px) {
+
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 22px;
+      }
+
+      .poster-wrapper {
+        flex: none;
+      }
+
+      .main-poster {
+        width: 220px;
+        height: 315px;
+      }
+
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .badges {
+        justify-content: center;
+      }
+
+      .rating-box {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .section {
+        padding: 20px;
+      }
     }
-    .star-icon {
-      fill: #999;
-      transition: fill 0.3s;
+
+    @media (max-width: 480px) {
+
+      .top-bar {
+        padding: 13px;
+      }
+
+      .back-btn,
+      .favorite-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+
+      .main-poster {
+        width: 190px;
+        height: 275px;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .cast-card {
+        flex-basis: 125px;
+      }
+
+      .cast-card img {
+        height: 125px;
+      }
+
+      .poster-gallery img {
+        width: 140px;
+      }
     }
-    .star-btn.active .star-icon {
-      fill: gold;
-    }
-    /* Lightbox */
-    .lightbox-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.8);
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-    .lightbox-overlay img {
-      max-width: 90%;
-      max-height: 90%;
-    }
-.info-section {
-  background: #ecf0f1;
-  padding: 30px 20px;
-  margin-top: 60px;
-  font-size: 16px;
-  border-top: 2px solid #bdc3c7;
-  direction: rtl;
-}
-
-.info-section h2 {
-  margin-top: 0;
-  color: #2c3e50;
-  font-size: 22px;
-  margin-bottom: 15px;
-}
-
-.info-section ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.info-section li {
-  margin-bottom: 10px;
-  color: #34495e;
-}
-
-.info-section strong {
-  color: #000;
-}
-
-/* الوضع الليلي */
-html.dark .info-section {
-  background: #2c2c2c;
-  border-top-color: #444;
-}
-
-html.dark .info-section h2 {
-  color: #fff;
-}
-
-html.dark .info-section li {
-  color: #ccc;
-}
-
-html.dark .info-section strong {
-  color: #fff;
-}
   </style>
 </head>
+
 <body>
-<div class="back-link"><a href="index.html">← العودة</a></div>
-<h1>منزل صيفي</h1>
-<div class="gallery-scroll">
-  <div class="character"><img src="talat.jpg" alt="تالا"><p>تالا</p></div>
-  <div class="character"><img src="tulin.jpg" alt="تولين"><p>تولين</p></div>
-  <div class="character"><img src="yahya.jpg" alt="يحيى"><p>يحيى</p></div>
-  <div class="character"><img src="zl1.jpg" alt="رامز"><p>رامز</p></div>
-  <div class="character"><img src="lubna.jpg" alt="لبنى"><p>لبنى</p></div>
-  <div class="character"><img src="al9.jpg" alt="يابانية"><p>يابانية</p></div>
-  <div class="character"><img src="br4.jpg" alt="جو"><p>جو</p></div>
-  <div class="character"><img src="br6.jpg" alt="مايكل"><p>مايكل</p></div>
-  <div class="character"><img src="lg2.jpg" alt="البيران"><p>البيران</p></div>
-</div>
-<div class="episodes">
-  <div class="episode"><h3>قصة الفيلم <span>⬇</span></h3><div class="desc">تدور القصة حول سيلين، وهي شابة تعود إلى المنزل الصيفي الذي كانت تقضي فيه طفولتها مع عائلتها. لكن يحدث أمر غريب يجعلها تسافر عبر الزمن إلى الماضي، حيث تلتقي بوالدتها عندما كانت في عمر الشباب، قبل أن تتزوج وقبل أن تتخذ القرارات التي غيّرت حياة الأسرة بالكامل.
 
-مع مرور الوقت، تحاول سيلين التأقلم مع الماضي دون كشف هويتها الحقيقية، لكنها تجد نفسها تتعلق بوالدتها الشابة وبالأشخاص المحيطين بها، كما تبدأ بفهم الأسباب التي أدت إلى الخلافات والأحداث المؤلمة التي عاشتها عائلتها لاحقًا. وفي الوقت نفسه، تنشأ قصة رومانسية تضيف تعقيدًا أكبر لرحلتها.
-. </div></div>
+  <!-- ================================
+       TOP BAR
+  ================================= -->
 
-<div class="lightbox-overlay" id="lightbox"><img id="lightbox-img" src="" alt=""></div>
-<div class="star-rating" aria-label="تقييم النجوم">
-  <button data-value="1" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
-  <button data-value="2" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
-  <button data-value="3" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
-  <button data-value="4" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
-  <button data-value="5" class="star-btn"><svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button>
-<button id="posters-btn" style="background: #2ecc71; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer;">📸 بوسترات</button>
-</div>
-<script>
-  // Lightbox
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img');
-  document.querySelectorAll('.character img').forEach(img => {
-    img.addEventListener('click', () => {
-      lightboxImg.src = img.src;
-      lightbox.style.display = 'flex';
-    });
-  });
-  lightbox.addEventListener('click', () => lightbox.style.display = 'none');
+  <div class="top-bar">
 
-  // Episodes Toggle
-  document.querySelectorAll('.episode h3').forEach(header => {
-    header.addEventListener('click', () => {
-      const desc = header.nextElementSibling;
-      const arrow = header.querySelector('span');
-      const isVisible = desc.style.display === 'block';
-      desc.style.display = isVisible ? 'none' : 'block';
-      arrow.textContent = isVisible ? '⬇' : '⬆';
-    });
-  });
+    <a href="index.html" class="back-btn">
+      ← العودة
+    </a>
 
-  // Star Rating
-  (function() {
-    const stars = document.querySelectorAll('.star-btn');
-    const storageKey = `rating-${location.pathname}`;
-    let savedRating = localStorage.getItem(storageKey);
-    if (savedRating) setRating(parseInt(savedRating));
-    stars.forEach(star => {
-      star.addEventListener('click', () => {
-        const val = parseInt(star.getAttribute('data-value'));
-        setRating(val);
-        localStorage.setItem(storageKey, val);
-      });
-    });
-    function setRating(rating) {
-      stars.forEach(star => {
-        const val = parseInt(star.getAttribute('data-value'));
-        star.classList.toggle('active', val <= rating);
-      });
-    }
-  })();
-</script>
-<script>
-  // Open Posters Page
-  document.getElementById('posters-btn').addEventListener('click', () => {
-    document.getElementById('posters-page').style.display = 'block';
-  });
+    <button class="favorite-btn" id="favoriteBtn">
+      ♡ إضافة للمفضلة
+    </button>
 
-  // Lightbox for posters
-  document.querySelectorAll('#posters-page img').forEach(img => {
-    img.addEventListener('click', () => {
-      document.getElementById('lightbox-img').src = img.src;
-      document.getElementById('lightbox').style.display = 'flex';
-    });
-  });
-</script>
-<!-- 📌 معلومات العمل -->
-<footer class="info-section">
-  <h2>معلومات العمل</h2>
-  <ul>
-    <li><strong>الكاتب:</strong> بشير الأديب</li>
-    <li><strong>القصة:</strong> مستوحاة تماما من فيلم منزل صيفي التركي..</li>
-    <li><strong>تاريخ النشر:</strong> يونيو 2026</li>
-  </ul>
-</footer>
-<div id="posters-page" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.9); z-index:9998; overflow-y:auto; padding:40px 20px; box-sizing:border-box;">
-  <button onclick="document.getElementById('posters-page').style.display='none'" style="position:absolute; top:15px; left:15px; background:#e74c3c; color:white; border:none; padding:6px 12px; border-radius:6px; font-weight:bold; cursor:pointer;">إغلاق ✖</button>
-  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px;">
-    <img src="photo45.jpg" alt="Poster 1" style="width:180px; height:auto; border-radius:8px; cursor:pointer;">
   </div>
-</div>
+
+
+  <!-- ================================
+       HERO
+  ================================= -->
+
+  <section class="hero">
+
+    <div class="poster-wrapper">
+
+      <img
+        id="mainPoster"
+        class="main-poster"
+        src="photo45.jpg"
+        alt="بوستر منزل صيفي"
+      >
+
+    </div>
+
+    <div class="hero-content">
+
+      <span class="work-type" id="workType">
+        فيلم
+      </span>
+
+      <h1 id="workTitle">
+        منزل صيفي
+      </h1>
+
+      <div class="subtitle" id="workSubtitle">
+        عمل رومانسي كوميدي
+      </div>
+
+      <div class="badges">
+
+        <span class="badge" id="genreBadge">
+          اكشن
+        </span>
+
+        <span class="badge" id="yearBadge">
+          2026
+        </span>
+
+        <span class="badge" id="episodesBadge">
+          فيلم
+        </span>
+
+        <span class="badge status" id="statusBadge">
+          انتهى
+        </span>
+
+      </div>
+
+      <div class="rating-box">
+
+        <div>
+
+          <div class="rating-number" id="workRating">
+            8.9
+          </div>
+
+          <div class="rating-label">
+            تقييم العمل
+          </div>
+
+        </div>
+
+        <div class="rating-stars">
+          ★★★★★
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================
+       STORY
+  ================================= -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      نبذة عن العمل
+    </h2>
+
+    <p class="story" id="storyText">
+تدور القصة حول سيلين، وهي شابة تعود إلى المنزل الصيفي الذي كانت تقضي فيه طفولتها مع عائلتها. لكن يحدث أمر غريب يجعلها تسافر عبر الزمن إلى الماضي، حيث تلتقي بوالدتها عندما كانت في عمر الشباب، قبل أن تتزوج وقبل أن تتخذ القرارات التي غيّرت حياة الأسرة بالكامل.
+
+مع مرور الوقت، تحاول سيلين التأقلم مع الماضي دون كشف هويتها الحقيقية، لكنها تجد نفسها تتعلق بوالدتها الشابة وبالأشخاص المحيطين بها، كما تبدأ بفهم الأسباب التي أدت إلى الخلافات والأحداث المؤلمة التي عاشتها عائلتها لاحقًا. وفي الوقت نفسه، تنشأ قصة رومانسية تضيف تعقيدًا أكبر لرحلتها
+
+    </p>
+
+  </section>
+
+
+  <!-- ================================
+       INFORMATION
+  ================================= -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      معلومات العمل
+    </h2>
+
+    <div class="info-grid">
+
+      <div class="info-card">
+        <div class="info-icon">🎬</div>
+        <div class="info-label">النوع</div>
+        <div class="info-value" id="infoType">فيلم</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">🎭</div>
+        <div class="info-label">التصنيف</div>
+        <div class="info-value" id="infoGenre">درامي اجتماعي</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">📅</div>
+        <div class="info-label">سنة العرض</div>
+        <div class="info-value" id="infoYear">2026</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">🌍</div>
+        <div class="info-label">البلد</div>
+        <div class="info-value" id="infoCountry">مصر</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">🎞️</div>
+        <div class="info-label">عدد الحلقات</div>
+        <div class="info-value" id="infoEpisodes">فيلم</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">⏱️</div>
+        <div class="info-label">مدة الفيلم</div>
+        <div class="info-value" id="infoDuration">ساعتين</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">✍️</div>
+        <div class="info-label">الكاتب</div>
+        <div class="info-value" id="infoWriter">بشير الأديب</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">📺</div>
+        <div class="info-label">الحالة</div>
+        <div class="info-value" id="infoStatus">انتهى</div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================
+       CAST
+  ================================= -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      أبطال العمل
+    </h2>
+
+    <div class="cast-scroll">
+
+      <div class="cast-card">
+        <img src="talat.jpg" alt="تالا">
+        <div class="actor-name">تالا</div>
+        <div class="character-name">سيلين</div>
+      </div>
+
+      <div class="cast-card">
+        <img src="tulin.jpg" alt="تولين">
+        <div class="actor-name">تولين</div>
+        <div class="character-name">زينب (والدة سيلين الصغيرة)</div>
+      </div>
+
+      <div class="cast-card">
+        <img src="yahya.jpg" alt="يحيى">
+        <div class="actor-name">يحيى</div>
+        <div class="character-name">سنان (والد سيلين الصغير)</div>
+      </div>
+
+      <div class="cast-card">
+        <img src="zl1.jpg" alt="رامز">
+        <div class="actor-name">رامز</div>
+        <div class="character-name">جان</div>
+      </div>
+
+      <div class="cast-card">
+        <img src="lubna.jpg" alt="لبنى">
+        <div class="actor-name">لبنى</div>
+        <div class="character-name">زينب الكبيرة</div>
+      </div>
+
+      <div class="cast-card">
+        <img src="al9.jpg" alt="يابانية">
+        <div class="actor-name">يابانية</div>
+        <div class="character-name">جدة سيلين</div>
+      </div>
+
+      <div class="cast-card">
+        <img src="br4.jpg" alt="جو">
+        <div class="actor-name">جو</div>
+        <div class="character-name">سنان الكبير</div>
+      </div>
+
+      <div class="cast-card">
+        <img src="br6.jpg" alt="مايكل">
+        <div class="actor-name">مايكل</div>
+        <div class="character-name">جد سيلين</div>
+      </div>
+
+      <div class="cast-card">
+        <img src="lg2.jpg" alt="البيران">
+        <div class="actor-name">البيران</div>
+        <div class="character-name">علوش </div>
+      </div>
+ </div>
+
+  </section>
+
+
+  <!-- ================================
+       EPISODES
+  ================================= -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      الوصف
+    </h2>
+
+    <div class="episodes">
+
+      <div class="episode">
+
+        <button class="episode-header">
+          <span>وصف الفيلم</span>
+          <span class="arrow">▼</span>
+        </button>
+
+        <div class="episode-desc">
+          تدور القصة حول سيلين، وهي شابة تعود إلى المنزل الصيفي الذي كانت تقضي فيه طفولتها مع عائلتها. لكن يحدث أمر غريب يجعلها تسافر عبر الزمن إلى الماضي، حيث تلتقي بوالدتها عندما كانت في عمر الشباب، قبل أن تتزوج وقبل أن تتخذ القرارات التي غيّرت حياة الأسرة بالكامل.
+
+مع مرور الوقت، تحاول سيلين التأقلم مع الماضي دون كشف هويتها الحقيقية، لكنها تجد نفسها تتعلق بوالدتها الشابة وبالأشخاص المحيطين بها، كما تبدأ بفهم الأسباب التي أدت إلى الخلافات والأحداث المؤلمة التي عاشتها عائلتها لاحقًا. وفي الوقت نفسه، تنشأ قصة رومانسية تضيف تعقيدًا أكبر لرحلتها
+.
+
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================
+       POSTERS
+  ================================= -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      بوسترات العمل
+    </h2>
+
+    <div class="poster-gallery">
+
+      <img
+        src="photo45.jpg"
+        alt="بوستر منزل صيفي"
+      >
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================
+       USER RATING
+  ================================= -->
+
+  <section class="section user-rating">
+
+    <h2 class="section-title">
+      قيّم العمل
+    </h2>
+
+    <p>
+      اختر تقييمك للعمل
+    </p>
+
+    <div class="stars">
+
+      <button class="star-btn" data-value="1" type="button">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+      </button>
+
+      <button class="star-btn" data-value="2" type="button">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+      </button>
+
+      <button class="star-btn" data-value="3" type="button">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+      </button>
+
+      <button class="star-btn" data-value="4" type="button">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+      </button>
+
+      <button class="star-btn" data-value="5" type="button">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================
+       WORK INFORMATION
+  ================================= -->
+
+  <footer class="footer-info">
+
+    <h2>
+      معلومات العمل
+    </h2>
+
+    <ul>
+
+      <li>
+        <strong>الكاتب:</strong>
+        <span id="footerWriter">
+          بشير الأديب
+        </span>
+      </li>
+
+      <li>
+        <strong>القصة:</strong>
+        <span id="footerStory">
+         مستوحاة تماما من فيلم منزل صيفي التركي..
+        </span>
+      </li>
+
+      <li>
+        <strong>تاريخ النشر:</strong>
+        <span id="footerDate">
+          يوليو 2026
+        </span>
+      </li>
+
+    </ul>
+
+  </footer>
+
+
+  <!-- ================================
+       LIGHTBOX
+  ================================= -->
+
+  <div class="lightbox" id="lightbox">
+
+    <button
+      class="close-lightbox"
+      id="closeLightbox"
+      type="button"
+    >
+      ✕
+    </button>
+
+    <img
+      id="lightboxImg"
+      src=""
+      alt="صورة مكبرة"
+    >
+
+  </div>
+
+
+  <!-- ================================
+       JAVASCRIPT
+  ================================= -->
+
+  <script>
+
+    /* =====================================================
+       WORK DATA
+       
+       ⭐ عند عمل صفحة جديدة، غيّر المعلومات هنا.
+    ===================================================== */
+
+    const WORK_DATA = {
+
+      title: "منزل صيفي",
+
+      poster: "photo45.jpg",
+
+      type: "فيلم",
+
+      subtitle: "عمل رومانسي كوميدي",
+
+      genre: "رومانسي كوميدي",
+
+      year: "2026",
+
+      episodes: "فيلم",
+
+      status: "انتهى",
+
+      rating: "8.6",
+
+      country: "تركيا",
+
+      duration: "ساعتين",
+
+      writer: "بشير الأديب",
+
+      publishDate: "يوليو 2026",
+
+story:
+  `تدور القصة حول سيلين، وهي شابة تعود إلى المنزل الصيفي الذي كانت تقضي فيه طفولتها مع عائلتها. لكن يحدث أمر غريب يجعلها تسافر عبر الزمن إلى الماضي، حيث تلتقي بوالدتها عندما كانت في عمر الشباب، قبل أن تتزوج وقبل أن تتخذ القرارات التي غيّرت حياة الأسرة بالكامل.
+
+مع مرور الوقت، تحاول سيلين التأقلم مع الماضي دون كشف هويتها الحقيقية، لكنها تجد نفسها تتعلق بوالدتها الشابة وبالأشخاص المحيطين بها، كما تبدأ بفهم الأسباب التي أدت إلى الخلافات والأحداث المؤلمة التي عاشتها عائلتها لاحقًا. وفي الوقت نفسه، تنشأ قصة رومانسية تضيف تعقيدًا أكبر لرحلتها
+.`
+    };
+
+
+    /* =====================================================
+       APPLY WORK DATA
+    ===================================================== */
+
+    document.title = WORK_DATA.title;
+
+    document.getElementById("workTitle").textContent =
+      WORK_DATA.title;
+
+    document.getElementById("mainPoster").src =
+      WORK_DATA.poster;
+
+    document.getElementById("mainPoster").alt =
+      "بوستر " + WORK_DATA.title;
+
+    document.getElementById("workType").textContent =
+      WORK_DATA.type;
+
+    document.getElementById("workSubtitle").textContent =
+      WORK_DATA.subtitle;
+
+    document.getElementById("genreBadge").textContent =
+      WORK_DATA.genre;
+
+    document.getElementById("yearBadge").textContent =
+      WORK_DATA.year;
+
+    document.getElementById("episodesBadge").textContent =
+      WORK_DATA.episodes + " حلقات";
+
+    document.getElementById("statusBadge").textContent =
+      WORK_DATA.status;
+
+    document.getElementById("workRating").textContent =
+      WORK_DATA.rating;
+
+    document.getElementById("storyText").textContent =
+      WORK_DATA.story;
+
+    document.getElementById("infoType").textContent =
+      WORK_DATA.type;
+
+    document.getElementById("infoGenre").textContent =
+      WORK_DATA.genre;
+
+    document.getElementById("infoYear").textContent =
+      WORK_DATA.year;
+
+    document.getElementById("infoCountry").textContent =
+      WORK_DATA.country;
+
+    document.getElementById("infoEpisodes").textContent =
+      WORK_DATA.episodes;
+
+    document.getElementById("infoDuration").textContent =
+      WORK_DATA.duration;
+
+    document.getElementById("infoWriter").textContent =
+      WORK_DATA.writer;
+
+    document.getElementById("infoStatus").textContent =
+      WORK_DATA.status;
+
+    document.getElementById("footerWriter").textContent =
+      WORK_DATA.writer;
+
+    document.getElementById("footerStory").textContent =
+      WORK_DATA.story;
+
+    document.getElementById("footerDate").textContent =
+      WORK_DATA.publishDate;
+
+
+    /* =====================================================
+       LIGHTBOX
+       
+       ⭐ أي صورة <img> في الصفحة تفتح عند الضغط عليها.
+    ===================================================== */
+
+    const lightbox =
+      document.getElementById("lightbox");
+
+    const lightboxImg =
+      document.getElementById("lightboxImg");
+
+    const closeLightbox =
+      document.getElementById("closeLightbox");
+
+
+    function openLightbox(imageSrc, imageAlt = "") {
+
+      lightboxImg.src = imageSrc;
+
+      lightboxImg.alt = imageAlt;
+
+      lightbox.style.display = "flex";
+
+      document.body.style.overflow = "hidden";
+
+    }
+
+
+    function closeLightboxFunction() {
+
+      lightbox.style.display = "none";
+
+      lightboxImg.src = "";
+
+      document.body.style.overflow = "";
+
+    }
+
+
+    /*
+       ⭐ هذا يجعل كل الصور الموجودة في الصفحة
+       قابلة للضغط والفتح.
+    */
+
+    document.addEventListener(
+      "click",
+      function (event) {
+
+        const image =
+          event.target.closest("img");
+
+        if (!image) return;
+
+        /*
+           إذا كانت الصورة هي صورة الـLightbox
+           نفسها، لا نفتح Lightbox جديد.
+        */
+
+        if (image.id === "lightboxImg") {
+          return;
+        }
+
+        openLightbox(
+          image.src,
+          image.alt
+        );
+
+      }
+    );
+
+
+    closeLightbox.addEventListener(
+      "click",
+      function (event) {
+
+        event.stopPropagation();
+
+        closeLightboxFunction();
+
+      }
+    );
+
+
+    lightbox.addEventListener(
+      "click",
+      function (event) {
+
+        if (event.target === lightbox) {
+
+          closeLightboxFunction();
+
+        }
+
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (
+          event.key === "Escape" &&
+          lightbox.style.display === "flex"
+        ) {
+
+          closeLightboxFunction();
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       EPISODES
+    ===================================================== */
+
+    document
+      .querySelectorAll(".episode-header")
+      .forEach(function (header) {
+
+        header.addEventListener(
+          "click",
+          function () {
+
+            const episode =
+              this.parentElement;
+
+            episode.classList.toggle("open");
+
+          }
+        );
+
+      });
+
+
+    /* =====================================================
+       USER STAR RATING
+       
+       ⭐⭐⭐ هذا الجزء تم إصلاحه.
+       
+       - عند الضغط على النجمة يتغير لونها.
+       - يحفظ التقييم.
+       - عند إعادة فتح الصفحة يظهر التقييم السابق.
+    ===================================================== */
+
+    const stars =
+      document.querySelectorAll(".star-btn");
+
+
+    const ratingStorageKey =
+      "rating-" + window.location.pathname;
+
+
+    function setUserRating(rating) {
+
+      stars.forEach(function (star) {
+
+        const value =
+          Number(
+            star.dataset.value
+          );
+
+        if (value <= rating) {
+
+          star.classList.add("active");
+
+        } else {
+
+          star.classList.remove("active");
+
+        }
+
+      });
+
+    }
+
+
+    /* استرجاع التقييم السابق */
+
+    const savedRating =
+      localStorage.getItem(
+        ratingStorageKey
+      );
+
+
+    if (
+      savedRating !== null &&
+      !isNaN(savedRating)
+    ) {
+
+      setUserRating(
+        Number(savedRating)
+      );
+
+    }
+
+
+    /* الضغط على النجوم */
+
+    stars.forEach(function (star) {
+
+      star.addEventListener(
+        "click",
+        function (event) {
+
+          event.preventDefault();
+
+          event.stopPropagation();
+
+          const rating =
+            Number(
+              this.dataset.value
+            );
+
+          setUserRating(rating);
+
+          localStorage.setItem(
+            ratingStorageKey,
+            String(rating)
+          );
+
+        }
+      );
+
+    });
+
+
+    /* =====================================================
+       FAVORITES
+    ===================================================== */
+
+    const favoriteBtn =
+      document.getElementById(
+        "favoriteBtn"
+      );
+
+
+    const favoriteKey =
+      "favorite-" +
+      window.location.pathname;
+
+
+    function updateFavoriteButton() {
+
+      const isFavorite =
+        localStorage.getItem(
+          favoriteKey
+        ) === "true";
+
+
+      if (isFavorite) {
+
+        favoriteBtn.classList.add(
+          "active"
+        );
+
+        favoriteBtn.innerHTML =
+          "♥ في المفضلة";
+
+      } else {
+
+        favoriteBtn.classList.remove(
+          "active"
+        );
+
+        favoriteBtn.innerHTML =
+          "♡ إضافة للمفضلة";
+
+      }
+
+    }
+
+
+    favoriteBtn.addEventListener(
+      "click",
+      function () {
+
+        const currentlyFavorite =
+          localStorage.getItem(
+            favoriteKey
+          ) === "true";
+
+
+        localStorage.setItem(
+          favoriteKey,
+          currentlyFavorite
+            ? "false"
+            : "true"
+        );
+
+
+        updateFavoriteButton();
+
+      }
+    );
+
+
+    updateFavoriteButton();
+
+  </script>
+
 </body>
 </html>
