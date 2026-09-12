@@ -1,1653 +1,1334 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> ⭐مكتبة النجوم</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap">
-  <style>
-    * {
-      box-sizing: border-box;
-      padding: 0;
-      margin: 0;
-      font-family: 'Cairo', sans-serif;
-    }
-    body {
-      background-color: #f4f4f4;
-      color: #222;
-      padding: 2rem;
-      transition: background 0.3s, color 0.3s;
-    }
-    body.dark {
-      background-color: #121212;
-      color: #ddd;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .top-buttons {
-      display: flex;
-      justify-content: space-between;
-      position: relative;
-    }
-    .toggle-btn, .back-btn {
-      padding: 10px 20px;
-      background-color: #3498db;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-    .search-bar {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .search-bar input {
-      padding: 12px 20px;
-      width: 80%;
-      max-width: 500px;
-      border-radius: 25px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 20px;
-    }
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.2s;
-      position: relative;
-    }
-    .card:hover {
-      transform: scale(1.03);
-    }
-    .card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      object-position: top;
-      border-radius: 10px;
-      transition: object-position 0.3s ease;
-    }
-    .card:hover img {
-      object-position: center;
-    }
-    .star {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 20px;
-      cursor: pointer;
-      color: gray;
-    }
-    .star.filled {
-      color: gold;
-    }
-    .card h3 {
-      margin-top: 10px;
-      font-size: 18px;
-    }
-.card .star {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 20px;
-  color: gray;
-  cursor: pointer;
-  transition: color 0.3s;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⭐ مكتبة النجوم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap">
+<style>
+:root {
+  --bg:#070709; --panel:#111116; --panel2:#17171e; --text:#f5f3ed;
+  --muted:#a8a5ad; --gold:#d8ad55; --gold2:#f4d58a; --line:rgba(255,255,255,.09);
+  --shadow:0 20px 60px rgba(0,0,0,.35);
 }
-
-.card .star.starred {
-  color: gold;
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Cairo,sans-serif;background:
+ radial-gradient(circle at 15% 0%,rgba(216,173,85,.12),transparent 30%),
+ radial-gradient(circle at 90% 20%,rgba(100,80,180,.10),transparent 28%),
+ var(--bg);color:var(--text);min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer}
+.container{width:min(1200px,92%);margin:auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:24px 0}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:20px}
+.brand-badge{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+ background:linear-gradient(135deg,var(--gold2),var(--gold));color:#17120a;box-shadow:0 8px 25px rgba(216,173,85,.18)}
+.icon-btn{border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff;
+ width:44px;height:44px;border-radius:14px}
+.hero{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:32px;
+ padding:52px 48px;margin:10px 0 26px;background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.015));
+ box-shadow:var(--shadow)}
+.hero:after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;
+ background:rgba(216,173,85,.10);filter:blur(20px);left:-120px;top:-170px}
+.eyebrow{color:var(--gold2);font-size:13px;font-weight:800;letter-spacing:1px;margin-bottom:8px}
+.hero h1{font-size:clamp(32px,5vw,58px);line-height:1.15;margin-bottom:12px}
+.hero p{color:var(--muted);max-width:700px;line-height:2;font-size:15px}
+.hero-stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.stat{background:rgba(255,255,255,.05);border:1px solid var(--line);padding:11px 16px;border-radius:16px}
+.stat b{color:var(--gold2);font-size:20px;margin-left:5px}
+.controls{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:22px 0;flex-wrap:wrap}
+.search{flex:1;min-width:240px;position:relative}
+.search input{width:100%;padding:16px 20px;border-radius:18px;border:1px solid var(--line);
+ background:rgba(255,255,255,.05);color:#fff;outline:none}
+.search input:focus{border-color:rgba(216,173,85,.65);box-shadow:0 0 0 4px rgba(216,173,85,.08)}
+.filter{display:flex;gap:8px}
+.filter button{border:1px solid var(--line);background:rgba(255,255,255,.04);color:#ddd;
+ padding:12px 16px;border-radius:15px}
+.filter button.active{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#17120a;border-color:transparent;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:18px;padding-bottom:50px}
+.card{position:relative;overflow:hidden;background:linear-gradient(145deg,#15151b,#0d0d11);
+ border:1px solid var(--line);border-radius:24px;padding:9px;transition:.28s;box-shadow:0 12px 35px rgba(0,0,0,.22)}
+.card:hover{transform:translateY(-7px);border-color:rgba(216,173,85,.35);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.photo-wrap{height:285px;position:relative;border-radius:18px;overflow:hidden;background:#222}
+.card img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:.45s}
+.card:hover img{transform:scale(1.035)}
+.favorite{position:absolute;top:12px;left:12px;z-index:3;width:38px;height:38px;border-radius:50%;
+ border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.55);backdrop-filter:blur(10px);color:#fff}
+.favorite.on{color:#ffd66e;background:rgba(216,173,85,.17);border-color:rgba(216,173,85,.45)}
+.photo-shade{position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.8))}
+.card-info{padding:14px 7px 8px}
+.card-info h2{font-size:18px;margin-bottom:3px}
+.card-info span{font-size:12px;color:var(--muted)}
+.open{width:100%;margin-top:10px;padding:11px;border:0;border-radius:14px;background:#fff;color:#111;font-weight:800}
+.open:hover{background:var(--gold2)}
+.empty{text-align:center;color:var(--muted);padding:60px 0;grid-column:1/-1}
+.modal{display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.82);backdrop-filter:blur(12px);padding:20px;align-items:center;justify-content:center}
+.modal.show{display:flex}
+.modal-box{width:min(920px,100%);max-height:92vh;overflow:auto;background:#101014;border:1px solid var(--line);
+ border-radius:30px;box-shadow:var(--shadow);position:relative}
+.close{position:absolute;top:16px;left:16px;z-index:3;width:42px;height:42px;border-radius:50%;
+ border:1px solid var(--line);background:rgba(0,0,0,.55);color:#fff}
+.profile-top{display:grid;grid-template-columns:260px 1fr;gap:28px;padding:30px}
+.profile-main-img{width:100%;height:350px;object-fit:cover;object-position:top center;border-radius:22px}
+.profile-copy{display:flex;flex-direction:column;justify-content:center}
+.profile-copy .tag{color:var(--gold2);font-size:12px;font-weight:800;margin-bottom:8px}
+.profile-copy h2{font-size:38px;margin-bottom:12px}
+.profile-copy p{color:#c3c0c7;line-height:2;font-size:14px}
+.works{padding:0 30px 30px}
+.works h3{margin-bottom:14px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.gallery img{width:100%;height:155px;object-fit:cover;border-radius:14px;cursor:pointer}
+.lightbox{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.94);align-items:center;justify-content:center;padding:25px}
+.lightbox.show{display:flex}
+.lightbox img{max-width:92vw;max-height:88vh;object-fit:contain;border-radius:16px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(30px);
+ background:#fff;color:#111;padding:12px 18px;border-radius:14px;font-weight:800;opacity:0;pointer-events:none;transition:.3s;z-index:200}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:650px){
+ .hero{padding:34px 24px;border-radius:25px}
+ .topbar{padding:16px 0}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+ .photo-wrap{height:235px}
+ .card{border-radius:19px}
+ .profile-top{grid-template-columns:1fr;padding:22px}
+ .profile-main-img{height:340px}
+ .profile-copy h2{font-size:30px}
+ .works{padding:0 22px 22px}
 }
-    .profile-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.9);
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-      z-index: 9999;
-    }
-    .profile-box {
-      background: #fff;
-      max-width: 800px;
-      width: 100%;
-      padding: 20px;
-      border-radius: 15px;
-      position: relative;
-      overflow-y: auto;
-      max-height: 90vh;
-    }
-    body.dark .profile-box {
-      background: #222;
-      color: #eee;
-    }
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 22px;
-      background: none;
-      border: none;
-      color: red;
-      cursor: pointer;
-    }
-    .profile-box img {
-      width: 150px;
-      border-radius: 50%;
-      display: block;
-      margin: auto;
-    }
-    .profile-box h2, .profile-box p {
-      text-align: center;
-      margin-top: 10px;
-    }
-    .gallery {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .gallery img {
-      width: 140px;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    .lightbox {
-      display: none;
-      position: fixed;
-      z-index: 10000;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.85);
-      justify-content: center;
-      align-items: center;
-    }
-    .lightbox img {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 12px;
-    }
-  </style>
+</style>
 </head>
 <body>
-  <div class="top-buttons">
-    <button class="back-btn" onclick="window.location.href='index.html'">⬅ الرئيسية</button>
-    <button class="toggle-btn" id="toggleMode">🌙</button>
+<div class="container">
+  <div class="topbar">
+    <div class="brand"><div class="brand-badge">★</div><span>مكتبة النجوم</span></div>
+    <button class="icon-btn" onclick="location.href='index.html'" title="الرئيسية">⌂</button>
   </div>
 
-  <header>
-    <h1>⭐مكتبة النجوم</h1>
-  </header>
+  <section class="hero">
+    <div class="eyebrow">GOLDEN BEE • STAR LIBRARY</div>
+    <h1>وجوه صنعت الحكاية ⭐</h1>
+    <p>مساحة عصرية تجمع نجومك وأعمالهم في مكان واحد. ابحث، استكشف الملفات، واحفظ المفضلين لديك.</p>
+    <div class="hero-stats">
+      <div class="stat"><b id="count">0</b> نجم</div>
+      <div class="stat"><b id="favCount">0</b> مفضل</div>
+    </div>
+  </section>
 
-<div class="search-bar">
-  <input type="text" id="searchInput" placeholder="ابحث عن اسم الممثل أو الممثلة...">
-  <button id="filterFavorites" style="margin-right:10px; padding:10px 15px; border-radius:20px; border:none; background:#f1c40f; color:#222; font-weight:bold; cursor:pointer;">
-    ⭐ المفضلون فقط
-  </button>
+  <div class="controls">
+    <div class="search"><input id="search" placeholder="ابحث عن اسم ممثل أو ممثلة..."></div>
+    <div class="filter">
+      <button id="allBtn" class="active">الكل</button>
+      <button id="favBtn">⭐ المفضلون</button>
+    </div>
+  </div>
+
+  <main class="grid" id="grid"></main>
 </div>
 
-  <div class="grid" id="actorGrid">
-    <div class="card" onclick="openProfile('name1')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name1')">★</span>
-      <img src="kaan.jpg" alt="كان">
-      <h3>كان</h3>
-    </div>
-   <div class="card" onclick="openProfile('name2')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name2')">★</span>
-      <img src="ali2.jpg" alt="كارلوس">
-      <h3>كارلوس</h3>
-    </div>
-   <div class="card" onclick="openProfile('name3')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name3')">★</span>
-      <img src="Aishe.jpg" alt="عائشة">
-      <h3>عائشة</h3>
-    </div>
-   <div class="card" onclick="openProfile('name4')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name4')">★</span>
-      <img src="al1.jpg" alt="لارين">
-      <h3>لارين</h3>
-    </div>
-   <div class="card" onclick="openProfile('name5')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name5')">★</span>
-      <img src="al2.jpg" alt="وايت">
-      <h3>وايت</h3>
-    </div>
-   <div class="card" onclick="openProfile('name6')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name6')">★</span>
-      <img src="al3.jpg" alt="المدير">
-      <h3>المدير</h3>
-    </div>
-   <div class="card" onclick="openProfile('name7')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name7')">★</span>
-      <img src="al4.jpg" alt="أليخاندرو">
-      <h3>أليخاندرو</h3>
-    </div>
-   <div class="card" onclick="openProfile('name8')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name8')">★</span>
-      <img src="al5.jpg" alt="ميليسا">
-      <h3>ميليسا</h3>
-    </div>
-   <div class="card" onclick="openProfile('name9')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name9')">★</span>
-      <img src="al9.jpg" alt="يابانية">
-      <h3>يابانية</h3>
-    </div>
-   <div class="card" onclick="openProfile('name10')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name10')">★</span>
-      <img src="al7.jpg" alt="جزار">
-      <h3>جزار</h3>
-    </div>
-   <div class="card" onclick="openProfile('name11')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name11')">★</span>
-      <img src="ali1.jpg" alt="عز">
-      <h3>عز</h3>
-    </div>
-   <div class="card" onclick="openProfile('name12')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name12')">★</span>
-      <img src="ali3.jpg" alt="هيام">
-      <h3>هيام</h3>
-    </div>
-   <div class="card" onclick="openProfile('name13')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name13')">★</span>
-      <img src="ali4.jpg" alt="مادلين">
-      <h3>مادلين</h3>
-    </div>
-   <div class="card" onclick="openProfile('name14')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name14')">★</span>
-      <img src="ali5.jpg" alt="آنا">
-      <h3>آنا</h3>
-    </div>
-   <div class="card" onclick="openProfile('name15')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name15')">★</span>
-      <img src="al11.jpg" alt="بربل">
-      <h3>بربل</h3>
-    </div>
-   <div class="card" onclick="openProfile('name16')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name16')">★</span>
-      <img src="ali6.jpg" alt="ضياء">
-      <h3>ضياء</h3>
-    </div>
-   <div class="card" onclick="openProfile('name17')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name17')">★</span>
-      <img src="ali8.jpg" alt="مايكل">
-      <h3>مايكل</h3>
-    </div>
-   <div class="card" onclick="openProfile('name18')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name18')">★</span>
-      <img src="ali9.jpg" alt="سيركان">
-      <h3>سيركان</h3>
-    </div>
-   <div class="card" onclick="openProfile('name19')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name19')">★</span>
-      <img src="ali10.jpg" alt="كارمن">
-      <h3>كارمن</h3>
-    </div>
-   <div class="card" onclick="openProfile('name20')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name20')">★</span>
-      <img src="ali11.jpg" alt="توم">
-      <h3>توم</h3>
-    </div>
-   <div class="card" onclick="openProfile('name21')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name21')">★</span>
-      <img src="ali12.jpg" alt="ثور">
-      <h3>ثور</h3>
-    </div>
-   <div class="card" onclick="openProfile('name22')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name22')">★</span>
-      <img src="ali13.jpg" alt="روجين">
-      <h3>روجين</h3>
-    </div>
-   <div class="card" onclick="openProfile('name23')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name23')">★</span>
-      <img src="ali14.jpg" alt="أوندار">
-      <h3>أوندار</h3>
-    </div>
-   <div class="card" onclick="openProfile('name24')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name24')">★</span>
-      <img src="ali15.jpg" alt="براون">
-      <h3>براون</h3>
-    </div>
-   <div class="card" onclick="openProfile('name25')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name25')">★</span>
-      <img src="ali16.jpg" alt="يعقوب">
-      <h3>يعقوب</h3>
-    </div>
-   <div class="card" onclick="openProfile('name26')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name26')">★</span>
-      <img src="br3.jpg" alt="لجين">
-      <h3>لجين</h3>
-    </div>
-   <div class="card" onclick="openProfile('name27')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name27')">★</span>
-      <img src="br5.jpg" alt="سلوى">
-      <h3>سلوى</h3>
-    </div>
-   <div class="card" onclick="openProfile('name28')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name28')">★</span>
-      <img src="br7.jpg" alt="ميليس">
-      <h3>ميليس</h3>
-    </div>
-   <div class="card" onclick="openProfile('name29')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name29')">★</span>
-      <img src="br8.jpg" alt="ويليام">
-      <h3>ويليام</h3>
-    </div>
-   <div class="card" onclick="openProfile('name30')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name30')">★</span>
-      <img src="br12.jpg" alt="أدهم">
-      <h3>أدهم</h3>
-    </div>
-   <div class="card" onclick="openProfile('name31')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name31')">★</span>
-      <img src="FT2.jpg" alt="ورد">
-      <h3>ورد</h3>
-    </div>
-   <div class="card" onclick="openProfile('name32')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name32')">★</span>
-      <img src="FT1.jpg" alt="عزيز">
-      <h3>عزيز</h3>
-    </div>
-   <div class="card" onclick="openProfile('name33')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name33')">★</span>
-      <img src="FT4.jpg" alt="ديما">
-      <h3>ديما</h3>
-    </div>
-   <div class="card" onclick="openProfile('name34')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name34')">★</span>
-      <img src="hr4.jpg" alt="ماهر">
-      <h3>ماهر</h3>
-    </div>
-   <div class="card" onclick="openProfile('name35')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name35')">★</span>
-      <img src="hr3.jpg" alt="عبلة">
-      <h3>عبلة</h3>
-    </div>
-   <div class="card" onclick="openProfile('name36')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name36')">★</span>
-      <img src="hr5.jpg" alt="زينب">
-      <h3>زينب</h3>
-    </div>
-   <div class="card" onclick="openProfile('name37')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name37')">★</span>
-      <img src="hr6.jpg" alt="قادر">
-      <h3>قادر</h3>
-    </div>
-   <div class="card" onclick="openProfile('name38')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name38')">★</span>
-      <img src="hr7.jpg" alt="ولي">
-      <h3>ولي</h3>
-    </div>
-   <div class="card" onclick="openProfile('name39')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name39')">★</span>
-      <img src="hr8.jpg" alt="ماركر">
-      <h3>ماركر</h3>
-    </div>
-   <div class="card" onclick="openProfile('name40')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name40')">★</span>
-      <img src="kh2.jpg" alt="شاهين">
-      <h3>شاهين</h3>
-    </div>
-   <div class="card" onclick="openProfile('name41')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name41')">★</span>
-      <img src="lg1.jpg" alt="يسرى">
-      <h3>يسرى</h3>
-    </div>
-   <div class="card" onclick="openProfile('name42')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name42')">★</span>
-      <img src="lg2.jpg" alt="ألبيران">
-      <h3>ألبيران</h3>
-    </div>
-   <div class="card" onclick="openProfile('name43')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name43')">★</span>
-      <img src="n1.jpg" alt="إيمري">
-      <h3>إيمري</h3>
-    </div>
-   <div class="card" onclick="openProfile('name44')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name44')">★</span>
-      <img src="masked.jpg" alt="المغنية">
-      <h3>المغنية</h3>
-    </div>
-   <div class="card" onclick="openProfile('name45')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name45')">★</span>
-      <img src="lg3.jpg" alt="عصام">
-      <h3>عصام</h3>
-    </div>
-   <div class="card" onclick="openProfile('name46')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name46')">★</span>
-      <img src="n2.jpg" alt="نور">
-      <h3>نور</h3>
-    </div>
-   <div class="card" onclick="openProfile('name47')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name47')">★</span>
-      <img src="n3.jpg" alt="جولدي">
-      <h3>جولدي</h3>
-    </div>
-   <div class="card" onclick="openProfile('name48')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name48')">★</span>
-      <img src="n4.jpg" alt="لينا">
-      <h3>لينا</h3>
-    </div>
-   <div class="card" onclick="openProfile('name49')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name49')">★</span>
-      <img src="n5.jpg" alt="ميار">
-      <h3>ميار</h3>
-    </div>
-   <div class="card" onclick="openProfile('name50')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name50')">★</span>
-      <img src="n7.jpg" alt="زينة">
-      <h3>زينة</h3>
-    </div>
-   <div class="card" onclick="openProfile('name51')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name51')">★</span>
-      <img src="t2.jpg" alt="برونو">
-      <h3>برونو</h3>
-    </div>
-   <div class="card" onclick="openProfile('name52')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name52')">★</span>
-      <img src="t4.jpg" alt="كارما">
-      <h3>كارما</h3>
-    </div>
-   <div class="card" onclick="openProfile('name53')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name53')">★</span>
-      <img src="Tz2.jpg" alt="داريا">
-      <h3>داريا</h3>
-    </div>
-   <div class="card" onclick="openProfile('name54')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name54')">★</span>
-      <img src="Tz3.jpg" alt="كرم">
-      <h3>كرم</h3>
-    </div>
-   <div class="card" onclick="openProfile('name55')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name55')">★</span>
-      <img src="zl1.jpg" alt="رامز">
-      <h3>رامز</h3>
-    </div>
-   <div class="card" onclick="openProfile('name56')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name56')">★</span>
-      <img src="zl2.jpg" alt="يونس">
-      <h3>يونس</h3>
-    </div>
-   <div class="card" onclick="openProfile('name57')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name57')">★</span>
-      <img src="zl3.jpg" alt="ليو">
-      <h3>ليو</h3>
-    </div>
-   <div class="card" onclick="openProfile('name58')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name58')">★</span>
-      <img src="Tz1.jpg" alt="ترينر">
-      <h3>ترينر</h3>
-    </div>
-   <div class="card" onclick="openProfile('name59')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name59')">★</span>
-      <img src="hr1.jpg" alt="ساموراي">
-      <h3>ساموراي</h3>
-    </div>
-   <div class="card" onclick="openProfile('name60')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name60')">★</span>
-      <img src="br4.jpg" alt="جو">
-      <h3>جو</h3>
-    </div>
-   <div class="card" onclick="openProfile('name61')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name61')">★</span>
-      <img src="al6.jpg" alt="بيلا">
-      <h3>بيلا</h3>
-    </div>
-   <div class="card" onclick="openProfile('name62')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name62')">★</span>
-      <img src="al8.jpg" alt="ناروتو">
-      <h3>ناروتو</h3>
-    </div>
-   <div class="card" onclick="openProfile('name63')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name63')">★</span>
-      <img src="al10.jpg" alt="أحمد">
-      <h3>أحمد</h3>
-    </div>
-   <div class="card" onclick="openProfile('name64')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name63')">★</span>
-      <img src="FT5.jpg" alt="سامر">
-      <h3>سامر</h3>
-    </div>
-   <div class="card" onclick="openProfile('name65')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name63')">★</span>
-      <img src="FT6.jpg" alt="أوزجي">
-      <h3>أوزجي</h3>
-    </div>
-   <div class="card" onclick="openProfile('name66')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name63')">★</span>
-      <img src="FT3.jpg" alt="ريدر">
-      <h3>ريدر</h3>
-    </div>
-   <div class="card" onclick="openProfile('name67')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name67')">★</span>
-      <img src="diva.jpg" alt="ديفا">
-      <h3>ديفا</h3>
-    </div>
-   <div class="card" onclick="openProfile('name68')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name68')">★</span>
-      <img src="jenny.jpg" alt="جيني">
-      <h3>جيني</h3>
-    </div>
-   <div class="card" onclick="openProfile('name69')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name69')">★</span>
-      <img src="n6.jpg" alt="لهب">
-      <h3>لهب</h3>
-    </div>
-   <div class="card" onclick="openProfile('name70')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name71')">★</span>
-      <img src="n8.jpg" alt="هولاند">
-      <h3>هولاند</h3>
-    </div>
-   <div class="card" onclick="openProfile('name71')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name71')">★</span>
-      <img src="pinar.jpg" alt="بينار">
-      <h3>بينار</h3>
-    </div>
-   <div class="card" onclick="openProfile('name72')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name72')">★</span>
-      <img src="t1.jpg" alt="تيسير">
-      <h3>تيسير</h3>
-    </div>
-   <div class="card" onclick="openProfile('name73')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name73')">★</span>
-      <img src="tomas.jpg" alt="توماس">
-      <h3>توماس</h3>
-    </div>
-   <div class="card" onclick="openProfile('name74')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name74')">★</span>
-      <img src="al12.jpg" alt="إدريس">
-      <h3>إدريس</h3>
-    </div>
-   <div class="card" onclick="openProfile('name75')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name75')">★</span>
-      <img src="cristin.jpg" alt="كريستين">
-      <h3>كريستين</h3>
-    </div>
-   <div class="card" onclick="openProfile('name76')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name76')">★</span>
-      <img src="kh3.jpg" alt="راموس">
-      <h3>راموس</h3>
-    </div>
-   <div class="card" onclick="openProfile('name77')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name77')">★</span>
-      <img src="t3.jpg" alt="تسنيم">
-      <h3>تسنيم</h3>
-    </div>
-   <div class="card" onclick="openProfile('name78')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name78')">★</span>
-      <img src="t5.jpg" alt="عجوز">
-      <h3>عجوز</h3>
-    </div>
-   <div class="card" onclick="openProfile('name79')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name79')">★</span>
-      <img src="br10.jpg" alt="هازال">
-      <h3>هازال</h3>
-    </div>
-   <div class="card" onclick="openProfile('name80')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name80')">★</span>
-      <img src="farid.jpg" alt="فريد">
-      <h3>فريد</h3>
-    </div>
-   <div class="card" onclick="openProfile('name81')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name81')">★</span>
-      <img src="injy.jpg" alt="إنجي">
-      <h3>إنجي</h3>
-    </div>
-   <div class="card" onclick="openProfile('name82')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name82')">★</span>
-      <img src="gym.jpg" alt="جيم">
-      <h3>جيم</h3>
-    </div>
-   <div class="card" onclick="openProfile('name83')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name83')">★</span>
-      <img src="malik.jpg" alt="مالك">
-      <h3>مالك</h3>
-    </div>
-   <div class="card" onclick="openProfile('name84')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name84')">★</span>
-      <img src="pv3.jpg" alt="مراد">
-      <h3>مراد</h3>
-    </div>
-   <div class="card" onclick="openProfile('name85')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name85')">★</span>
-      <img src="hadi.jpg" alt="هادي">
-      <h3>هادي</h3>
-    </div>
-   <div class="card" onclick="openProfile('name86')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name86')">★</span>
-      <img src="juan.jpg" alt="خوان">
-      <h3>خوان</h3>
-    </div>
-   <div class="card" onclick="openProfile('name87')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name87')">★</span>
-      <img src="kinda.jpg" alt="كندة">
-      <h3>كندة</h3>
-    </div>
-   <div class="card" onclick="openProfile('name88')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name88')">★</span>
-      <img src="leyla.jpg" alt="ليلى">
-      <h3>ليلى</h3>
-    </div>
-   <div class="card" onclick="openProfile('name89')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name89')">★</span>
-      <img src="shihab.jpg" alt="شهاب">
-      <h3>شهاب</h3>
-    </div>
-   <div class="card" onclick="openProfile('name90')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name90')">★</span>
-      <img src="rief.jpg" alt="ريف">
-      <h3>ريف</h3>
-    </div>
-   <div class="card" onclick="openProfile('name91')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name91')">★</span>
-      <img src="samir.jpg" alt="سمير">
-      <h3>سمير</h3>
-    </div>
-   <div class="card" onclick="openProfile('name92')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name92')">★</span>
-      <img src="shams.jpg" alt="شمس">
-      <h3>شمس</h3>
-    </div>
-   <div class="card" onclick="openProfile('name93')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name93')">★</span>
-      <img src="john.jpg" alt="جوني">
-      <h3>جوني</h3>
-    </div>
-   <div class="card" onclick="openProfile('name94')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name94')">★</span>
-      <img src="pv2.jpg" alt="شيف">
-      <h3>شيف</h3>
-    </div>
-   <div class="card" onclick="openProfile('name95')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name95')">★</span>
-      <img src="pv1.jpg" alt="هدى">
-      <h3>هدى</h3>
-    </div>
-   <div class="card" onclick="openProfile('name96')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name96')">★</span>
-      <img src="coral.jpg" alt="كورال">
-      <h3>كورال</h3>
-    </div>
-   <div class="card" onclick="openProfile('name97')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name97')">★</span>
-      <img src="ibrahim.jpg" alt="إبراهيم">
-      <h3>إبراهيم</h3>
-    </div>
-   <div class="card" onclick="openProfile('name98')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name98')">★</span>
-      <img src="dola.jpg" alt="دولا">
-      <h3>دولا</h3>
-    </div>
-   <div class="card" onclick="openProfile('name99')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name99')">★</span>
-      <img src="rula.jpg" alt="رلا">
-      <h3>رلا</h3>
-    </div>
-   <div class="card" onclick="openProfile('name100')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name100')">★</span>
-      <img src="rabi3.jpg" alt="ربيع">
-      <h3>ربيع</h3>
-    </div>
-   <div class="card" onclick="openProfile('name101')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name101')">★</span>
-      <img src="buran.jpg" alt="بوران">
-      <h3>بوران</h3>
-    </div>
-   <div class="card" onclick="openProfile('name102')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name102')">★</span>
-      <img src="kim.jpg" alt="كيم">
-      <h3>كيم</h3>
-    </div>
-   <div class="card" onclick="openProfile('name103')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name103')">★</span>
-      <img src="can.jpg" alt="جان">
-      <h3>جان</h3>
-    </div>
-   <div class="card" onclick="openProfile('name104')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name104')">★</span>
-      <img src="majic.jpg" alt="ماجيك">
-      <h3>ماجيك</h3>
-    </div>
-   <div class="card" onclick="openProfile('name105')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name105')">★</span>
-      <img src="ismail.jpg" alt="إسماعيل">
-      <h3>إسماعيل</h3>
-    </div>
-   <div class="card" onclick="openProfile('name106')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name106')">★</span>
-      <img src="nuha.jpg" alt="نهى">
-      <h3>نهى</h3>
-    </div>
-   <div class="card" onclick="openProfile('name107')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name107')">★</span>
-      <img src="lara.jpg" alt="لارا">
-      <h3>لارا<h3>
-    </div>
-   <div class="card" onclick="openProfile('name108')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name108')">★</span>
-      <img src="alex.jpg" alt="أليكس">
-      <h3>أليكس</h3>
-    </div>
-   <div class="card" onclick="openProfile('name109')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name109')">★</span>
-      <img src="lubna.jpg" alt="لبنى">
-      <h3>لبنى</h3>
-    </div>
-   <div class="card" onclick="openProfile('name110')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name110')">★</span>
-      <img src="deigo.jpg" alt="دييغو">
-      <h3>دييغو</h3>
-    </div>
-   <div class="card" onclick="openProfile('name111')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name111')">★</span>
-      <img src="karim.jpg" alt="كريم">
-      <h3>كريم</h3>
-    </div>
-   <div class="card" onclick="openProfile('name112')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name112')">★</span>
-      <img src="shokry.jpg" alt="شكري">
-      <h3>شكري</h3>
-    </div>
-   <div class="card" onclick="openProfile('name113')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name113')">★</span>
-      <img src="omar.jpg" alt="عمر">
-      <h3>عمر</h3>
-    </div>
-   <div class="card" onclick="openProfile('name114')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name114')">★</span>
-      <img src="ishk.jpg" alt="عشق">
-      <h3>عشق</h3>
-    </div>
-   <div class="card" onclick="openProfile('name115')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name115')">★</span>
-      <img src="anas.jpg" alt="أنس">
-      <h3>أنس</h3>
-    </div>
-   <div class="card" onclick="openProfile('name116')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name116')">★</span>
-      <img src="silin.jpg" alt="سيلين">
-      <h3>سيلين</h3>
-    </div>
-   <div class="card" onclick="openProfile('name117')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name117')">★</span>
-      <img src="lamar.jpg" alt="لمار">
-      <h3>لمار</h3>
-    </div>
-   <div class="card" onclick="openProfile('name118')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name118')">★</span>
-      <img src="lale.jpg" alt="لالي">
-      <h3>لالي</h3>
-    </div>
-   <div class="card" onclick="openProfile('name119')">
-      <span class="star" onclick="event.stopPropagation(); toggleStar(this, 'name119')">★</span>
-      <img src="murad.jpg" alt="مراد">
-      <h3>مراد</h3>
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closeProfile()">✕</button>
+    <div class="profile-top">
+      <img id="profileImg" class="profile-main-img" src="" alt="">
+      <div class="profile-copy">
+        <div class="tag">⭐ ملف النجم</div>
+        <h2 id="profileName"></h2>
+        <p id="profileDesc"></p>
+      </div>
+    </div>
+    <div class="works">
+      <h3>أبرز الأعمال</h3>
+      <div class="gallery" id="gallery"></div>
     </div>
   </div>
+</div>
 
-  <div class="profile-overlay" id="profileOverlay">
-    <div class="profile-box" id="profileBox">
-      <button class="close-btn" onclick="closeProfile()">✖</button>
-      <img id="profileImg" src="" alt="">
-      <h2 id="profileName"></h2>
-      <p id="profileDesc"></p>
-      <div class="gallery" id="profileGallery"></div>
-    </div>
-  </div>
+<div class="lightbox" id="lightbox" onclick="closeLightbox()"><img id="lightboxImg" src="" alt=""></div>
+<div class="toast" id="toast"></div>
 
-  <div class="lightbox" id="lightbox">
-    <img id="lightboxImg" src="" alt="">
-  </div>
+<script>
+/*
+========================================================
+⭐ المكان الوحيد الذي تعدّل فيه أسماء النجوم مستقبلاً ⭐
 
-  <script>
-    const profiles = {
-      name1: {
-        name: "كان",
-        image: "kaan.jpg",
-        desc: "ممثل بدأ مشواره في برنامج تحديات، مأخوذ من ممثل تركي يحمل ذات الاسم، أصبح بطل مسلسلاته سريعا وعرف بهيبته الطاغية!",
-        works: ["photo16.jpg", "photo17.jpg", "photo19.jpg", "photo28.jpg", "photo11.jpg"]
-      },
-      name2: {
-        name: "كارلوس",
-        image: "ali2.jpg",
-        desc: "بدأ مشواره الفني مبكرا، ببرنامج بوليفارد، ومن ثم تطور شخصيا حتى أخذ شكله الحالي، ومن ثم اقتحم الأدوار البطولية المشتركة، كما أنه كان عضوا فعالا في برنامج القناعات الشهير حتى أخذ ستايل مميز",
-        works: ["photo10.jpg", "photo11.jpg", "photo1.jpg", "photo3.jpg", "photo5.jpg", "photo18.jpg", "photo36.jpg"]
-      },
-      name3: {
-        name: "عائشة",
-        image: "Aishe.jpg",
-        desc: "ممثلة جديدة، دخلت عالم التمثيل البوليسي حديثا، مستوحاة من ممثلة تركية تحمل ذات الاسم.",
-        works: ["photo16.jpg", "photo17.jpg", "photo23.jpg"]
-      },
-      name4: {
-        name: "لارين",
-        image: "al1.jpg",
-        desc: "من الممثلات الأوائل في المجال، بدأت مشوارها ببطولة كذبة وحقيقة لتظهر موهبتها، صاحبة أندر لون شعر في العالم!",
-        works: ["photo2.jpg", "photo4.jpg", "photo7.jpg", "photo9.jpg", "news1.jpg"]
-      },
-      name5: {
-        name: "وايت",
-        image: "al2.jpg",
-        desc: "بدأ مبكرا، عرف بطلته المميزة ولون شعره المنفرد، قدم برامج كثيرة وكذلك حفل جوائز جولدين بي، بدأ بمسلسل كذبة وحقيقة ثم قل ظهوره.",
-        works: ["photo2.jpg", "photo11.jpg", "photo17.jpg"]
-      },
-      name6: {
-        name: "المدير",
-        image: "al3.jpg",
-        desc: "بدأ مبكرا، وشارك في العديد من الأعمال، أطلق عليه لقب المدير دون أن يعرف اسمه أحد، وبذلك حاز على جائزة جولدين بي لأفضل فنان متنوع!",
-        works: ["photo1.jpg", "photo2.jpg", "photo4.jpg", "photo5.jpg", "photo6.jpg", "photo8.jpg", "photo9.jpg", "photo23.jpg", "photo20.jpg"]
-      },
-      name7: {
-        name: "أليخاندرو",
-        image: "al4.jpg",
-        desc: "بدأ مبكرا في مسلسل كذبة وحقيقة وعرف بستايله الشعبي فأحبه الجمهور.",
-        works: ["photo2.jpg", "photo9.jpg", "photo19.jpg"]
-      },
-      name8: {
-        name: "ميليسا",
-        image: "al5.jpg",
-        desc: "مستوحاة من ممثلة تركية بذات الاسم، بدأت مسيرتها في عالم التحقيق والمحاماة وبرز ذلك في تمثيلها، شاركت في عدة مسلسلات.",
-        works: ["photo2.jpg", "photo8.jpg"]
-      },
-      name9: {
-        name: "يابانية",
-        image: "al9.jpg",
-        desc: "بدأت في بالوفارد المواهب، تميزت بطلتها اليابانية فعرفت بهذا الاسم، أتقنت دور الأم المضحكة في جميع مسلسلاتها.",
-        works: ["photo2.jpg", "photo9.jpg", "news1.jpg", "photo10.jpg", "photo19.jpg", "photo26.jpg"]
-      },
-      name10: {
-        name: "جزار",
-        image: "al7.jpg",
-        desc: "بدأ مسيرته في بالوفارد المواهب، وأكمل بأدواره الخطيرة الدموية، سمي جزار على حسب عمله القديم، لكن لا تجرب أن تسأله عنه.",
-        works: ["photo2.jpg", "photo10.jpg", "photo17.jpg"]
-      },
-      name11: {
-        name: "عز",
-        image: "ali1.jpg",
-        desc: "بدأ مشواره الفني في بطولة مسلسل السوار، شخصية قوية وتعمل بتدريب لياقة بدنية إلى جانب التمثيل!",
-        works: ["photo1.jpg", "photo18.jpg", "photo19.jpg"]
-      },
-      name12: {
-        name: "هيام",
-        image: "ali3.jpg",
-        desc: "بدأت مشوارها في مسلسل السوار، فنانة شاملة وعارضة أزياء ماهرة، رغم تأخر ظهورها، لكنها تمتلك صيتا جميلا في عالم التمثيل!",
-        works: ["photo1.jpg", "photo14.jpg", "photo19.jpg"]
-      },
-      name13: {
-        name: "مادلين",
-        image: "ali4.jpg",
-        desc: "بدأ ظهورها في بوسترات مسلسل توأمي في البداية، لتصبح بعد ذلك من أكثر الممثلات براعة، وكذلك حازت على ستايل طبيبة كإهداء لدورها!",
-        works: ["photo1.jpg", "photo4.jpg", "photo7.jpg", "photo13.jpg", "photo18.jpg", "photo24.jpg", "photo25.jpg"]
-      },
-      name14: {
-        name: "آنا",
-        image: "ali5.jpg",
-        desc: "بدأت في مسلسل شلة بنات، عرفت بمهارتها المحامية وشخصيتها القوية، لذلك تمكنت من القيام بالكثير من الأدوار رغم ظهورها الحديث.",
-        works: ["photo1.jpg", "photo3.jpg", "photo5.jpg", "news1.jpg", "photo14.jpg", "photo18.jpg", "photo19.jpg", "photo26.jpg", "photo36.jpg"]
-      },
-      name15: {
-        name: "بربل",
-        image: "al11.jpg",
-        desc: "بدأت مبكرا في مسلسل كذبة وحقيقة ومن ثم ملأت أدوارها المميزة الشاشة، حتى عرفت بفتاة الشر التمثيلي",
-        works: ["photo2.jpg", "photo3.jpg", "photo9.jpg", "photo10.jpg"]
-      },
-      name16: {
-        name: "ضياء",
-        image: "ali6.jpg",
-        desc: "بدأ تمثيله في مسلسل السوار ومن ثم شهر ليصبح متواجدا بوفرة على الشاشات، بطلته الغريبة والمخيفة لكنها جذابة",
-        works: ["photo1.jpg", "photo17.jpg"]
-      },
-      name17: {
-        name: "مايكل",
-        image: "ali8.jpg",
-        desc: "بدأ حديثا لكنه سرعان ما شارك في الكثير من المسلسلات، بدوره الأب المميز، بدأ مسيرته كشرطي في مسلسل شلة بنات، ومن ثم تميز بإطلالته القديمة",
-        works: ["photo1.jpg", "photo3.jpg", "photo4.jpg", "photo7.jpg", "photo14.jpg", "news1.jpg", "photo18.jpg", "photo17.jpg", "photo19.jpg", "photo23.jpg", "photo20.jpg", "photo26.jpg", "photo35.jpg"]
-      },
-      name18: {
-        name: "سيركان",
-        image: "ali9.jpg",
-        desc: "انفرد سيركان بحب إطلالات البحر، بدأ مشواره متأخرا في مسلسل حادث رباعي، ومن ثم قل ظهوره لكن تميزت أدواره ليعود حديثا في الخياط",
-        works: ["photo1.jpg", "photo5.jpg", "photo7.jpg", "photo19.jpg", "photo26.jpg", "photo28.jpg", "photo34.jpg"]
-      },
-      name19: {
-        name: "كارمن",
-        image: "ali10.jpg",
-        desc: "بدأت مشوارها الفني كعارضة أزياء ومذيعة ومن ثم اتجهت للتمثيل في حادث رباعي كأول خيار لها، كما أنها من لجنة حكام القناع",
-        works: ["photo1.jpg", "photo4.jpg", "photo5.jpg", "photo9.jpg", "photo11.jpg", "news1.jpg", "photo19.jpg", "photo28.jpg", "photo25.jpg"]
-      },
-      name20: {
-        name: "توم",
-        image: "ali11.jpg",
-        desc: "مستوحاة من ممثل أمريكي يحمل ذات الاسم، بدأ مشواره في مسلسل السوار ومن ثم حاز على إطلالة طبية ممتازة",
-        works: ["photo1.jpg", "photo18.jpg", "photo23.jpg", "photo35.jpg"]
-      },
-      name21: {
-        name: "ثور",
-        image: "ali12.jpg",
-        desc: "مستوحاة تماما من شخصية أمريكية تحمل ذات الاسم، بدأت مسيرته في مسلسل كذبة وحقيقة ومن ثم شارك في عدة أعمال أخرى وناجحة",
-        works: ["photo1.jpg", "photo2.jpg", "photo13.jpg"]
-      },
-      name22: {
-        name: "روجين",
-        image: "ali13.jpg",
-        desc: "مستوحاة من ممثلة تركية تحمل ذات الاسم، عرفت بطبعها الحاد وإطلالتها الشارعية، بدأت في السوار ومن ثم تميزت أعمالها بالطابع المضحك الأكشن ",
-        works: ["photo1.jpg", "photo7.jpg", "photo14.jpg", "news1.jpg", "photo24.jpg", "photo34.jpg", "photo35.jpg"]
-      },
-      name23: {
-        name: "أوندار",
-        image: "ali14.jpg",
-        desc: "مستواحاة من شخصية تركية، بدأ تمثيله في مسلسل الياقة المغبرة، ومن ثم تربع على عرش الأدوار الأبوية الكوميدية، تجمعه علاقة زواج مع داريا",
-        works: ["photo1.jpg", "photo9.jpg", "photo18.jpg", "news1.jpg", "photo24.jpg", "photo20.jpg", "photo34.jpg", "photo36.jpg"]
-      },
-      name24: {
-        name: "براون",
-        image: "ali15.jpg",
-        desc: " ذات شخصية صلبة، وإطلالة بنية بحتة، بدأ مسيرته بمسلسل نور في ظلام، ومن ثم أصبح الخيار الأول في الأدوار الآباء الشريرة",
-        works: ["photo1.jpg", "photo4.jpg", "photo19.jpg", "photo21.jpg", "photo23.jpg", "photo24.jpg", "photo20.jpg"]
-      },
-      name25: {
-        name: "يعقوب",
-        image: "ali16.jpg",
-        desc: "شخصية محبوبة، بدأ تمثيله في مسلسل حادث رباعي وتميز بإطلالته الشوارعية وخفته المضحكة، يتقن أدوار الشر وأيضا الأدوار الكوميدية",
-        works: ["photo1.jpg", "photo5.jpg", "photo7.jpg", "photo14.jpg", "photo17.jpg", "photo19.jpg", "photo21.jpg"]
-      },
-      name26: {
-        name: "لجين",
-        image: "br3.jpg",
-        desc: "عارضة أزياء دخلت عالم التمثيل في مسلسل شلة بنات، لتكتشف نفسها بالأدوار البوليسية فيما بعد.. يقال بأن خلف رقتها وجمالها طاقة قتال قوية",
-        works: ["photo3.jpg", "photo5.jpg", "photo17.jpg", "photo28.jpg", "photo35.jpg"]
-      },
-      name27: {
-        name: "سلوى",
-        image: "br5.jpg",
-        desc: "مزارعة ريفية، بدأت بالتمثيل في شلة بناتـ لتبرز جمالها وطاقتها العفوية، ومن ثم اتجهت نحو أعمال أخرى",
-        works: ["photo3.jpg", "photo5.jpg", "news1.jpg", "photo21.jpg", "photo34.jpg"]
-      },
-      name28: {
-        name: "ميليس",
-        image: "br7.jpg",
-        desc: "بدأت مشوارها في مسلسل شلة بنات، وسرعان ما تزايدت أدوارها نظرا لوهبتها القوية، تتميز بإطلالة عصرية ممتازة",
-        works: ["photo3.jpg", "photo5.jpg", "news1.jpg", "photo21.jpg"]
-      },
-      name29: {
-        name: "ويليام",
-        image: "br8.jpg",
-        desc: "بدأ مشواره في شلة بنات، ومن ثم أقدم على أعمال بوليسية قوية، يقال بأنه سائق درجات نارية كمجال آخر غير التمثيل",
-        works: ["photo3.jpg", "photo5.jpg", "photo17.jpg", "photo24.jpg"]
-      },
-      name30: {
-        name: "أدهم",
-        image: "br12.jpg",
-        desc: "بدأ مبكرا، ونال على إطلالة جديدة، بدأ كبطولة أولية في قضية حرف، ومن ثم عاد للبطولات الجماعية، من أذكى الشخصيات وأكثرهم ثقافة",
-        works: ["photo3.jpg", "photo6.jpg", "photo9.jpg"]
-      },
-      name31: {
-        name: "ورد",
-        image: "FT2.jpg",
-        desc: "بدأت مسيرتها في مسلسل توأمي بدور شبه بطولي، تميزت بإطلالتها المحتشمة وتمثيلها المميز لتدخل بعد ذلك في الكثير من الأعمال",
-        works: ["photo7.jpg", "photo13.jpg", "photo24.jpg", "photo20.jpg"]
-      },
-      name32: {
-        name: "عزيز",
-        image: "FT1.jpg",
-        desc: "بدأ كعارض أزياء ومن ثم جرب التمثيل كدور بطولي، قلت أدواره لكن تميزت شخصيته",
-        works: ["photo7.jpg", "photo21.jpg", "photo24.jpg", "photo20.jpg", "photo26.jpg"]
-      },
-      name33: {
-        name: "ديما",
-        image: "FT4.jpg",
-        desc: "بدأت مسيرتها في الفريق الخطأ، تعددت أدوراها بعد ذلك، لتتوج بلقب الممثلة الخجولة",
-        works: ["photo7.jpg", "photo18.jpg", "photo21.jpg", "photo24.jpg"]
-      },
-      name34: {
-        name: "ماهر",
-        image: "hr4.jpg",
-        desc: "بدأ مسيرته في مسلسل توأمي، ومن ثم تنوعت أدواره وامتاز بالدور الماكر.. قل ظهوره مؤخرا",
-        works: ["photo5.jpg", "photo13.jpg"]
-      },
-      name35: {
-        name: "عبلة",
-        image: "hr3.jpg",
-        desc: "بدأت مبكرا وعاصرت جيلين، أعمالها كثيرة حيث بدأت في مسلسل شارع الهرم ومن ثم عادت حديثا في حادث رباعي.. وهي والدة الممثلة هدى",
-        works: ["photo5.jpg", "photo7.jpg", "photo21.jpg", "photo20.jpg", "photo35.jpg", "photo36.jpg"]
-      },
-      name36: {
-        name: "زينب",
-        image: "hr5.jpg",
-        desc: "تتميز بإطلالة خريفية ممتازة، بدأت مسيرتها في مسلسل حادث رباعي بدور البطولة، ومن ثم اختفت تدريجيا",
-        works: ["photo5.jpg", "photo21.jpg"]
-      },
-      name37: {
-        name: "قادر",
-        image: "hr6.jpg",
-        desc: "ممثل موهوب، شارك ببطولة حادث رباعي ومن ثم لم يظهر مرة أخرى، ومع ذلك نال جائزة جولدين بي لأفضل ممثل ليؤكد موهبته",
-        works: ["photo5.jpg"]
-      },
-      name38: {
-        name: "ولي",
-        image: "hr7.jpg",
-        desc: "تميز بدور الشرير في مسلسل حادث رباعي، فنال عليه جائزة جولدين بي لأفضل ممثل شرير، ومن ثم ظهر قليلا ولا يزال يبهر الجميع بتمثيله",
-        works: ["photo5.jpg", "photo17.jpg", "photo23.jpg", "photo20.jpg"]
-      },
-      name39: {
-        name: "ماركر",
-        image: "hr8.jpg",
-        desc: "ممثل قدير بدأ قديما جدا، له عدة أعمال وهو الوحيد الذي رسم على الطراز الأولي، بدأ حديثا في قضية حرف ونال الجولدين بي لأفضل ممثل كبير",
-        works: ["photo6.jpg", "photo5.jpg", "photo14.jpg", "photo23.jpg", "photo26.jpg", "photo28.jpg"]
-      },
-      name40: {
-        name: "شاهين",
-        image: "kh2.jpg",
-        desc: "ممثل قديم مستواحاة من ممثل أمريكي، بدأ في قضية حرف واشتهر بدور الشرطي.. اسمه يعني الطائر السريع",
-        works: ["photo6.jpg", "photo8.jpg", "photo9.jpg", "photo24.jpg"]
-      },
-      name41: {
-        name: "يسرى",
-        image: "lg1.jpg",
-        desc: "ظهرت لأول مرة في برنامج عالم الترفيه، ومن ثم نالت أول دور لها في مسلسل لعبة زواج",
-        works: ["photo16.jpg", "news1.jpg"]
-      },
-      name42: {
-        name: "ألبيران",
-        image: "lg2.jpg",
-        desc: "بدأ مؤخرا بأعمال لذيذة، أبرزها دوره بمسلسل لعبة زواج.. مستوحاة من ممثل تركي يحمل نفس الاسم",
-        works: ["news1.jpg", "photo24.jpg"]
-      },
-      name43: {
-        name: "إيمري",
-        image: "n1.jpg",
-        desc: "بدأ مشواره الفني في مسلسل توأمي، ليصبح مشهورًا بعد ذلك ويقدم برنامج القناع الشهير.. وأوقعته لينا بشباكها فتزوجا وأخذا جائزة أفضل ثنائي في جولدين بي",
-        works: ["photo13.jpg", "photo4.jpg", "photo11.jpg", "photo20.jpg"]
-      },
-      name44: {
-        name: "المغنية",
-        image: "masked.jpg",
-        desc: "لم تمثل كثيرا، بل قدمت برنامج القناع الشهير وكذلك حفل جولدين بي، لتتوج بجائزة أفضل مقدمة",
-        works: ["photo11.jpg", "photo17.jpg"]
-      },
-      name45: {
-        name: "عصام",
-        image: "lg3.jpg",
-        desc: "شخصية مستواحاة تماما من ممثل مصري يحمل ذات الاسم، بدأ مشواره الفني في برنامج عالم الترفيه، ومن ثم أتته عروض العمل في لعبة زواج.. يعرف بلياقته الجذابة وتمثيله المميز",
-        works: ["news1.jpg", "photo16.jpg", "photo23.jpg", "photo26.jpg", "photo28.jpg"]
-      },
-      name46: {
-        name: "نور",
-        image: "n2.jpg",
-        desc: "بدأت تمثيلها مبكرا، فحازت على إطلالة جديدة لتظهر أول مرة في قضية حرف، ثم لمعت في نور في ظلام.. هي طالبة جامعية في الأساس وتهتم بدراستها",
-        works: ["photo4.jpg", "photo6.jpg", "photo9.jpg"]
-      },
-      name47: {
-        name: "جولدي",
-        image: "n3.jpg",
-        desc: "بدأ مشواره الفني في مسلسل نور في ظلام، ومن ثم مثل عدة أعمال أخرى، مستواحاة من ممثل تركي.. لكنه سائق دراجات نارية ممتاز",
-        works: ["photo4.jpg", "photo8.jpg", "photo17.jpg", "photo18.jpg"]
-      },
-      name48: {
-        name: "لينا",
-        image: "n4.jpg",
-        desc: "بدأت مبكرا، ومن ثم حازت على نسخة جديدة لتنال جائزة العودة المميزة في الجولدين بي، وكذلك أفضل ثنائي مع إيمري، عادت في البداية في مسلسل توأمي ومن ثم أظهرت موهبتها في أعمال أخرى",
-        works: ["photo4.jpg", "photo13.jpg", "news1.jpg", "photo28.jpg", "photo25.jpg"]
-      },
-      name49: {
-        name: "ميار",
-        image: "n5.jpg",
-        desc: "عرفت ببراءتها وأسلوبها الهادئ في التمثيل، بدأت بمسلسل غير موفق ثم اتجهت نحو دور شبه بطولي في نور في ظلام، وكذلك قدَّمت دور في لجنة حكام القناع... حتى نالت إطلالة مميزة أخرى",
-        works: ["photo4.jpg", "photo11.jpg", "photo14.jpg", "photo27.jpg"]
-      },
-      name50: {
-        name: "زينة",
-        image: "n7.jpg",
-        desc: "بدأت مبكرا في مسلسل الياقة المغبرة وكذلك نور في ظلام، لتحصل على جائزة جولدين بي كأفضل ممثل دور مساعد.. يقال بأن عملها الأصلي هو الصحافة",
-        works: ["photo4.jpg", "photo9.jpg"]
-      },
-      name51: {
-        name: "برونو",
-        image: "t2.jpg",
-        desc: "بدأ ظهوره البطولي في مسلسل توأمي ومن ثم غاب عن الساحة وانفرد بحياته الخاصة",
-        works: ["photo13.jpg"]
-      },
-      name52: {
-        name: "كارما",
-        image: "t4.jpg",
-        desc: "بدأت مبكرا وعاصرت جيلين، تتميز بطلتها الغنية وحضورها الفكاهي.. بدأت حديثا بمسلسل توأمي، كما تعددت أعمالها",
-        works: ["photo13.jpg", "photo17.jpg", "photo19.jpg"]
-      },
-      name53: {
-        name: "داريا",
-        image: "Tz2.jpg",
-        desc: "شخصية مستوحاة من ممثلة تركية، بدأت كدور الأم في الياقة المغبرة ومن ثم تزوجت أوندار وانفردت بدور الأم الطيبة",
-        works: ["photo9.jpg", "photo18.jpg", "photo20.jpg", "photo34.jpg", "photo36.jpg"]
-      },
-      name54: {
-        name: "كرم",
-        image: "Tz3.jpg",
-        desc: "من الممثلين ذوي العيون الباردة، بدأ بمسلسل الياقة المغبرة، ورشح لأعمال كثيرة ورفضها مثل حادث رباعي.. كما أنه حاز على إطلالة عسكرية",
-        works: ["photo9.jpg", "photo23.jpg"]
-      },
-      name55: {
-        name: "رامز",
-        image: "zl1.jpg",
-        desc: "بدأ مبكرا ومن ثم نال تطوير ليعود بأدواره المميزة، بدأ سابقا بمسلسل أخوتي، لكنه بدأ حديثا بفيلم أرض زيكولا كخيار موفق، لا تفكر بتحديه",
-        works: ["photo14.jpg", "photo17.jpg", "photo19.jpg", "photo23.jpg"]
-      },
-      name56: {
-        name: "يونس",
-        image: "zl2.jpg",
-        desc: "بدأ مسيرته الفنية في أرض زيكولا، ومن ثم انفرد ببطولة مسلسل جديد.. لا يزال بشبابه ومع ذلك أبهر جمهوره بموهبته",
-        works: ["photo14.jpg", "news1.jpg", "photo26.jpg", "photo25.jpg"]
-      },
-      name57: {
-        name: "ليو",
-        image: "zl3.jpg",
-        desc: "بدأ ظهوره في عالم الترفيه ومن ثم نال بطولة أرض زيكولا.. تميز بإطلالته وموهبته، ومع ذلك ندرت أدواره",
-        works: ["photo14.jpg", "photo16.jpg", "photo23.jpg", "photo35.jpg", "photo11.jpg"]
-      },
-      name58: {
-        name: "ترينر",
-        image: "Tz1.jpg",
-        desc: "بدأ ظهوره لأول مرة قبل التطور، ومن ثم عاد ظهوره في الياقة المغبرة. عمله الأصلي هو مدرب لياقة بدنية",
-        works: ["photo9.jpg", "photo8.jpg"]
-      },
-      name59: {
-        name: "ساموراي",
-        image: "hr1.jpg",
-        desc: "يقال بأنه من أجداد الساموراي، بدأ تمثيله وأثبت دوره الشرير في حادث رباعي، لكنه يظل يفضل القتال بدلا من التمثيل",
-        works: ["photo5.jpg", "photo8.jpg"]
-      },
-      name60: {
-        name: "جو",
-        image: "br4.jpg",
-        desc: "بدأ مسيرته في مسلسل شلة بنات، ومن ثم قل ظهوره واتجه نحو أعمال الكتابية، ومع ذلك ظهر مؤخرا في فيلم أمنية الدم",
-        works: ["photo3.jpg", "photo17.jpg"]
-      },
-      name61: {
-        name: "بيلا",
-        image: "al6.jpg",
-        desc: "بدأت مبكرا في قضية الحرف، ومن ثم أخذت أدوار بطولية كما في الياقة، وأدوار جانبية ممتعة كما في كذبة وحقيقة وغيرها من الأدوار.. نالت أفضل ممثلة في الجولدين بي نظرا لموهبتها المميزة",
-        works: ["photo2.jpg", "photo4.jpg", "photo6.jpg", "photo9.jpg", "photo19.jpg", "photo21.jpg", "photo23.jpg"]
-      },
-      name62: {
-        name: "ناروتو",
-        image: "al8.jpg",
-        desc: "بدأ مبكرا وعاصر جيلين، صمم من شخصية أنمي مشهور. بدأ حديثا في كذبة وحقيقة وله عدة أعمال يعرف بها",
-        works: ["photo2.jpg", "photo13.jpg"]
-      },
-      name63: {
-        name: "أحمد",
-        image: "al10.jpg",
-        desc: "لم يتجه كثيرا للتمثيل، ومع ذلك يظهر في مشاهد قليلة وربما أدوار جانبية مميزة",
-        works: ["photo2.jpg"]
-      },
-      name64: {
-        name: "سامر",
-        image: "FT5.jpg",
-        desc: "مدرب سباحة، دخل التمثيل مؤخرا في مسلسل الفريق الخطأ، لم يشارك كثيرا لكنه مميز باختيار أدواره",
-        works: ["photo7.jpg", "photo14.jpg"]
-      },
-      name65: {
-        name: "أوزجي",
-        image: "FT6.jpg",
-        desc: "عارضة أزياء وممثلة، بدأت في الفريق الخطأ ومن ثم قل ظهورها، كما أنها كانت ضيفة الخياط الأولى",
-        works: ["photo7.jpg"]
-      },
-      name66: {
-        name: "ريدر",
-        image: "FT3.jpg",
-        desc: "عرف بإطلالته القديمة، سمي بهذا الاسم بسبب محبته للقراة.. بدأ في الفريق الخطأ ومن ثم طلب لعدة أعمال مثل بعضها",
-        works: ["photo7.jpg", "photo14.jpg", "photo19.jpg", "photo23.jpg", "photo20.jpg"]
-      },
-      name67: {
-        name: "ديفا",
-        image: "diva.jpg",
-        desc: "اسمها يعني من هي، عارضة أزياء مشهورة، دخلت مجال التمثيل في فيلم أمنية الدم.. كما أنها تواجدت كضيف شرف في مسلسل آخر، ومع ذلك بدأ ظهورها في عالم الترفيه",
-        works: ["photo16.jpg", "photo17.jpg"]
-      },
-      name68: {
-        name: "جيني",
-        image: "jenny.jpg",
-        desc: "بدأ ظهورها في عالم الترفيه، اشتهرت بإطلالتها ومن ثم طلبت لعدة أعمال حتى بدأت بالتمثيل في الخياط",
-        works: ["photo16.jpg", "photo19.jpg", "photo21.jpg", "photo25.jpg"]
-      },
-      name69: {
-        name: "لهب",
-        image: "n6.jpg",
-        desc: "من الممثلين القدامى، عاصر حقبتين وبدأ حديثا في نور في ظلام، ومع ذلك تظل موهبته في التمثيل تعزله عن حياته، لذلك تقل أدواره",
-        works: ["photo4.jpg", "photo17.jpg"]
-      },
-      name70: {
-        name: "هولاند",
-        image: "n8.jpg",
-        desc: "من الممثلين القدامى، بدأ حديثا في الياقة المغبرة، أبرز موهبته وشارك في العديد من المسلسلات منها الذي توقف.. مستوحاة من ممثل أمريكي مشهور",
-        works: ["photo4.jpg", "photo9.jpg"]
-      },
-      name71: {
-        name: "بينار",
-        image: "pinar.jpg",
-        desc: "ظهرت حديثا وجذبت جمهورها، ظهرت لأول مرة في الخياط الحلقة الأولى، ومن ثم شاركت سريعا في مستشفى الحب كأول عمل حقيقي لها.. مستوحاة من ممقلة تركية مشهورة تحمل ذات الاسم",
-        works: ["photo18.jpg", "photo23.jpg", "photo20.jpg", "photo34.jpg"]
-      },
-      name72: {
-        name: "تيسير",
-        image: "t1.jpg",
-        desc: "من الممثلين القدامى، بدأ مشواره الفني في توأمي، مثبتا مهارته، ومع ذلك يفضل التركيز على حياته اللياقية وألعاب القوى، لذلك يبتعد عن التمثيل قليلا",
-        works: ["photo13.jpg"]
-      },
-      name73: {
-        name: "توماس",
-        image: "tomas.jpg",
-        desc: "ظهر في المرة الأولى في عالم الترفيه، عرف بإطلالته الغريبة وكاريزماته العالية، بدأ تمثيله حديثا في مسلسل البراعم الذابلة كخيار أول",
-        works: ["photo20.jpg", "photo16.jpg", "photo24.jpg"]
-      },
-      name74: {
-        name: "إدريس",
-        image: "al12.jpg",
-        desc: "صاحب أندر لون شعر، يعمل في اللياقة لكنه اتجه للتمثيل قليلا، بدأ في كذبة وحقيقة وحقق دوره شهرة جيدة.. ومع ذلك غاب عن الساحة كثيرا",
-        works: ["photo2.jpg"]
-      },
-      name75: {
-        name: "كريستين",
-        image: "cristin.jpg",
-        desc: "تتميز بإطلالتها الرسمية، بدأت حديثا في مسلسل مستشفى الحب، ومع ذلك يبدو أن لها مستقبل باهر في التمثيل",
-        works: ["photo18.jpg"]
-      },
-      name76: {
-        name: "راموس",
-        image: "kh3.jpg",
-        desc: "بدأ مبكرا وحاز على إطلالة جديدة، بدأ قديما في البالوفارد، أما حديثا فقد بدأ في قضية حرف، ومع ذلك يبقى اهتمامه بالأزياء اليابانية غريب",
-        works: ["photo10.jpg", "photo6.jpg"]
-      },
-      name77: {
-        name: "تسنيم",
-        image: "t3.jpg",
-        desc: "بدأت في مسلسل توأمي، نالت شهرة محدودة لذلك لم تمثل كثيرا بعد",
-        works: ["photo13.jpg"]
-      },
-      name78: {
-        name: "عجوز",
-        image: "t5.jpg",
-        desc: "من أمهر الممثلات الكبار، بدأت في توأمي ومن ثم تعددت أدوارها الجانبية.. كما أنها من تصميم ماسة",
-        works: ["photo5.jpg", "photo13.jpg", "photo21.jpg", "photo36.jpg"]
-      },
-      name79: {
-        name: "هازال",
-        image: "br10.jpg",
-        desc: "بدأت في شلة بنات ومن ثم اتجهت نحو الأدوار الجانبية وعرض الأزياء",
-        works: ["photo3.jpg", "photo21.jpg", "photo23.jpg"]
-      },
-      name80: {
-        name: "فريد",
-        image: "farid.jpg",
-        desc: "مستوحاة من بلوجر تركي، بدأ في برنامج عالم الترفيه ومن ثم اختفى عن الساحة لفترة، ومع ذلك فهو يفضل قيادة السيارات",
-        works: ["photo16.jpg"]
-      },
-      name81: {
-        name: "إنجي",
-        image: "injy.jpg",
-        desc: "من الأوجه الجذابة، ظهرت لأول مرة في عالم الترفيه ومن ثم اختفت.. لكنها بالتأكيد ستنضم لأعمال حيوية",
-        works: ["photo16.jpg"]
-      },
-      name82: {
-        name: "جيم",
-        image: "gym.jpg",
-        desc: "ظهر لأول مرة في عالم الترفيه ومن ثم اختفى عن الشاشات، لكنه يفضل عالمه الخاص في اللياقة البدنية",
-        works: ["photo16.jpg"]
-      },
-      name83: {
-        name: "مالك",
-        image: "malik.jpg",
-        desc: "ظهر لأول مرة في عالم الترفيه، ولكنه اختفى بعد ذلك.. شخصية مستوحاة من ممثل إيطالي، وعمله الخاص هو عرض الأزياء",
-        works: ["photo16.jpg"]
-      },
-      name84: {
-        name: "مراد",
-        image: "pv3.jpg",
-        desc: "ظهر قديما وعاصر جيلين، بدأ حديثا في نور في ظلام.. تزوج نيللي وقدم معها برامج كثيرة، كما انه قدم بوليفارد المواهب حديثا",
-        works: ["photo10.jpg", "photo4.jpg"]
-      },
-      name85: {
-        name: "هادي",
-        image: "hadi.jpg",
-        desc: "ظهر لأول مرة في عالم الترفيه ومن ثم قل ظهوره، ومع ذلك فهو يفضل حياة الهدوء والقراءة",
-        works: ["photo16.jpg"]
-      },
-      name86: {
-        name: "خوان",
-        image: "juan.jpg",
-        desc: "ظهر لأول مرة في عالم الترفيه ومن ثم قل ظهوره، ومع ذلك فهو يفضل حياة البحر والسباحة",
-        works: ["photo16.jpg"]
-      },
-      name87: {
-        name: "كندة",
-        image: "kinda.jpg",
-        desc: "ظهرت لأول مرة في عالم الترفيه ومن ثم قل ظهورها واتجهت لعالم الموضة.. ظهرت كضيفة شرف في مسلسل الخياط",
-        works: ["photo16.jpg"]
-      },
-      name88: {
-        name: "ليلى",
-        image: "leyla.jpg",
-        desc: "ظهرت حديثا ونالت إعجابا واسعا.. شاركت في مسلسل الخياط كأول ظهور، ومن ثم نالت البطولة في البراعم الذابلة",
-        works: ["photo19.jpg", "photo20.jpg", "photo23.jpg", "photo25.jpg"]
-      },
-      name89: {
-        name: "شهاب",
-        image: "shihab.jpg",
-        desc: "ظهر حديثا لأول مرة في الخياط.. عمله الأساسي هو عرض الأزياء.. لكن لاقت موهبته محبة عند جمهوره",
-        works: ["photo19.jpg", "photo20.jpg", "photo34.jpg", "photo36.jpg"]
-      },
-      name90: {
-        name: "ريف",
-        image: "rief.jpg",
-        desc: "ظهرت لأول مرة في عالم الترفيه لكنها لم تمثل بعد، ومع ذلك تتجه أهميتها نحو الشهرة والازدحام، عكس الريف تماما",
-        works: ["photo16.jpg", "photo28.jpg", "photo36.jpg"]
-      },
-      name91: {
-        name: "سمير",
-        image: "samir.jpg",
-        desc: "ظهر لأول مرة في عالم الترفيه لكنه لم يمثل بعد، ومع ذلك تتجه أهميته نحو حياة الكاووبوي",
-        works: ["photo16.jpg"]
-      },
-      name92: {
-        name: "شمس",
-        image: "shams.jpg",
-        desc: "ظهرت لأول مرة في عالم الترفيه لكنها لم تمثل بعد، سميت شمس نظرا لشقارها المميز",
-        works: ["photo16.jpg"]
-      },
-      name93: {
-        name: "جوني",
-        image: "john.jpg",
-        desc: "ظهر لأول مرة في الخياط.. جديد تماما بإطلالة صيفية، ينتظره المزيد من الأعمال",
-        works: ["photo19.jpg", "photo25.jpg"]
-      },
-      name94: {
-        name: "شيف",
-        image: "pv2.jpg",
-        desc: "ظهر لأول مرة في بوليفارد المواهب.. يفضل الطبخ ولا يظهر إلا بأدوار تخص مجاله.. ومع ذلك فهو ذو شخصية قوية كالسكين",
-        works: ["photo10.jpg"]
-      },
-      name95: {
-        name: "هدى",
-        image: "pv1.jpg",
-        desc: "ظهرت لأول مرة في بوليفارد المواهب.. ابنة عبلة وبدأت بالتمثيل قديما، لكنها لا تمتلك أي أعمال حديثة حتى الآن ",
-        works: ["photo10.jpg"]
-      },
-      name96: {
-        name: "كورال",
-        image: "coral.jpg",
-        desc: "ظهرت حديثا ومستوحاة من ممثلة تركية.. سميت نتيجة لحبها الموسيقي، بدأت مسيرتها في الخياط كدور جانبي ",
-        works: ["photo19.jpg", "photo23.jpg", "photo20.jpg", "photo26.jpg", "photo28.jpg"]
-      },
-      name97: {
-        name: "إبراهيم",
-        image: "ibrahim.jpg",
-        desc: "ظهر لأول مرة في الخياط كضيف شرف، ومن سرعان ما انطلقت جماهيريته بفيلم درس خصوصي، يقال أنه يعشق كرة القدم بجانب التمثيل ",
-        works: ["photo21.jpg", "photo23.jpg", "photo24.jpg", "photo27.jpg", "photo26.jpg", "photo36.jpg"]
-      },
-      name98: {
-        name: "دولا",
-        image: "dola.jpg",
-        desc: "ظهر لأول مرة في الخياط كضيف شرف، وسريعا ما شارك بفيلم درس خصوصي كدور جانبي أول، في الحقيقة هو مدرب لياقة بدنية أساسي ",
-        works: ["photo21.jpg"]
-      },
-      name99: {
-        name: "رلا",
-        image: "rula.jpg",
-        desc: "ظهرت لأول مرة في الخياط كضيفة شرف، وسريعا ما شاركت بفيلم درس خصوصي كدور جانبي أول، في الحقيقة هي عارضة أزياء متقاعدة ",
-        works: ["photo21.jpg", "photo24.jpg"]
-      },
-      name100: {
-        name: "ربيع",
-        image: "rabi3.jpg",
-        desc: "ظهر لأول مرة في الخياط كضيف شرف، وسريعا ما شارك بمسلسل البراعم الذابلة كدور رئيسي أول، في الحقيقة هو عارض أزياء ",
-        works: ["photo20.jpg", "photo23.jpg", "photo35.jpg"]
-      },
-      name101: {
-        name: "بوران",
-        image: "buran.jpg",
-        desc: "يعمل كشيف في الحقيقة لكن جاذبيته وقدرته جلبتاه لعالم التمثيل وبدأ في المسلسل الرقمي الممثلة.. حاز على إطلالة جديدة سريعا وفقا لإنتاجات الرقميات",
-        works: ["photo23.jpg", "photo20.jpg", "photo25.jpg"]
-      },
-      name102: {
-        name: "كيم",
-        image: "kim.jpg",
-        desc: "يقال أنه رأس مافيا كبيرة، بدأ في مسلسل الرقمي الممثلة بدور جانبي، ومع ذلك جذب جمهوره بإطلالته ",
-        works: ["photo23.jpg", "photo35.jpg"]
-      },
-      name103: {
-        name: "جان",
-        image: "can.jpg",
-        desc: "ظهر لأول مرة في الممثلة، مستوحاة من موديل تركي يحمل ذات الاسم ",
-        works: ["photo23.jpg"]
-      },
-      name104: {
-        name: "ماجيك",
-        image: "majic.jpg",
-        desc: "شخصية مستوحاة من إحدى الألعاب، بدأ مسيرته في حادث رباعي ومن ثم تنوعت أدواره الجانبية المؤثرة ",
-        works: ["photo5.jpg", "photo23.jpg"]
-      },
-      name105: {
-        name: "إسماعيل",
-        image: "ismail.jpg",
-        desc: "شخصية مستوحاة من ممثل تركي يحمل ذات الاسم، معروف بجاذبيته وأدائه المميز، بدأ في البراعم الذابلة بدور بطولي فأحيه جمهوره ",
-        works: ["photo20.jpg"]
-      },
-      name106: {
-        name: "نهى",
-        image: "nuha.jpg",
-        desc: "بدأت مسيرتها في مسلسل البراعم الذابلة ، من صفاتها المميزة هي أنها عاشقة للتسوق والسفر ",
-        works: ["photo20.jpg", "photo34.jpg"]
-      },
-      name107: {
-        name: "لارا",
-        image: "lara.jpg",
-        desc: "بدأت مسيرتها في فيلم فريق الأرشيف ومن ثم بطولة أخرى في كما يطير الغراب، معروفة بحبها للأكشن ",
-        works: ["photo26.jpg", "photo28.jpg", "photo11.jpg"]
-      },
-      name108: {
-        name: "أليكس",
-        image: "alex.jpg",
-        desc: "بدأ مسيرته كدور جانبي في مستشفى الحب ومن ثم دور بطولي في فريق الأرشيف، يعمل بجانب كونه ممرضا سائق دراجات نارية ",
-        works: ["photo26.jpg", "photo18.jpg", "photo34.jpg", "photo36.jpg"]
-      },
-      name109: {
-        name: "لبنى",
-        image: "lubna.jpg",
-        desc: "ظهرت لأول مرة في الخياط ومن ثم تألقت في فريق الأرشيف، معروفة بشخصيتها الجدية الحازمة والمميزة ",
-        works: ["photo26.jpg", "photo28.jpg", "photo35.jpg"]
-      },
-      name110: {
-        name: "دييغو",
-        image: "deigo.jpg",
-        desc: "ظهر لأول مرة في الخياط ومن ثم تألق في فريق الأرشيف وكما يطير الغراب، يعمل في ريادة الأعمال بجانب التمثيل ",
-        works: ["photo26.jpg", "photo28.jpg"]
-      },
-      name111: {
-        name: "كريم",
-        image: "karim.jpg",
-        desc: "ظهر لأول مرة في عشق101 ومن ثم زادت جماهيريته، في الأساس هو ملاكم بارع وموهوب",
-        works: ["photo25.jpg"]
-      },
-      name112: {
-        name: "شكري",
-        image: "shokry.jpg",
-        desc: "بدأ بمستشفى الحب ومن ثم عشق101، يقال أنه أحد الباشاوات القدماء وهذا يتضح عليه ",
-        works: ["photo25.jpg"]
-      },
-      name113: {
-        name: "عمر",
-        image: "omar.jpg",
-        desc: "ممثل موهوب بدأ في عشق101 وحاز على جماهيرية عالية.. يعمل في مجال عرض الأزياء بجانب التمثيل",
-        works: ["photo25.jpg"]
-      },
-      name114: {
-        name: "عشق",
-        image: "ishk.jpg",
-        desc: "ظهرت لأول مرة في عشق101 وسميت نسبة لشخصيتها، كما أنها سفيرة اللون الزهري حول العالم",
-        works: ["photo25.jpg"]
-      },
-      name115: {
-        name: "أنس",
-        image: "anas.jpg",
-        desc: "لاقى محبة كبيرة في تحقيقات وأظهر حبه للأكشن أمام جمهوره، يقال بأنه درس العسكرية ومن ثم التحق بالتمثيل",
-        works: ["photo35.jpg"]
-      },
-      name116: {
-        name: "سيلين",
-        image: "silin.jpg",
-        desc: "ظهرت لأول مرة تحقيقات، ذات شخصية غامضة وأسلوب تمثيلي فنان.. بدأت كموديل في بداياتها",
-        works: ["photo35.jpg"]
-      },
-      name117: {
-        name: "لمار",
-        image: "lamar.jpg",
-        desc: "ظهرت لأول مرة في تحقيقات، خطيبة ليو كما أنها تبرز موهبة ثقيلة بجانب ادارتها للأعمال.",
-        works: ["photo35.jpg", "photo36.jpg"]
-      },
-      name118: {
-        name: "لالي",
-        image: "lale.jpg",
-        desc: "ظهرت لأول مرة في تحقيقات، مستوحاة من ممثلة تركية، كما أن عملها كمديرة أعمال يظهر في مسيرتها الفنية.",
-        works: ["photo35.jpg", "photo36.jpg"]
-      },
-      name119: {
-        name: "مراد",
-        image: "murad.jpg",
-        desc: "بدأ مسيرته في مسلسل أنت في كل مكان لكنه في الحقيقة سباح موهوب وعارض أزياء مثالي، حاز على جماهيرية عالية سريعا.",
-        works: ["photo36.jpg"]
-      },
-      name120: {
-        name: "رابيا",
-        image: "murad.jpg",
-        desc: "بدأت مسيرتها في أنت في كل مكان ونالت على إعجاب كبير بسرعة .",
-        works: ["photo36.jpg"]
-      },
-    };
+كل ممثل/ممثلة = قطعة واحدة بهذا الشكل:
 
-    const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('input', () => {
-      const val = searchInput.value.toLowerCase();
-      document.querySelectorAll('.card').forEach(card => {
-        const isMatch = card.innerText.toLowerCase().includes(val);
-        card.style.display = isMatch ? 'block' : 'none';
-        const h3 = card.querySelector('h3');
-        if (isMatch) {
-          const text = h3.textContent;
-          const regex = new RegExp(`(${val})`, 'gi');
-          h3.innerHTML = text.replace(regex, '<mark>$1</mark>');
-        } else {
-          h3.innerHTML = h3.textContent;
-        }
-      });
-    });
-
-    function openProfile(key) {
-      const p = profiles[key];
-      if (!p) return;
-      document.getElementById('profileImg').src = p.image;
-      document.getElementById('profileName').textContent = p.name;
-      document.getElementById('profileDesc').textContent = p.desc;
-      const gallery = document.getElementById('profileGallery');
-      gallery.innerHTML = '';
-      p.works.forEach(src => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.addEventListener('click', () => openLightbox(src));
-        gallery.appendChild(img);
-      });
-      document.getElementById('profileOverlay').style.display = 'flex';
-    }
-
-    function closeProfile() {
-      document.getElementById('profileOverlay').style.display = 'none';
-    }
-
-    function openLightbox(src) {
-      document.getElementById('lightboxImg').src = src;
-      document.getElementById('lightbox').style.display = 'flex';
-    }
-
-    document.getElementById('lightbox').addEventListener('click', () => {
-      document.getElementById('lightbox').style.display = 'none';
-    });
-
-    const toggleBtn = document.getElementById('toggleMode');
-    if (localStorage.getItem('theme') === 'dark') {
-      document.body.classList.add('dark');
-    }
-    toggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark');
-      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-    });
-
-    // ⭐ حفظ النجوم المفضلة
-    function toggleStar(el, key) {
-      const isFilled = el.classList.toggle('filled');
-      localStorage.setItem(`starred-${key}`, isFilled);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.star').forEach(star => {
-        const key = star.getAttribute('onclick').match(/'([^']+)'/)[1];
-        if (localStorage.getItem(`starred-${key}`) === 'true') {
-          star.classList.add('filled');
-        }
-      });
-    });
-// فلترة الممثلين المفضلين
-let showOnlyStarred = false;
-
-document.getElementById('filterFavorites').addEventListener('click', () => {
-  showOnlyStarred = !showOnlyStarred;
-  filterActors();
-});
-
-searchInput.addEventListener('input', filterActors);
-
-function filterActors() {
-  const val = searchInput.value.toLowerCase();
-  document.querySelectorAll('.card').forEach(card => {
-    const name = card.querySelector('h3').innerText.toLowerCase();
-    const key = card.getAttribute('onclick').match(/'([^']+)'/)[1];
-    const isStarred = localStorage.getItem('star-' + key) === 'true';
-    const matchesSearch = name.includes(val);
-    const matchesStar = !showOnlyStarred || isStarred;
-
-    card.style.display = (matchesSearch && matchesStar) ? 'block' : 'none';
-  });
+{
+  id: 'name11',
+  name: 'اسم الشخص',
+  image: 'person.jpg',
+  desc: 'وصف قصير',
+  works: ['work1.jpg','work2.jpg']
 }
 
-// التعامل مع النجمة والحفظ
-function toggleStar(el, key) {
-  el.classList.toggle('starred');
-  const starred = el.classList.contains('starred');
-  localStorage.setItem('star-' + key, starred);
+انسخ القطعة وغيّر 5 أشياء فقط: id / name / image / desc / works.
+========================================================
+*/
+const PEOPLE = [
+  {
+    id: 'name1',
+    name: 'كان',
+    image: 'kaan.jpg',
+    desc: 'ممثل بدأ مشواره في برنامج تحديات، مأخوذ من ممثل تركي يحمل ذات الاسم، أصبح بطل مسلسلاته سريعا وعرف بهيبته الطاغية!',
+    works: ['photo16.jpg', 'photo17.jpg', 'photo19.jpg', 'photo28.jpg', 'photo11.jpg', 'photo41.jpg', 'photo42.jpg']
+  },
+  {
+    id: 'name2',
+    name: 'كارلوس',
+    image: 'ali2.jpg',
+    desc: 'بدأ مشواره الفني مبكرا، ببرنامج بوليفارد، ومن ثم تطور شخصيا حتى أخذ شكله الحالي، ومن ثم اقتحم الأدوار البطولية المشتركة، كما أنه كان عضوا فعالا في برنامج القناعات الشهير حتى أخذ ستايل مميز',
+    works: ['photo10.jpg', 'photo11.jpg', 'photo1.jpg', 'photo3.jpg', 'photo5.jpg', 'photo18.jpg', 'photo36.jpg']
+  },
+  {
+    id: 'name3',
+    name: 'عائشة',
+    image: 'Aishe.jpg',
+    desc: 'ممثلة جديدة، دخلت عالم التمثيل البوليسي حديثا، مستوحاة من ممثلة تركية تحمل ذات الاسم.',
+    works: ['photo16.jpg', 'photo17.jpg', 'photo23.jpg', 'photo43.jpg']
+  },
+  {
+    id: 'name4',
+    name: 'لارين',
+    image: 'al1.jpg',
+    desc: 'من الممثلات الأوائل في المجال، بدأت مشوارها ببطولة كذبة وحقيقة لتظهر موهبتها، صاحبة أندر لون شعر في العالم!',
+    works: ['photo2.jpg', 'photo4.jpg', 'photo7.jpg', 'photo9.jpg', 'news1.jpg']
+  },
+  {
+    id: 'name5',
+    name: 'وايت',
+    image: 'al2.jpg',
+    desc: 'بدأ مبكرا، عرف بطلته المميزة ولون شعره المنفرد، قدم برامج كثيرة وكذلك حفل جوائز جولدين بي، بدأ بمسلسل كذبة وحقيقة ثم قل ظهوره.',
+    works: ['photo2.jpg', 'photo11.jpg', 'photo17.jpg', 'photo39.jpg', 'photo43.jpg']
+  },
+  {
+    id: 'name6',
+    name: 'المدير',
+    image: 'al3.jpg',
+    desc: 'بدأ مبكرا، وشارك في العديد من الأعمال، أطلق عليه لقب المدير دون أن يعرف اسمه أحد، وبذلك حاز على جائزة جولدين بي لأفضل فنان متنوع!',
+    works: ['photo1.jpg', 'photo2.jpg', 'photo4.jpg', 'photo5.jpg', 'photo6.jpg', 'photo8.jpg', 'photo9.jpg', 'photo23.jpg', 'photo20.jpg']
+  },
+  {
+    id: 'name7',
+    name: 'أليخاندرو',
+    image: 'al4.jpg',
+    desc: 'بدأ مبكرا في مسلسل كذبة وحقيقة وعرف بستايله الشعبي فأحبه الجمهور.',
+    works: ['photo2.jpg', 'photo9.jpg', 'photo19.jpg']
+  },
+  {
+    id: 'name8',
+    name: 'ميليسا',
+    image: 'al5.jpg',
+    desc: 'مستوحاة من ممثلة تركية بذات الاسم، بدأت مسيرتها في عالم التحقيق والمحاماة وبرز ذلك في تمثيلها، شاركت في عدة مسلسلات.',
+    works: ['photo2.jpg', 'photo8.jpg']
+  },
+  {
+    id: 'name9',
+    name: 'يابانية',
+    image: 'al9.jpg',
+    desc: 'بدأت في بالوفارد المواهب، تميزت بطلتها اليابانية فعرفت بهذا الاسم، أتقنت دور الأم المضحكة في جميع مسلسلاتها.',
+    works: ['photo2.jpg', 'photo9.jpg', 'news1.jpg', 'photo10.jpg', 'photo19.jpg', 'photo26.jpg', 'photo24.jpg', 'photo45.jpg', 'photo49.jpg']
+  },
+  {
+    id: 'name10',
+    name: 'جزار',
+    image: 'al7.jpg',
+    desc: 'بدأ مسيرته في بالوفارد المواهب، وأكمل بأدواره الخطيرة الدموية، سمي جزار على حسب عمله القديم، لكن لا تجرب أن تسأله عنه.',
+    works: ['photo2.jpg', 'photo10.jpg', 'photo17.jpg']
+  },
+  {
+    id: 'name11',
+    name: 'عز',
+    image: 'ali1.jpg',
+    desc: 'بدأ مشواره الفني في بطولة مسلسل السوار، شخصية قوية وتعمل بتدريب لياقة بدنية إلى جانب التمثيل!.',
+    works: ['photo1.jpg', 'photo18.jpg', 'photo19.jpg', 'photo43.jpg']
+  },
+
+  {
+    id: 'name12',
+    name: 'هيام',
+    image: 'ali3.jpg',
+    desc: 'بدأت مشوارها في مسلسل السوار، فنانة شاملة وعارضة أزياء ماهرة، رغم تأخر ظهورها، لكنها تمتلك صيتا جميلا في عالم التمثيل!',
+    works: ['photo1.jpg', 'photo14.jpg', 'photo19.jpg']
+  },
+  {
+    id: 'name13',
+    name: 'مادلين',
+    image: 'ali4.jpg',
+    desc: 'بدأ ظهورها في بوسترات مسلسل توأمي في البداية، لتصبح بعد ذلك من أكثر الممثلات براعة، وكذلك حازت على ستايل طبيبة كإهداء لدورها!',
+    works: ['photo1.jpg', 'photo4.jpg', 'photo7.jpg', 'photo13.jpg', 'photo18.jpg', 'photo24.jpg', 'photo25.jpg', 'photo39.jpg']
+  },
+  {
+    id: 'name14',
+    name: 'آنا',
+    image: 'ali5.jpg',
+    desc: 'بدأت في مسلسل شلة بنات، عرفت بمهارتها المحامية وشخصيتها القوية، لذلك تمكنت من القيام بالكثير من الأدوار رغم ظهورها الحديث.',
+    works: ['photo1.jpg', 'photo3.jpg', 'photo5.jpg', 'news1.jpg', 'photo14.jpg', 'photo18.jpg', 'photo19.jpg', 'photo26.jpg', 'photo36.jpg', 'photo42.jpg']
+  },
+  {
+    id: 'name15',
+    name: 'بربل',
+    image: 'al11.jpg',
+    desc: 'بدأت مبكرا في مسلسل كذبة وحقيقة ومن ثم ملأت أدوارها المميزة الشاشة، حتى عرفت بفتاة الشر التمثيلي',
+    works: ['photo2.jpg', 'photo3.jpg', 'photo9.jpg', 'photo10.jpg']
+  },
+  {
+    id: 'name16',
+    name: 'ضياء',
+    image: 'ali6.jpg',
+    desc: 'بدأ تمثيله في مسلسل السوار ومن ثم شهر ليصبح متواجدا بوفرة على الشاشات، بطلته الغريبة والمخيفة لكنها جذابة',
+    works: ['photo1.jpg', 'photo17.jpg']
+  },
+  {
+    id: 'name17',
+    name: 'مايكل',
+    image: 'ali8.jpg',
+    desc: 'بدأ حديثا لكنه سرعان ما شارك في الكثير من المسلسلات، بدوره الأب المميز، بدأ مسيرته كشرطي في مسلسل شلة بنات، ومن ثم تميز بإطلالته القديمة',
+    works: ['photo1.jpg', 'photo3.jpg', 'photo4.jpg', 'photo7.jpg', 'photo14.jpg', 'news1.jpg', 'photo18.jpg', 'photo17.jpg', 'photo19.jpg', 'photo23.jpg', 'photo20.jpg', 'photo26.jpg', 'photo35.jpg', 'photo39.jpg', 'photo45.jpg', 'photo42.jpg', 'photo41.jpg', 'photo49.jpg']
+  },
+  {
+    id: 'name18',
+    name: 'سيركان',
+    image: 'ali9.jpg',
+    desc: 'انفرد سيركان بحب إطلالات البحر، بدأ مشواره متأخرا في مسلسل حادث رباعي، ومن ثم قل ظهوره لكن تميزت أدواره ليعود حديثا في الخياط',
+    works: ['photo1.jpg', 'photo5.jpg', 'photo7.jpg', 'photo19.jpg', 'photo26.jpg', 'photo28.jpg', 'photo34.jpg']
+  },
+  {
+    id: 'name19',
+    name: 'كارمن',
+    image: 'ali10.jpg',
+    desc: 'بدأت مشوارها الفني كعارضة أزياء ومذيعة ومن ثم اتجهت للتمثيل في حادث رباعي كأول خيار لها، كما أنها من لجنة حكام القناع',
+    works: ['photo1.jpg', 'photo4.jpg', 'photo5.jpg', 'photo9.jpg', 'photo11.jpg', 'news1.jpg', 'photo19.jpg', 'photo28.jpg', 'photo25.jpg', 'photo42.jpg']
+  },
+  {
+    id: 'name20',
+    name: 'توم',
+    image: 'ali11.jpg',
+    desc: 'مستوحاة من ممثل أمريكي يحمل ذات الاسم، بدأ مشواره في مسلسل السوار ومن ثم حاز على إطلالة طبية ممتازة',
+    works: ['photo1.jpg', 'photo18.jpg', 'photo23.jpg', 'photo35.jpg']
+  },
+  {
+    id: 'name21',
+    name: 'ثور',
+    image: 'ali12.jpg',
+    desc: 'مستوحاة تماما من شخصية أمريكية تحمل ذات الاسم، بدأت مسيرته في مسلسل كذبة وحقيقة ومن ثم شارك في عدة أعمال أخرى وناجحة',
+    works: ['photo1.jpg', 'photo2.jpg', 'photo13.jpg']
+  },
+  {
+    id: 'name22',
+    name: 'روجين',
+    image: 'ali13.jpg',
+    desc: 'مستوحاة من ممثلة تركية تحمل ذات الاسم، عرفت بطبعها الحاد وإطلالتها الشارعية، بدأت في السوار ومن ثم تميزت أعمالها بالطابع المضحك الأكشن',
+    works: ['photo1.jpg', 'photo7.jpg', 'photo14.jpg', 'news1.jpg', 'photo24.jpg', 'photo34.jpg', 'photo35.jpg']
+  },
+  {
+    id: 'name23',
+    name: 'أوندار',
+    image: 'ali14.jpg',
+    desc: 'مستواحاة من شخصية تركية، بدأ تمثيله في مسلسل الياقة المغبرة، ومن ثم تربع على عرش الأدوار الأبوية الكوميدية، تجمعه علاقة زواج مع داريا',
+    works: ['photo1.jpg', 'photo9.jpg', 'photo18.jpg', 'news1.jpg', 'photo24.jpg', 'photo20.jpg', 'photo34.jpg', 'photo36.jpg', 'photo39.jpg', 'photo40.jpg']
+  },
+  {
+    id: 'name24',
+    name: 'براون',
+    image: 'ali15.jpg',
+    desc: 'ذات شخصية صلبة، وإطلالة بنية بحتة، بدأ مسيرته بمسلسل نور في ظلام، ومن ثم أصبح الخيار الأول في الأدوار الآباء الشريرة',
+    works: ['photo1.jpg', 'photo4.jpg', 'photo19.jpg', 'photo21.jpg', 'photo23.jpg', 'photo24.jpg', 'photo20.jpg', 'photo49.jpg', 'photo40.jpg']
+  },
+  {
+    id: 'name25',
+    name: 'يعقوب',
+    image: 'ali16.jpg',
+    desc: 'شخصية محبوبة، بدأ تمثيله في مسلسل حادث رباعي وتميز بإطلالته الشوارعية وخفته المضحكة، يتقن أدوار الشر وأيضا الأدوار الكوميدية',
+    works: ['photo1.jpg', 'photo5.jpg', 'photo7.jpg', 'photo14.jpg', 'photo17.jpg', 'photo19.jpg', 'photo21.jpg']
+  },
+  {
+    id: 'name26',
+    name: 'لجين',
+    image: 'br3.jpg',
+    desc: 'عارضة أزياء دخلت عالم التمثيل في مسلسل شلة بنات، لتكتشف نفسها بالأدوار البوليسية فيما بعد.. يقال بأن خلف رقتها وجمالها طاقة قتال قوية',
+    works: ['photo3.jpg', 'photo5.jpg', 'photo17.jpg', 'photo28.jpg', 'photo35.jpg', 'photo39.jpg', 'photo42.jpg']
+  },
+  {
+    id: 'name27',
+    name: 'سلوى',
+    image: 'br5.jpg',
+    desc: 'مزارعة ريفية، بدأت بالتمثيل في شلة بناتـ لتبرز جمالها وطاقتها العفوية، ومن ثم اتجهت نحو أعمال أخرى',
+    works: ['photo3.jpg', 'photo5.jpg', 'news1.jpg', 'photo21.jpg', 'photo34.jpg']
+  },
+  {
+    id: 'name28',
+    name: 'ميليس',
+    image: 'br7.jpg',
+    desc: 'بدأت مشوارها في مسلسل شلة بنات، وسرعان ما تزايدت أدوارها نظرا لوهبتها القوية، تتميز بإطلالة عصرية ممتازة',
+    works: ['photo3.jpg', 'photo5.jpg', 'news1.jpg', 'photo21.jpg']
+  },
+  {
+    id: 'name29',
+    name: 'ويليام',
+    image: 'br8.jpg',
+    desc: 'بدأ مشواره في شلة بنات، ومن ثم أقدم على أعمال بوليسية قوية، يقال بأنه سائق درجات نارية كمجال آخر غير التمثيل',
+    works: ['photo3.jpg', 'photo5.jpg', 'photo17.jpg', 'photo24.jpg']
+  },
+  {
+    id: 'name30',
+    name: 'أدهم',
+    image: 'br12.jpg',
+    desc: 'بدأ مبكرا، ونال على إطلالة جديدة، بدأ كبطولة أولية في قضية حرف، ومن ثم عاد للبطولات الجماعية، من أذكى الشخصيات وأكثرهم ثقافة',
+    works: ['photo3.jpg', 'photo6.jpg', 'photo9.jpg']
+  },
+  {
+    id: 'name31',
+    name: 'ورد',
+    image: 'FT2.jpg',
+    desc: 'بدأت مسيرتها في مسلسل توأمي بدور شبه بطولي، تميزت بإطلالتها المحتشمة وتمثيلها المميز لتدخل بعد ذلك في الكثير من الأعمال',
+    works: ['photo7.jpg', 'photo13.jpg', 'photo24.jpg', 'photo20.jpg', 'photo38.jpg', 'photo44.jpg', 'photo42.jpg', 'photo39.jpg']
+  },
+  {
+    id: 'name32',
+    name: 'عزيز',
+    image: 'FT1.jpg',
+    desc: 'بدأ كعارض أزياء ومن ثم جرب التمثيل كدور بطولي، قلت أدواره لكن تميزت شخصيته',
+    works: ['photo7.jpg', 'photo21.jpg', 'photo24.jpg', 'photo20.jpg', 'photo26.jpg', 'photo38.jpg']
+  },
+  {
+    id: 'name33',
+    name: 'ديما',
+    image: 'FT4.jpg',
+    desc: 'بدأت مسيرتها في الفريق الخطأ، تعددت أدوراها بعد ذلك، لتتوج بلقب الممثلة الخجولة',
+    works: ['photo7.jpg', 'photo18.jpg', 'photo21.jpg', 'photo24.jpg', 'photo39.jpg']
+  },
+  {
+    id: 'name34',
+    name: 'ماهر',
+    image: 'hr4.jpg',
+    desc: 'بدأ مسيرته في مسلسل توأمي، ومن ثم تنوعت أدواره وامتاز بالدور الماكر.. قل ظهوره مؤخرا',
+    works: ['photo5.jpg', 'photo13.jpg']
+  },
+  {
+    id: 'name35',
+    name: 'عبلة',
+    image: 'hr3.jpg',
+    desc: 'بدأت مبكرا وعاصرت جيلين، أعمالها كثيرة حيث بدأت في مسلسل شارع الهرم ومن ثم عادت حديثا في حادث رباعي.. وهي والدة الممثلة هدى',
+    works: ['photo5.jpg', 'photo7.jpg', 'photo21.jpg', 'photo20.jpg', 'photo35.jpg', 'photo36.jpg', 'photo43.jpg', 'photo39.jpg']
+  },
+  {
+    id: 'name36',
+    name: 'زينب',
+    image: 'hr5.jpg',
+    desc: 'تتميز بإطلالة خريفية ممتازة، بدأت مسيرتها في مسلسل حادث رباعي بدور البطولة، ومن ثم اختفت تدريجيا',
+    works: ['photo5.jpg', 'photo21.jpg']
+  },
+  {
+    id: 'name37',
+    name: 'قادر',
+    image: 'hr6.jpg',
+    desc: 'ممثل موهوب، شارك ببطولة حادث رباعي ومن ثم لم يظهر مرة أخرى، ومع ذلك نال جائزة جولدين بي لأفضل ممثل ليؤكد موهبته',
+    works: ['photo5.jpg']
+  },
+  {
+    id: 'name38',
+    name: 'ولي',
+    image: 'hr7.jpg',
+    desc: 'تميز بدور الشرير في مسلسل حادث رباعي، فنال عليه جائزة جولدين بي لأفضل ممثل شرير، ومن ثم ظهر قليلا ولا يزال يبهر الجميع بتمثيله',
+    works: ['photo5.jpg', 'photo17.jpg', 'photo23.jpg', 'photo20.jpg', 'photo42.jpg']
+  },
+  {
+    id: 'name39',
+    name: 'ماركر',
+    image: 'hr8.jpg',
+    desc: 'ممثل قدير بدأ قديما جدا، له عدة أعمال وهو الوحيد الذي رسم على الطراز الأولي، بدأ حديثا في قضية حرف ونال الجولدين بي لأفضل ممثل كبير',
+    works: ['photo6.jpg', 'photo5.jpg', 'photo14.jpg', 'photo23.jpg', 'photo26.jpg', 'photo28.jpg', 'photo44.jpg', 'photo43.jpg']
+  },
+  {
+    id: 'name40',
+    name: 'شاهين',
+    image: 'kh2.jpg',
+    desc: 'ممثل قديم مستواحاة من ممثل أمريكي، بدأ في قضية حرف واشتهر بدور الشرطي.. اسمه يعني الطائر السريع',
+    works: ['photo6.jpg', 'photo8.jpg', 'photo9.jpg', 'photo24.jpg']
+  },
+  {
+    id: 'name41',
+    name: 'يسرى',
+    image: 'lg1.jpg',
+    desc: 'ظهرت لأول مرة في برنامج عالم الترفيه، ومن ثم نالت أول دور لها في مسلسل لعبة زواج',
+    works: ['photo16.jpg', 'news1.jpg']
+  },
+  {
+    id: 'name42',
+    name: 'ألبيران',
+    image: 'lg2.jpg',
+    desc: 'بدأ مؤخرا بأعمال لذيذة، أبرزها دوره بمسلسل لعبة زواج.. مستوحاة من ممثل تركي يحمل نفس الاسم',
+    works: ['news1.jpg', 'photo24.jpg', 'photo45.jpg']
+  },
+  {
+    id: 'name43',
+    name: 'إيمري',
+    image: 'n1.jpg',
+    desc: 'بدأ مشواره الفني في مسلسل توأمي، ليصبح مشهورًا بعد ذلك ويقدم برنامج القناع الشهير.. وأوقعته لينا بشباكها فتزوجا وأخذا جائزة أفضل ثنائي في جولدين بي',
+    works: ['photo13.jpg', 'photo4.jpg', 'photo11.jpg', 'photo20.jpg']
+  },
+  {
+    id: 'name44',
+    name: 'المغنية',
+    image: 'masked.jpg',
+    desc: 'لم تمثل كثيرا، بل قدمت برنامج القناع الشهير وكذلك حفل جولدين بي، لتتوج بجائزة أفضل مقدمة',
+    works: ['photo11.jpg', 'photo17.jpg']
+  },
+  {
+    id: 'name45',
+    name: 'عصام',
+    image: 'lg3.jpg',
+    desc: 'شخصية مستواحاة تماما من ممثل مصري يحمل ذات الاسم، بدأ مشواره الفني في برنامج عالم الترفيه، ومن ثم أتته عروض العمل في لعبة زواج.. يعرف بلياقته الجذابة وتمثيله المميز',
+    works: ['news1.jpg', 'photo16.jpg', 'photo23.jpg', 'photo26.jpg', 'photo28.jpg']
+  },
+  {
+    id: 'name46',
+    name: 'نور',
+    image: 'n2.jpg',
+    desc: 'بدأت تمثيلها مبكرا، فحازت على إطلالة جديدة لتظهر أول مرة في قضية حرف، ثم لمعت في نور في ظلام.. هي طالبة جامعية في الأساس وتهتم بدراستها',
+    works: ['photo4.jpg', 'photo6.jpg', 'photo9.jpg']
+  },
+  {
+    id: 'name47',
+    name: 'جولدي',
+    image: 'n3.jpg',
+    desc: 'بدأ مشواره الفني في مسلسل نور في ظلام، ومن ثم مثل عدة أعمال أخرى، مستواحاة من ممثل تركي.. لكنه سائق دراجات نارية ممتاز',
+    works: ['photo4.jpg', 'photo8.jpg', 'photo17.jpg', 'photo18.jpg']
+  },
+  {
+    id: 'name48',
+    name: 'لينا',
+    image: 'n4.jpg',
+    desc: 'بدأت مبكرا، ومن ثم حازت على نسخة جديدة لتنال جائزة العودة المميزة في الجولدين بي، وكذلك أفضل ثنائي مع إيمري، عادت في البداية في مسلسل توأمي ومن ثم أظهرت موهبتها في أعمال أخرى',
+    works: ['photo4.jpg', 'photo13.jpg', 'news1.jpg', 'photo28.jpg', 'photo25.jpg']
+  },
+  {
+    id: 'name49',
+    name: 'ميار',
+    image: 'n5.jpg',
+    desc: 'عرفت ببراءتها وأسلوبها الهادئ في التمثيل، بدأت بمسلسل غير موفق ثم اتجهت نحو دور شبه بطولي في نور في ظلام، وكذلك قدَّمت دور في لجنة حكام القناع... حتى نالت إطلالة مميزة أخرى',
+    works: ['photo4.jpg', 'photo11.jpg', 'photo14.jpg', 'photo27.jpg']
+  },
+  {
+    id: 'name50',
+    name: 'زينة',
+    image: 'n7.jpg',
+    desc: 'بدأت مبكرا في مسلسل الياقة المغبرة وكذلك نور في ظلام، لتحصل على جائزة جولدين بي كأفضل ممثل دور مساعد.. يقال بأن عملها الأصلي هو الصحافة',
+    works: ['photo4.jpg', 'photo9.jpg']
+  },
+  {
+    id: 'name51',
+    name: 'برونو',
+    image: 't2.jpg',
+    desc: 'بدأ ظهوره البطولي في مسلسل توأمي ومن ثم غاب عن الساحة وانفرد بحياته الخاصة',
+    works: ['photo13.jpg']
+  },
+  {
+    id: 'name52',
+    name: 'كارما',
+    image: 't4.jpg',
+    desc: 'بدأت مبكرا وعاصرت جيلين، تتميز بطلتها الغنية وحضورها الفكاهي.. بدأت حديثا بمسلسل توأمي، كما تعددت أعمالها',
+    works: ['photo13.jpg', 'photo17.jpg', 'photo19.jpg']
+  },
+  {
+    id: 'name53',
+    name: 'داريا',
+    image: 'Tz2.jpg',
+    desc: 'شخصية مستوحاة من ممثلة تركية، بدأت كدور الأم في الياقة المغبرة ومن ثم تزوجت أوندار وانفردت بدور الأم الطيبة',
+    works: ['photo9.jpg', 'photo18.jpg', 'photo20.jpg', 'photo34.jpg', 'photo36.jpg']
+  },
+  {
+    id: 'name54',
+    name: 'كرم',
+    image: 'Tz3.jpg',
+    desc: 'من الممثلين ذوي العيون الباردة، بدأ بمسلسل الياقة المغبرة، ورشح لأعمال كثيرة ورفضها مثل حادث رباعي.. كما أنه حاز على إطلالة عسكرية',
+    works: ['photo9.jpg', 'photo23.jpg']
+  },
+  {
+    id: 'name55',
+    name: 'رامز',
+    image: 'zl1.jpg',
+    desc: 'بدأ مبكرا ومن ثم نال تطوير ليعود بأدواره المميزة، بدأ سابقا بمسلسل أخوتي، لكنه بدأ حديثا بفيلم أرض زيكولا كخيار موفق، لا تفكر بتحديه',
+    works: ['photo14.jpg', 'photo17.jpg', 'photo19.jpg', 'photo23.jpg', 'photo45.jpg']
+  },
+  {
+    id: 'name56',
+    name: 'يونس',
+    image: 'zl2.jpg',
+    desc: 'بدأ مسيرته الفنية في أرض زيكولا، ومن ثم انفرد ببطولة مسلسل جديد.. لا يزال بشبابه ومع ذلك أبهر جمهوره بموهبته',
+    works: ['photo14.jpg', 'news1.jpg', 'photo26.jpg', 'photo25.jpg']
+  },
+  {
+    id: 'name57',
+    name: 'ليو',
+    image: 'zl3.jpg',
+    desc: 'بدأ ظهوره في عالم الترفيه ومن ثم نال بطولة أرض زيكولا.. تميز بإطلالته وموهبته، ومع ذلك ندرت أدواره',
+    works: ['photo14.jpg', 'photo16.jpg', 'photo23.jpg', 'photo35.jpg', 'photo11.jpg']
+  },
+  {
+    id: 'name58',
+    name: 'ترينر',
+    image: 'Tz1.jpg',
+    desc: 'بدأ ظهوره لأول مرة قبل التطور، ومن ثم عاد ظهوره في الياقة المغبرة. عمله الأصلي هو مدرب لياقة بدنية',
+    works: ['photo9.jpg', 'photo8.jpg']
+  },
+  {
+    id: 'name59',
+    name: 'ساموراي',
+    image: 'hr1.jpg',
+    desc: 'يقال بأنه من أجداد الساموراي، بدأ تمثيله وأثبت دوره الشرير في حادث رباعي، لكنه يظل يفضل القتال بدلا من التمثيل',
+    works: ['photo5.jpg', 'photo8.jpg']
+  },
+  {
+    id: 'name60',
+    name: 'جو',
+    image: 'br4.jpg',
+    desc: 'بدأ مسيرته في مسلسل شلة بنات، ومن ثم قل ظهوره واتجه نحو أعمال الكتابية، ومع ذلك ظهر مؤخرا في فيلم أمنية الدم',
+    works: ['photo3.jpg', 'photo17.jpg', 'photo45.jpg', 'photo39.jpg']
+  },
+  {
+    id: 'name61',
+    name: 'بيلا',
+    image: 'al6.jpg',
+    desc: 'بدأت مبكرا في قضية الحرف، ومن ثم أخذت أدوار بطولية كما في الياقة، وأدوار جانبية ممتعة كما في كذبة وحقيقة وغيرها من الأدوار.. نالت أفضل ممثلة في الجولدين بي نظرا لموهبتها المميزة',
+    works: ['photo2.jpg', 'photo4.jpg', 'photo6.jpg', 'photo9.jpg', 'photo19.jpg', 'photo21.jpg', 'photo23.jpg']
+  },
+  {
+    id: 'name62',
+    name: 'ناروتو',
+    image: 'al8.jpg',
+    desc: 'بدأ مبكرا وعاصر جيلين، صمم من شخصية أنمي مشهور. بدأ حديثا في كذبة وحقيقة وله عدة أعمال يعرف بها',
+    works: ['photo2.jpg', 'photo13.jpg']
+  },
+  {
+    id: 'name63',
+    name: 'أحمد',
+    image: 'al10.jpg',
+    desc: 'لم يتجه كثيرا للتمثيل، ومع ذلك يظهر في مشاهد قليلة وربما أدوار جانبية مميزة',
+    works: ['photo2.jpg']
+  },
+  {
+    id: 'name64',
+    name: 'سامر',
+    image: 'FT5.jpg',
+    desc: 'مدرب سباحة، دخل التمثيل مؤخرا في مسلسل الفريق الخطأ، لم يشارك كثيرا لكنه مميز باختيار أدواره',
+    works: ['photo7.jpg', 'photo14.jpg']
+  },
+  {
+    id: 'name65',
+    name: 'أوزجي',
+    image: 'FT6.jpg',
+    desc: 'عارضة أزياء وممثلة، بدأت في الفريق الخطأ ومن ثم قل ظهورها، كما أنها كانت ضيفة الخياط الأولى',
+    works: ['photo7.jpg', 'photo46.jpg', 'photo49.jpg']
+  },
+  {
+    id: 'name66',
+    name: 'ريدر',
+    image: 'FT3.jpg',
+    desc: 'عرف بإطلالته القديمة، سمي بهذا الاسم بسبب محبته للقراة.. بدأ في الفريق الخطأ ومن ثم طلب لعدة أعمال مثل بعضها',
+    works: ['photo7.jpg', 'photo14.jpg', 'photo19.jpg', 'photo23.jpg', 'photo20.jpg']
+  },
+  {
+    id: 'name67',
+    name: 'ديفا',
+    image: 'diva.jpg',
+    desc: 'اسمها يعني من هي، عارضة أزياء مشهورة، دخلت مجال التمثيل في فيلم أمنية الدم.. كما أنها تواجدت كضيف شرف في مسلسل آخر، ومع ذلك بدأ ظهورها في عالم الترفيه',
+    works: ['photo16.jpg', 'photo17.jpg']
+  },
+  {
+    id: 'name68',
+    name: 'جيني',
+    image: 'jenny.jpg',
+    desc: 'بدأ ظهورها في عالم الترفيه، اشتهرت بإطلالتها ومن ثم طلبت لعدة أعمال حتى بدأت بالتمثيل في الخياط',
+    works: ['photo16.jpg', 'photo19.jpg', 'photo21.jpg', 'photo25.jpg']
+  },
+  {
+    id: 'name69',
+    name: 'لهب',
+    image: 'n6.jpg',
+    desc: 'من الممثلين القدامى، عاصر حقبتين وبدأ حديثا في نور في ظلام، ومع ذلك تظل موهبته في التمثيل تعزله عن حياته، لذلك تقل أدواره',
+    works: ['photo4.jpg', 'photo17.jpg', 'photo43.jpg']
+  },
+  {
+    id: 'name70',
+    name: 'هولاند',
+    image: 'n8.jpg',
+    desc: 'من الممثلين القدامى، بدأ حديثا في الياقة المغبرة، أبرز موهبته وشارك في العديد من المسلسلات منها الذي توقف.. مستوحاة من ممثل أمريكي مشهور',
+    works: ['photo4.jpg', 'photo9.jpg']
+  },
+  {
+    id: 'name71',
+    name: 'بينار',
+    image: 'pinar.jpg',
+    desc: 'ظهرت حديثا وجذبت جمهورها، ظهرت لأول مرة في الخياط الحلقة الأولى، ومن ثم شاركت سريعا في مستشفى الحب كأول عمل حقيقي لها.. مستوحاة من ممقلة تركية مشهورة تحمل ذات الاسم',
+    works: ['photo18.jpg', 'photo23.jpg', 'photo20.jpg', 'photo34.jpg', 'photo42.jpg', 'photo44.jpg']
+  },
+  {
+    id: 'name72',
+    name: 'تيسير',
+    image: 't1.jpg',
+    desc: 'من الممثلين القدامى، بدأ مشواره الفني في توأمي، مثبتا مهارته، ومع ذلك يفضل التركيز على حياته اللياقية وألعاب القوى، لذلك يبتعد عن التمثيل قليلا',
+    works: ['photo13.jpg']
+  },
+  {
+    id: 'name73',
+    name: 'توماس',
+    image: 'tomas.jpg',
+    desc: 'ظهر في المرة الأولى في عالم الترفيه، عرف بإطلالته الغريبة وكاريزماته العالية، بدأ تمثيله حديثا في مسلسل البراعم الذابلة كخيار أول',
+    works: ['photo20.jpg', 'photo16.jpg', 'photo24.jpg', 'photo39.jpg']
+  },
+  {
+    id: 'name74',
+    name: 'إدريس',
+    image: 'al12.jpg',
+    desc: 'صاحب أندر لون شعر، يعمل في اللياقة لكنه اتجه للتمثيل قليلا، بدأ في كذبة وحقيقة وحقق دوره شهرة جيدة.. ومع ذلك غاب عن الساحة كثيرا',
+    works: ['photo2.jpg']
+  },
+  {
+    id: 'name75',
+    name: 'كريستين',
+    image: 'cristin.jpg',
+    desc: 'تتميز بإطلالتها الرسمية، بدأت حديثا في مسلسل مستشفى الحب، ومع ذلك يبدو أن لها مستقبل باهر في التمثيل',
+    works: ['photo18.jpg']
+  },
+  {
+    id: 'name76',
+    name: 'راموس',
+    image: 'kh3.jpg',
+    desc: 'بدأ مبكرا وحاز على إطلالة جديدة، بدأ قديما في البالوفارد، أما حديثا فقد بدأ في قضية حرف، ومع ذلك يبقى اهتمامه بالأزياء اليابانية غريب',
+    works: ['photo10.jpg', 'photo6.jpg']
+  },
+  {
+    id: 'name77',
+    name: 'تسنيم',
+    image: 't3.jpg',
+    desc: 'بدأت في مسلسل توأمي، نالت شهرة محدودة لذلك لم تمثل كثيرا بعد',
+    works: ['photo13.jpg']
+  },
+  {
+    id: 'name78',
+    name: 'عجوز',
+    image: 't5.jpg',
+    desc: 'من أمهر الممثلات الكبار، بدأت في توأمي ومن ثم تعددت أدوارها الجانبية.. كما أنها من تصميم ماسة',
+    works: ['photo5.jpg', 'photo13.jpg', 'photo21.jpg', 'photo36.jpg', 'photo39.jpg', 'photo47.jpg']
+  },
+  {
+    id: 'name79',
+    name: 'هازال',
+    image: 'br10.jpg',
+    desc: 'بدأت في شلة بنات ومن ثم اتجهت نحو الأدوار الجانبية وعرض الأزياء',
+    works: ['photo3.jpg', 'photo21.jpg', 'photo23.jpg', 'photo38.jpg', 'photo39.jpg']
+  },
+  {
+    id: 'name80',
+    name: 'فريد',
+    image: 'farid.jpg',
+    desc: 'مستوحاة من بلوجر تركي، بدأ في برنامج عالم الترفيه ومن ثم اختفى عن الساحة لفترة، ومع ذلك فهو يفضل قيادة السيارات',
+    works: ['photo16.jpg']
+  },
+  {
+    id: 'name81',
+    name: 'إنجي',
+    image: 'injy.jpg',
+    desc: 'من الأوجه الجذابة، ظهرت لأول مرة في عالم الترفيه ومن ثم اختفت.. لكنها بالتأكيد ستنضم لأعمال حيوية',
+    works: ['photo16.jpg']
+  },
+  {
+    id: 'name82',
+    name: 'جيم',
+    image: 'gym.jpg',
+    desc: 'ظهر لأول مرة في عالم الترفيه ومن ثم اختفى عن الشاشات، لكنه يفضل عالمه الخاص في اللياقة البدنية',
+    works: ['photo16.jpg']
+  },
+  {
+    id: 'name83',
+    name: 'مالك',
+    image: 'malik.jpg',
+    desc: 'ظهر لأول مرة في عالم الترفيه، ولكنه اختفى بعد ذلك.. شخصية مستوحاة من ممثل إيطالي، وعمله الخاص هو عرض الأزياء',
+    works: ['photo16.jpg']
+  },
+  {
+    id: 'name84',
+    name: 'مراد',
+    image: 'pv3.jpg',
+    desc: 'ظهر قديما وعاصر جيلين، بدأ حديثا في نور في ظلام.. تزوج نيللي وقدم معها برامج كثيرة، كما انه قدم بوليفارد المواهب حديثا',
+    works: ['photo10.jpg', 'photo4.jpg']
+  },
+  {
+    id: 'name85',
+    name: 'هادي',
+    image: 'hadi.jpg',
+    desc: 'ظهر لأول مرة في عالم الترفيه ومن ثم قل ظهوره، ومع ذلك فهو يفضل حياة الهدوء والقراءة',
+    works: ['photo16.jpg']
+  },
+  {
+    id: 'name86',
+    name: 'خوان',
+    image: 'juan.jpg',
+    desc: 'ظهر لأول مرة في عالم الترفيه ومن ثم قل ظهوره، ومع ذلك فهو يفضل حياة البحر والسباحة',
+    works: ['photo16.jpg']
+  },
+  {
+    id: 'name87',
+    name: 'كندة',
+    image: 'kinda.jpg',
+    desc: 'ظهرت لأول مرة في عالم الترفيه ومن ثم قل ظهورها واتجهت لعالم الموضة.. ظهرت كضيفة شرف في مسلسل الخياط',
+    works: ['photo16.jpg']
+  },
+  {
+    id: 'name88',
+    name: 'ليلى',
+    image: 'leyla.jpg',
+    desc: 'ظهرت حديثا ونالت إعجابا واسعا.. شاركت في مسلسل الخياط كأول ظهور، ومن ثم نالت البطولة في البراعم الذابلة',
+    works: ['photo19.jpg', 'photo20.jpg', 'photo23.jpg', 'photo25.jpg', 'photo47.jpg']
+  },
+  {
+    id: 'name89',
+    name: 'شهاب',
+    image: 'shihab.jpg',
+    desc: 'ظهر حديثا لأول مرة في الخياط.. عمله الأساسي هو عرض الأزياء.. لكن لاقت موهبته محبة عند جمهوره',
+    works: ['photo19.jpg', 'photo20.jpg', 'photo34.jpg', 'photo36.jpg', 'photo38.jpg', 'photo43.jpg', 'photo40.jpg']
+  },
+  {
+    id: 'name90',
+    name: 'ريف',
+    image: 'rief.jpg',
+    desc: 'ظهرت لأول مرة في عالم الترفيه لكنها لم تمثل بعد، ومع ذلك تتجه أهميتها نحو الشهرة والازدحام، عكس الريف تماما',
+    works: ['photo16.jpg', 'photo28.jpg', 'photo36.jpg']
+  },
+  {
+    id: 'name91',
+    name: 'سمير',
+    image: 'samir.jpg',
+    desc: 'ظهر لأول مرة في عالم الترفيه لكنه لم يمثل بعد، ومع ذلك تتجه أهميته نحو حياة الكاووبوي',
+    works: ['photo16.jpg']
+  },
+  {
+    id: 'name92',
+    name: 'شمس',
+    image: 'shams.jpg',
+    desc: 'ظهرت لأول مرة في عالم الترفيه لكنها لم تمثل بعد، سميت شمس نظرا لشقارها المميز',
+    works: ['photo16.jpg']
+  },
+  {
+    id: 'name93',
+    name: 'جوني',
+    image: 'john.jpg',
+    desc: 'ظهر لأول مرة في الخياط.. جديد تماما بإطلالة صيفية، ينتظره المزيد من الأعمال',
+    works: ['photo19.jpg', 'photo25.jpg', 'photo47.jpg']
+  },
+  {
+    id: 'name94',
+    name: 'شيف',
+    image: 'pv2.jpg',
+    desc: 'ظهر لأول مرة في بوليفارد المواهب.. يفضل الطبخ ولا يظهر إلا بأدوار تخص مجاله.. ومع ذلك فهو ذو شخصية قوية كالسكين',
+    works: ['photo10.jpg']
+  },
+  {
+    id: 'name95',
+    name: 'هدى',
+    image: 'pv1.jpg',
+    desc: 'ظهرت لأول مرة في بوليفارد المواهب.. ابنة عبلة وبدأت بالتمثيل قديما، لكنها لا تمتلك أي أعمال حديثة حتى الآن',
+    works: ['photo10.jpg']
+  },
+  {
+    id: 'name96',
+    name: 'كورال',
+    image: 'coral.jpg',
+    desc: 'ظهرت حديثا ومستوحاة من ممثلة تركية.. سميت نتيجة لحبها الموسيقي، بدأت مسيرتها في الخياط كدور جانبي',
+    works: ['photo19.jpg', 'photo23.jpg', 'photo20.jpg', 'photo26.jpg', 'photo28.jpg', 'photo38.jpg', 'photo42.jpg']
+  },
+  {
+    id: 'name97',
+    name: 'إبراهيم',
+    image: 'ibrahim.jpg',
+    desc: 'ظهر لأول مرة في الخياط كضيف شرف، ومن سرعان ما انطلقت جماهيريته بفيلم درس خصوصي، يقال أنه يعشق كرة القدم بجانب التمثيل',
+    works: ['photo21.jpg', 'photo23.jpg', 'photo24.jpg', 'photo27.jpg', 'photo26.jpg', 'photo36.jpg', 'photo47.jpg']
+  },
+  {
+    id: 'name98',
+    name: 'دولا',
+    image: 'dola.jpg',
+    desc: 'ظهر لأول مرة في الخياط كضيف شرف، وسريعا ما شارك بفيلم درس خصوصي كدور جانبي أول، في الحقيقة هو مدرب لياقة بدنية أساسي',
+    works: ['photo21.jpg']
+  },
+  {
+    id: 'name99',
+    name: 'رلا',
+    image: 'rula.jpg',
+    desc: 'ظهرت لأول مرة في الخياط كضيفة شرف، وسريعا ما شاركت بفيلم درس خصوصي كدور جانبي أول، في الحقيقة هي عارضة أزياء متقاعدة',
+    works: ['photo21.jpg', 'photo24.jpg', 'photo42.jpg', 'photo39.jpg']
+  },
+  {
+    id: 'name100',
+    name: 'ربيع',
+    image: 'rabi3.jpg',
+    desc: 'ظهر لأول مرة في الخياط كضيف شرف، وسريعا ما شارك بمسلسل البراعم الذابلة كدور رئيسي أول، في الحقيقة هو عارض أزياء',
+    works: ['photo20.jpg', 'photo23.jpg', 'photo35.jpg', 'photo39.jpg']
+  },
+  {
+    id: 'name101',
+    name: 'بوران',
+    image: 'buran.jpg',
+    desc: 'يعمل كشيف في الحقيقة لكن جاذبيته وقدرته جلبتاه لعالم التمثيل وبدأ في المسلسل الرقمي الممثلة.. حاز على إطلالة جديدة سريعا وفقا لإنتاجات الرقميات',
+    works: ['photo23.jpg', 'photo20.jpg', 'photo25.jpg']
+  },
+  {
+    id: 'name102',
+    name: 'كيم',
+    image: 'kim.jpg',
+    desc: 'يقال أنه رأس مافيا كبيرة، بدأ في مسلسل الرقمي الممثلة بدور جانبي، ومع ذلك جذب جمهوره بإطلالته',
+    works: ['photo23.jpg', 'photo35.jpg', 'photo48.jpg']
+  },
+  {
+    id: 'name103',
+    name: 'جان',
+    image: 'can.jpg',
+    desc: 'ظهر لأول مرة في الممثلة، مستوحاة من موديل تركي يحمل ذات الاسم',
+    works: ['photo23.jpg']
+  },
+  {
+    id: 'name104',
+    name: 'ماجيك',
+    image: 'majic.jpg',
+    desc: 'شخصية مستوحاة من إحدى الألعاب، بدأ مسيرته في حادث رباعي ومن ثم تنوعت أدواره الجانبية المؤثرة',
+    works: ['photo5.jpg', 'photo23.jpg']
+  },
+  {
+    id: 'name105',
+    name: 'إسماعيل',
+    image: 'ismail.jpg',
+    desc: 'شخصية مستوحاة من ممثل تركي يحمل ذات الاسم، معروف بجاذبيته وأدائه المميز، بدأ في البراعم الذابلة بدور بطولي فأحيه جمهوره',
+    works: ['photo20.jpg', 'photo43.jpg', 'photo46.jpg']
+  },
+  {
+    id: 'name106',
+    name: 'نهى',
+    image: 'nuha.jpg',
+    desc: 'بدأت مسيرتها في مسلسل البراعم الذابلة، من صفاتها المميزة هي أنها عاشقة للتسوق والسفر',
+    works: ['photo20.jpg', 'photo34.jpg', 'photo42.jpg']
+  },
+  {
+    id: 'name107',
+    name: 'لارا',
+    image: 'lara.jpg',
+    desc: 'بدأت مسيرتها في فيلم فريق الأرشيف ومن ثم بطولة أخرى في كما يطير الغراب، معروفة بحبها للأكشن',
+    works: ['photo26.jpg', 'photo28.jpg', 'photo11.jpg', 'photo38.jpg', 'photo41.jpg', 'photo46.jpg']
+  },
+  {
+    id: 'name108',
+    name: 'أليكس',
+    image: 'alex.jpg',
+    desc: 'بدأ مسيرته كدور جانبي في مستشفى الحب ومن ثم دور بطولي في فريق الأرشيف، يعمل بجانب كونه ممرضا سائق دراجات نارية',
+    works: ['photo26.jpg', 'photo18.jpg', 'photo34.jpg', 'photo36.jpg', 'photo43.jpg', 'photo40.jpg']
+  },
+  {
+    id: 'name109',
+    name: 'لبنى',
+    image: 'lubna.jpg',
+    desc: 'ظهرت لأول مرة في الخياط ومن ثم تألقت في فريق الأرشيف، معروفة بشخصيتها الجدية الحازمة والمميزة',
+    works: ['photo26.jpg', 'photo28.jpg', 'photo35.jpg', 'photo45.jpg', 'photo44.jpg', 'photo39.jpg', 'photo40.jpg']
+  },
+  {
+    id: 'name110',
+    name: 'دييغو',
+    image: 'deigo.jpg',
+    desc: 'ظهر لأول مرة في الخياط ومن ثم تألق في فريق الأرشيف وكما يطير الغراب، يعمل في ريادة الأعمال بجانب التمثيل',
+    works: ['photo26.jpg', 'photo28.jpg', 'photo44.jpg', 'photo48.jpg']
+  },
+  {
+    id: 'name111',
+    name: 'كريم',
+    image: 'karim.jpg',
+    desc: 'ظهر لأول مرة في عشق101 ومن ثم زادت جماهيريته، في الأساس هو ملاكم بارع وموهوب',
+    works: ['photo25.jpg', 'photo40.jpg']
+  },
+  {
+    id: 'name112',
+    name: 'شكري',
+    image: 'shokry.jpg',
+    desc: 'بدأ بمستشفى الحب ومن ثم عشق101، يقال أنه أحد الباشاوات القدماء وهذا يتضح عليه',
+    works: ['photo25.jpg', 'photo39.jpg', 'photo43.jpg', 'photo42.jpg']
+  },
+  {
+    id: 'name113',
+    name: 'عمر',
+    image: 'omar.jpg',
+    desc: 'ممثل موهوب بدأ في عشق101 وحاز على جماهيرية عالية.. يعمل في مجال عرض الأزياء بجانب التمثيل',
+    works: ['photo25.jpg']
+  },
+  {
+    id: 'name114',
+    name: 'عشق',
+    image: 'ishk.jpg',
+    desc: 'ظهرت لأول مرة في عشق101 وسميت نسبة لشخصيتها، كما أنها سفيرة اللون الزهري حول العالم',
+    works: ['photo25.jpg', 'photo44.jpg']
+  },
+  {
+    id: 'name115',
+    name: 'أنس',
+    image: 'anas.jpg',
+    desc: 'لاقى محبة كبيرة في تحقيقات وأظهر حبه للأكشن أمام جمهوره، يقال بأنه درس العسكرية ومن ثم التحق بالتمثيل',
+    works: ['photo35.jpg', 'photo42.jpg']
+  },
+  {
+    id: 'name116',
+    name: 'سيلين',
+    image: 'silin.jpg',
+    desc: 'ظهرت لأول مرة تحقيقات، ذات شخصية غامضة وأسلوب تمثيلي فنان.. بدأت كموديل في بداياتها',
+    works: ['photo35.jpg']
+  },
+  {
+    id: 'name117',
+    name: 'لمار',
+    image: 'lamar.jpg',
+    desc: 'ظهرت لأول مرة في تحقيقات، خطيبة ليو كما أنها تبرز موهبة ثقيلة بجانب ادارتها للأعمال.',
+    works: ['photo35.jpg', 'photo36.jpg', 'photo41.jpg']
+  },
+  {
+    id: 'name118',
+    name: 'لالي',
+    image: 'lale.jpg',
+    desc: 'ظهرت لأول مرة في تحقيقات، مستوحاة من ممثلة تركية، كما أن عملها كمديرة أعمال يظهر في مسيرتها الفنية.',
+    works: ['photo35.jpg', 'photo36.jpg', 'photo43.jpg', 'photo39.jpg']
+  },
+  {
+    id: 'name119',
+    name: 'مراد',
+    image: 'murad.jpg',
+    desc: 'بدأ مسيرته في مسلسل أنت في كل مكان لكنه في الحقيقة سباح موهوب وعارض أزياء مثالي، حاز على جماهيرية عالية سريعا.',
+    works: ['photo36.jpg', 'photo42.jpg']
+  },
+  {
+    id: 'name120',
+    name: 'رابيا',
+    image: 'rabia.jpg',
+    desc: 'بدأت مسيرتها في أنت في كل مكان ونالت على إعجاب كبير بسرعة.',
+    works: ['photo36.jpg', 'photo43.jpg', 'photo42.jpg']
+  },
+  {
+    id: 'name121',
+    name: 'حسام',
+    image: 'hussam.jpg',
+    desc: 'بدأ مسيرته كموديل ثم دخل عالم التمثيل ببطولاته المثالية.',
+    works: ['photo44.jpg', 'photo38.jpg', 'photo41.jpg', 'photo49.jpg']
+  },
+  {
+    id: 'name122',
+    name: 'يحيى',
+    image: 'yahya.jpg',
+    desc: 'بدأ مسيرته كموديل ثم دخل عالم التمثيل ببطولاته المثالية. كما أنه شقيق إسماعيل.',
+    works: ['photo39.jpg', 'photo45.jpg', 'photo41.jpg']
+  },
+  {
+    id: 'name123',
+    name: 'مختار',
+    image: 'mukhtar.jpg',
+    desc: 'الممثل القدير الذي يترك بصمة في كل دور يمثله.',
+    works: ['photo36.jpg', 'photo38.jpg', 'photo39.jpg', 'photo49.jpg', 'photo44.jpg']
+  },
+  {
+    id: 'name124',
+    name: 'تالا',
+    image: 'talat.jpg',
+    desc: 'ممثلة موهوبة بدأت مسيرتها في فيلم من بطولتها ومن ثم دخلت الساحة.',
+    works: ['photo45.jpg', 'photo44.jpg', 'photo49.jpg']
+  },
+  {
+    id: 'name125',
+    name: 'أسماء',
+    image: 'asmaa.jpg',
+    desc: 'ممثلة موهوبة استطاعت لفت الأنظار سريعا خاصة بأدوارها الدرامية.',
+    works: ['photo48.jpg', 'photo47.jpg', 'photo49.jpg']
+  },
+  {
+    id: 'name126',
+    name: 'سيمرا',
+    image: 'semra.jpg',
+    desc: 'بدأت مسيرتها في ميدترم بدور نعومي ونالت على إعجاب كبير بسرعة.',
+    works: ['photo39.jpg']
+  },
+  {
+    id: 'name127',
+    name: 'رزان',
+    image: 'razan.jpg',
+    desc: 'بدأت مسيرتها في مسلسلات عديدة معا وأفلام ونالت على إعجاب كبير وشهرة واسعة بسرعة.',
+    works: ['photo43.jpg', 'photo38.jpg', 'photo42.jpg']
+  },
+  {
+    id: 'name128',
+    name: 'داني',
+    image: 'dani.jpg',
+    desc: 'بدأ مسيرته في ميدترم وأثبت موهبته حتى انطلق جماهيريا.',
+    works: ['photo39.jpg', 'photo44.jpg']
+  },
+  {
+    id: 'name129',
+    name: 'طارق',
+    image: 'tarek.jpg',
+    desc: 'بدأ مسيرته في مسلسل في الداخل وحاز على جماهيرية عالية.',
+    works: ['photo43.jpg']
+  },
+  {
+    id: 'name130',
+    name: 'وائل',
+    image: 'wael.jpg',
+    desc: 'بدأ كمذيع في حفلات الجولدن بي ليدخل بعدها مجال التمثيل عن طريق مسلسل النائم فحاز على إعجاب عال.',
+    works: ['photo44.jpg', 'photo47.jpg']
+  },
+  {
+    id: 'name131',
+    name: 'نوح',
+    image: 'noah.jpg',
+    desc: 'بدأ كمقدم أساسي في حفلات الجولدن بي ليدخل بعدها مجال التمثيل عن طريق مسلسل النائم فحاز على إعجاب عال.',
+    works: ['photo44.jpg', 'photo47.jpg']
+  },
+  {
+    id: 'name132',
+    name: 'نوران',
+    image: 'nuran.jpg',
+    desc: 'بدأت تجربتها التمثيلية في دور درامي قاسي في فيلم لأنها امرأة لتثبت نفسها فيما بعد.',
+    works: ['photo48.jpg', 'photo42.jpg']
+  },
+  {
+    id: 'name133',
+    name: 'تولين',
+    image: 'tulin.jpg',
+    desc: 'بدأت تجربتها التمثيلية في بطولة فيلم منزل صيفي لتثبت نفسها فيما بعد.',
+    works: ['photo45.jpg']
+  },
+  {
+    id: 'name134',
+    name: 'علي',
+    image: 'ali.jpg',
+    desc: 'بدأ بأدواره البسيطة التي لاقت إعجابا كبيرا رغم سنه الصغير',
+    works: ['photo43.jpg', 'photo46.jpg', 'photo42.jpg']
+  },
+  {
+    id: 'name135',
+    name: 'صرب',
+    image: 'sarb.jpg',
+    desc: 'يقولون عنه مافيا محترف، لكن أدواره تؤكد ذلك حرفيا.',
+    works: ['photo43.jpg']
+  },
+  {
+    id: 'name136',
+    name: 'رامي',
+    image: 'rami.jpg',
+    desc: 'بدأ تجربته التمثيلية في دور كوميدي درامي في مسلسل الحب والانتقام ليثبت نفسه فيما بعد.',
+    works: ['photo42.jpg']
+  },
+  {
+    id: 'name137',
+    name: 'توبراك',
+    image: 'tobrak.jpg',
+    desc: 'بدأ تجربته التمثيلية في شجر الزيتون ليثبت نفسه فيما بعد، كما أنه عارض أزياء مشهور سابقا.',
+    works: ['photo43.jpg', 'photo47.jpg']
+  },
+  {
+    id: 'name138',
+    name: 'فهد',
+    image: 'fahed.jpg',
+    desc: 'بدأ تجربته التمثيلية في شجر الزيتون ليثبت نفسه فيما بعد، كما أنه عارض أزياء مشهور سابقا.',
+    works: ['photo47.jpg', 'photo49.jpg']
+  },
+  {
+    id: 'name139',
+    name: 'صبا',
+    image: 'saba.jpg',
+    desc: 'ذات الأدوار البسيطة لكن بمستواها العالي وبصمتها المختلفة.',
+    works: ['photo47.jpg', 'photo36.jpg']
+  },
+  {
+    id: 'name140',
+    name: 'نادين',
+    image: 'nadin.jpg',
+    desc: 'ذات الأدوار البسيطة لكن بمستواها العالي وبصمتها المختلفة. كما أنها موديل مشهورة.',
+    works: ['photo47.jpg']
+  },
+  {
+    id: 'name141',
+    name: 'سلمى',
+    image: 'salma.jpg',
+    desc: 'بدأت مسيرتها في بطولة مثالية في فيلم غرام نقش علد جدراان الزمان، لتثبت هويتها الفنية.',
+    works: ['photo46.jpg']
+  },
+  {
+    id: 'name142',
+    name: 'تارا',
+    image: 'tara.jpg',
+    desc: 'أشهر عارضات الأزياء، بدأت بموهبتها في مسلسل كذبة العمر ومن ثم نالت إعجابا جماهيريا.',
+    works: ['photo49.jpg']
+  },
+  {
+    id: 'name143',
+    name: 'ميرال',
+    image: 'miral.jpg',
+    desc: 'أظهرت موهبتها القوية في أولى بطولاتها النسائية في شجر الزيتون.',
+    works: ['photo47.jpg']
+  },
+  {
+    id: 'name144',
+    name: 'جواد',
+    image: 'jawad.jpg',
+    desc: 'ذو الأدوار البسيطة لكن بمستواه العالي وبصمته المختلفة. كما أنه موديل مشهور.',
+    works: ['photo44.jpg', 'photo49.jpg']
+  },
+  {
+    id: 'name145',
+    name: 'توغي',
+    image: 'toge.jpg',
+    desc: 'ذو الأدوار البسيطة لكن بمستواه العالي وبصمته المختلفة وروحه المرحة.',
+    works: ['photo43.jpg', 'photo39.jpg']
+  },
+  {
+    id: 'name146',
+    name: 'أويس',
+    image: 'oays.jpg',
+    desc: 'مدرب لياقة بدنية أثبت مستواه التمثيلي ولاقى إعجاب جماهيري عالي.',
+    works: ['photo47.jpg']
+  },
+  {
+    id: 'name147',
+    name: 'جيمري',
+    image: 'cemre.jpg',
+    desc: 'ممثلة موهوبة مستوحاة من ممثلة تركية ، اشتهرت ببطولتها الخفيفة واللطيفة في لعبة الحظ.',
+    works: ['photo50.jpg']
+  },
+  {
+    id: 'name148',
+    name: 'ألبير',
+    image: 'alper.jpg',
+    desc: 'موديل مشهور وممثل بارع أثبت هويته سريعا ببطولة لعبة الحظ ونال إعجابا جماهيريا عاليا.',
+    works: ['photo50.jpg']
+  },
+  {
+    id: 'name149',
+    name: 'آدم',
+    image: 'adam.jpg',
+    desc: 'مدرب لياقة بدنية أثبت مستواه التمثيلي ولاقى إعجاب جماهيري عالي وسرعان ما نال بطولات مطلقة.',
+    works: ['photo51.jpg']
+  },
+  {
+    id: 'name150',
+    name: 'إرديم',
+    image: 'adil.jpg',
+    desc: 'ممثل موهوب ووسيم، يترك بصمات مميزة ومستوحى من ممثل تركي بذات الاسم.',
+    works: ['photo51.jpg']
+  },
+];
+
+
+let favorites = JSON.parse(localStorage.getItem('goldenBeeFavorites') || '[]');
+let showFavorites = false;
+
+function saveFavorites() {
+  localStorage.setItem('goldenBeeFavorites', JSON.stringify(favorites));
 }
 
-// عند تحميل الصفحة: إعادة تفعيل النجوم
-window.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.card').forEach(card => {
-    const key = card.getAttribute('onclick').match(/'([^']+)'/)[1];
-    const star = card.querySelector('.star');
-    if (localStorage.getItem('star-' + key) === 'true') {
-      star.classList.add('starred');
-    }
+function render() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const list = PEOPLE.filter(p => {
+    const match = p.name.toLowerCase().includes(q);
+    const fav = favorites.includes(p.id);
+    return match && (!showFavorites || fav);
   });
+
+  document.getElementById('count').textContent = PEOPLE.length;
+  document.getElementById('favCount').textContent = favorites.length;
+
+  const grid = document.getElementById('grid');
+  if (!list.length) {
+    grid.innerHTML = '<div class="empty">ما في نتائج مطابقة 🔎</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(p => `
+    <article class="card">
+      <div class="photo-wrap" onclick="openProfile('${p.id}')">
+        <button class="favorite ${favorites.includes(p.id) ? 'on' : ''}"
+          onclick="event.stopPropagation(); toggleFavorite('${p.id}')">${favorites.includes(p.id) ? '★' : '☆'}</button>
+        <img src="${p.image}" alt="${p.name}" loading="lazy">
+        <div class="photo-shade"></div>
+      </div>
+      <div class="card-info">
+        <h2>${p.name}</h2>
+        <span>مكتبة النجوم</span>
+        <button class="open" onclick="openProfile('${p.id}')">استكشف الملف</button>
+      </div>
+    </article>
+  `).join('');
+}
+
+function toggleFavorite(id) {
+  favorites = favorites.includes(id)
+    ? favorites.filter(x => x !== id)
+    : [...favorites, id];
+  saveFavorites();
+  render();
+  showToast(favorites.includes(id) ? 'تمت الإضافة إلى المفضل ⭐' : 'تمت الإزالة من المفضل');
+}
+
+function openProfile(id) {
+  const p = PEOPLE.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('profileImg').src = p.image;
+  document.getElementById('profileName').textContent = p.name;
+  document.getElementById('profileDesc').textContent = p.desc || 'لا يوجد وصف بعد.';
+  document.getElementById('gallery').innerHTML = (p.works || []).map(w =>
+    `<img src="${w}" alt="${p.name}" onclick="openLightbox('${w}')" loading="lazy">`
+  ).join('') || '<p style="color:#999">لا توجد أعمال مضافة بعد.</p>';
+  document.getElementById('modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProfile() {
+  document.getElementById('modal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('show');
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('show');
+}
+
+function showToast(text) {
+  const t = document.getElementById('toast');
+  t.textContent = text;
+  t.classList.add('show');
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('allBtn').onclick = () => {
+  showFavorites = false;
+  document.getElementById('allBtn').classList.add('active');
+  document.getElementById('favBtn').classList.remove('active');
+  render();
+};
+document.getElementById('favBtn').onclick = () => {
+  showFavorites = true;
+  document.getElementById('favBtn').classList.add('active');
+  document.getElementById('allBtn').classList.remove('active');
+  render();
+};
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target.id === 'modal') closeProfile();
 });
-  </script>
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeProfile();
+    closeLightbox();
+  }
+});
+render();
+</script>
 </body>
 </html>
