@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اتقدم | The Proposal Game</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Amiri:wght@400;700&display=swap');
+
+:root {
+ --bg:#160f17;
+ --bg2:#211521;
+ --card:#2b1d29;
+ --gold:#d9b36c;
+ --gold2:#f3dba8;
+ --rose:#a84e69;
+ --pink:#d98da1;
+ --white:#fff8f0;
+ --muted:#c0adb8;
+ --green:#79cba1;
+ --red:#e47b83;
+}
+
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ background:
+ radial-gradient(ellipse at top,#513044 0%,transparent 55%),
+ linear-gradient(150deg,#120e15,#241522 65%,#130e14);
+ color:var(--white);
+ font-family:'Cairo',Tahoma,sans-serif;
+ min-height:100vh;
+}
+
+button,input,textarea{font-family:inherit}
+
+button{
+ cursor:pointer;
+ border:none;
+ transition:.2s;
+}
+
+button:hover{transform:translateY(-2px);filter:brightness(1.1)}
+
+header{
+ text-align:center;
+ padding:28px 16px 18px;
+}
+
+header h1{
+ font-family:'Amiri',serif;
+ font-size:clamp(42px,7vw,70px);
+ color:var(--gold2);
+ margin:0;
+ text-shadow:0 3px 20px #d9b36c55;
+}
+
+header p{color:var(--muted);margin:0;font-size:14px}
+
+.ring-decoration{
+ font-size:32px;
+ margin-bottom:5px;
+}
+
+.episode-bar{
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ gap:12px;
+ flex-wrap:wrap;
+ margin:12px auto 22px;
+ padding:0 14px;
+}
+
+.episode-bar input{
+ background:#ffffff12;
+ color:white;
+ border:1px solid #d9b36c66;
+ border-radius:10px;
+ padding:10px 14px;
+ width:190px;
+ text-align:center;
+ outline:none;
+}
+
+.tabs{
+ display:flex;
+ justify-content:center;
+ gap:8px;
+ flex-wrap:wrap;
+ margin:0 auto 24px;
+ padding:0 12px;
+}
+
+.tab{
+ background:#ffffff12;
+ color:var(--muted);
+ border:1px solid #ffffff22;
+ padding:10px 20px;
+ border-radius:30px;
+ font-weight:700;
+}
+
+.tab.active{
+ background:var(--gold);
+ color:#211521;
+ border-color:var(--gold);
+}
+
+main{
+ max-width:1250px;
+ margin:auto;
+ padding:0 16px 60px;
+}
+
+.section{display:none}
+.section.active{display:block}
+
+.section-title{
+ text-align:center;
+ color:var(--gold2);
+ font-family:'Amiri',serif;
+ font-size:30px;
+ margin:10px 0 20px;
+}
+
+.teams-grid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:18px;
+}
+
+.team-card{
+ background:linear-gradient(145deg,#382536,#241923);
+ border:1px solid #d9b36c55;
+ border-radius:18px;
+ padding:16px;
+ box-shadow:0 8px 25px #0003;
+}
+
+.team-header{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ border-bottom:1px solid #d9b36c44;
+ padding-bottom:10px;
+ margin-bottom:14px;
+}
+
+.team-header h3{
+ color:var(--gold2);
+ margin:0;
+ font-size:20px;
+}
+
+.team-status{
+ color:var(--muted);
+ font-size:12px;
+}
+
+.players-grid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:12px;
+}
+
+.player-card{
+ background:#ffffff0b;
+ border:1px solid #ffffff18;
+ border-radius:13px;
+ padding:10px;
+ text-align:center;
+ min-width:0;
+}
+
+.player-photo{
+ width:100%;
+ height:180px;
+ object-fit:cover;
+ object-position:center 1%;
+ display:block;
+ border-radius:9px;
+ background:#171019;
+}
+
+.player-name{
+ color:var(--white);
+ font-weight:800;
+ margin:8px 0 2px;
+ font-size:16px;
+}
+
+.player-score{
+ color:var(--gold2);
+ font-size:26px;
+ font-weight:900;
+ line-height:1.3;
+}
+
+.score-controls{
+ display:flex;
+ justify-content:center;
+ gap:8px;
+ margin-top:7px;
+}
+
+.score-btn{
+ width:34px;
+ height:32px;
+ border-radius:8px;
+ font-size:20px;
+ font-weight:900;
+}
+
+.plus{background:var(--green);color:#14251c}
+.minus{background:var(--red);color:#30151a}
+
+.qualified-label{
+ color:var(--green);
+ font-size:12px;
+ font-weight:800;
+ margin-top:5px;
+}
+
+.question-panel,.final-panel,.add-question-panel{
+ background:linear-gradient(145deg,#382536,#241923);
+ border:1px solid #d9b36c55;
+ border-radius:18px;
+ padding:22px;
+ margin:18px auto;
+ max-width:900px;
+}
+
+.question-panel h3,.final-panel h3,.add-question-panel h3{
+ color:var(--gold2);
+ font-family:'Amiri',serif;
+ font-size:25px;
+ margin:0 0 12px;
+}
+
+.primary-btn{
+ background:linear-gradient(135deg,var(--gold2),var(--gold));
+ color:#281a22;
+ padding:11px 22px;
+ border-radius:10px;
+ font-weight:900;
+ margin:5px;
+}
+
+.secondary-btn{
+ background:#ffffff15;
+ color:var(--white);
+ border:1px solid #ffffff33;
+ padding:10px 18px;
+ border-radius:10px;
+ font-weight:700;
+ margin:5px;
+}
+
+.danger-btn{
+ background:#8d394d;
+ color:white;
+ padding:10px 18px;
+ border-radius:10px;
+ font-weight:700;
+ margin:5px;
+}
+
+input,textarea,select{
+ background:#ffffff12;
+ border:1px solid #d9b36c66;
+ color:var(--white);
+ border-radius:9px;
+ padding:10px 12px;
+ outline:none;
+}
+
+select option{background:#2b1d29;color:white}
+
+textarea{
+ width:100%;
+ min-height:75px;
+ resize:vertical;
+}
+
+.answer-grid{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:12px;
+ margin:18px 0;
+}
+
+.answer-card{
+ max-width:680px;
+ width:100%;
+ margin-inline:auto;
+ background:#ffffff0d;
+ border:1px solid #d9b36c55;
+ border-radius:12px;
+ padding:16px;
+ text-align:center;
+ min-height:75px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-weight:700;
+ line-height:1.7;
+}
+
+.answer-card.hidden-answer{
+ color:transparent;
+ background:#ffffff08;
+ border-style:dashed;
+}
+
+.answer-card.hidden-answer::after{
+ content:"؟";
+ color:var(--gold);
+ font-size:25px;
+}
+
+.team-pick-row{
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:9px;
+ margin:14px 0 18px;
+}
+
+.team-pick-btn{
+ background:#ffffff12;
+ color:var(--white);
+ border:1px solid #d9b36c66;
+ padding:11px 6px;
+ border-radius:10px;
+ font-weight:800;
+}
+
+.team-pick-btn.active{
+ background:var(--gold);
+ color:#211521;
+ border-color:var(--gold2);
+}
+
+.answer-reveal-card{
+ display:flex;
+ align-items:center;
+ gap:14px;
+ text-align:right;
+ justify-content:flex-start;
+ min-height:104px;
+}
+
+.answer-reveal-card img{
+ width:66px;
+ height:78px;
+ object-fit:cover;
+ object-position:center 1%;
+ border-radius:8px;
+ flex:0 0 auto;
+ background:#171019;
+}
+
+.answer-reveal-card .answer-player-name{
+ color:var(--gold2);
+ font-size:14px;
+ margin-bottom:5px;
+}
+
+.answer-reveal-card .answer-player-text{
+ line-height:1.7;
+}
+
+.answer-reveal-card.locked .answer-player-text{
+ color:transparent;
+ user-select:none;
+}
+
+.answer-reveal-card.locked .answer-player-text::after{
+ content:"الإجابة مخفية 🤫";
+ color:var(--gold);
+}
+
+.question-controls{
+ display:flex;
+ justify-content:center;
+ flex-wrap:wrap;
+ gap:8px;
+}
+
+.form-row{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+ margin:10px 0;
+}
+
+.form-row input{width:100%}
+
+.finalists-grid{
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:12px;
+ margin:15px 0;
+}
+
+.finalist-slot{
+ background:#ffffff0d;
+ border:1px solid #d9b36c55;
+ border-radius:12px;
+ padding:12px;
+ text-align:center;
+ min-height:90px;
+}
+
+.finalist-slot strong{
+ display:block;
+ color:var(--gold2);
+ margin-bottom:5px;
+}
+
+.champion{
+ text-align:center;
+ font-family:'Amiri',serif;
+ font-size:34px;
+ color:var(--gold2);
+ padding:20px;
+ white-space:pre-line;
+}
+
+.small-note{
+ color:var(--muted);
+ font-size:12px;
+ line-height:1.8;
+}
+
+hr{
+ border:0;
+ border-top:1px solid #d9b36c33;
+ margin:20px 0;
+}
+
+@media(max-width:700px){
+ .teams-grid{grid-template-columns:1fr}
+ .finalists-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .player-photo{height:160px}
+}
+
+@media(max-width:420px){
+ .players-grid{gap:8px}
+ .player-card{padding:7px}
+ .player-photo{height:140px}
+ .player-name{font-size:14px}
+ .answer-grid{grid-template-columns:1fr}
+ .form-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="ring-decoration">💍 ✨ 💍</div>
+ <h1>اتقدم</h1>
+ <p>لعبة الحب والخطوبة والتحدي</p>
+</header>
+
+<div class="episode-bar">
+ <input id="episodeNumber" type="text" value="الحلقة 1" placeholder="رقم الحلقة">
+ <input id="womanName" type="text" placeholder="اسم العروسة">
+ <button class="secondary-btn" onclick="saveGame()">حفظ التغييرات</button>
+ <button class="secondary-btn" onclick="newEpisode()">حلقة جديدة</button>
+</div>
+
+<nav class="tabs">
+ <button class="tab active" onclick="showTab('competition',this)">المنافسة</button>
+ <button class="tab" onclick="showTab('questions',this)">الأسئلة</button>
+ <button class="tab" onclick="showTab('final',this)">النهائي 💍</button>
+</nav>
+
+<main>
+
+<section id="competition" class="section active">
+ <h2 class="section-title">المنافسة بين الفرق</h2>
+ <p class="small-note" style="text-align:center">
+ كل فريق فيه 4 لاعبين. أول لاعب يوصل إلى 3 نقاط يتأهل إلى النهائي.
+ </p>
+ <div class="teams-grid" id="teamsContainer"></div>
+</section>
+
+<section id="questions" class="section">
+ <h2 class="section-title">أسئلة الحلقة</h2>
+
+ <div class="question-panel">
+  <h3>🎤 السؤال الحالي</h3>
+
+  <div id="questionText" style="font-size:21px;font-weight:800;line-height:1.8;margin:15px 0">
+   اضغط على زر السؤال لبدء اللعب
+  </div>
+
+  <div class="question-controls">
+   <button class="primary-btn" onclick="randomQuestion()">اختيار السؤال التالي</button>
+   <button class="secondary-btn" onclick="resetQuestionRound()">إعادة الأسئلة من البداية</button>
+  </div>
+
+  <h3 style="margin-top:22px">اختَر الفريق لتوزيع الإجابات</h3>
+
+  <div class="team-pick-row" id="questionTeamButtons">
+   <button class="team-pick-btn" onclick="selectQuestionTeam(0)">الفريق 1</button>
+   <button class="team-pick-btn" onclick="selectQuestionTeam(1)">الفريق 2</button>
+   <button class="team-pick-btn" onclick="selectQuestionTeam(2)">الفريق 3</button>
+   <button class="team-pick-btn" onclick="selectQuestionTeam(3)">الفريق 4</button>
+  </div>
+
+  <div id="answerStatus" class="small-note" style="text-align:center">
+   اختَر سؤالاً ثم اضغط على الفريق.
+  </div>
+
+  <div class="answer-grid" id="answersContainer"></div>
+
+  <div class="question-controls">
+   <button class="primary-btn" id="revealNextBtn"
+    onclick="revealNextAnswer()" disabled>
+    كشف إجابة اللاعب الأول
+   </button>
+  </div>
+
+  <hr>
+
+  <h3>احتساب النقطة</h3>
+
+  <div class="form-row">
+   <select id="scoringTeam">
+    <option value="0">الفريق الأول</option>
+    <option value="1">الفريق الثاني</option>
+    <option value="2">الفريق الثالث</option>
+    <option value="3">الفريق الرابع</option>
+   </select>
+
+   <select id="scoringPlayer"></select>
+  </div>
+
+  <button class="primary-btn" onclick="awardSelectedPoint()">
+   إضافة نقطة للاعب
+  </button>
+
+  <p class="small-note">
+   اختَر الفريق واللاعب الذي فاز بالإجابة، ثم أضف له نقطة.
+  </p>
+ </div>
+
+ <div class="add-question-panel">
+  <h3>➕ إضافة سؤال جديد</h3>
+
+  <input id="newQuestion" type="text"
+   placeholder="اكتب السؤال هنا"
+   style="width:100%;margin-bottom:10px">
+
+  <div class="form-row">
+   <input id="answer1" type="text" placeholder="الإجابة الأولى">
+   <input id="answer2" type="text" placeholder="الإجابة الثانية">
+   <input id="answer3" type="text" placeholder="الإجابة الثالثة">
+   <input id="answer4" type="text" placeholder="الإجابة الرابعة">
+  </div>
+
+  <button class="primary-btn" onclick="addQuestion()">
+   إضافة السؤال
+  </button>
+
+  <p class="small-note">
+   الأسئلة التي تضيفها يتم حفظها في هذا المتصفح.
+  </p>
+ </div>
+</section>
+
+<section id="final" class="section">
+ <h2 class="section-title">النهائي الكبير 💍</h2>
+
+ <div class="final-panel">
+  <h3>المتأهلون إلى النهائي</h3>
+  <p class="small-note">
+   أول لاعب يصل إلى 3 نقاط من كل فريق يتأهل.
+  </p>
+  <div class="finalists-grid" id="finalistsContainer"></div>
+ </div>
+
+ <div class="final-panel">
+  <h3>👑 اختيار الفائز النهائي</h3>
+  <p class="small-note">اختَر الفائز من بين المتأهلين.</p>
+
+  <select id="championSelect" style="width:100%;margin:10px 0">
+   <option value="">اختيار الفائز</option>
+  </select>
+
+  <button class="primary-btn" onclick="declareChampion()">
+   إعلان الفائز 🏆
+  </button>
+
+  <div id="championDisplay" class="champion"></div>
+ </div>
+</section>
+
+</main>
+<script>
+const teams = [
+ {
+  name:"الفريق الأول",
+  players:[
+   {name:"بوران",photo:"buran.jpg",score:0},
+   {name:"لوكاس",photo:"lukas.jpg",score:0},
+   {name:"حمزة",photo:"hamza.jpg",score:0},
+   {name:"يونس",photo:"zl2.jpg",score:0}
+  ]
+ },
+ {
+  name:"الفريق الثاني",
+  players:[
+   {name:"كارلوس",photo:"ali2.jpg",score:0},
+   {name:"فهد",photo:"fahed.jpg",score:0},
+   {name:"ليو",photo:"zl3.jpg",score:0},
+   {name:"ألبير",photo:"alper.jpg",score:0}
+  ]
+ },
+ {
+  name:"الفريق الثالث",
+  players:[
+   {name:"إبراهيم",photo:"ibrahim.jpg",score:0},
+   {name:"توماس",photo:"tomas.jpg",score:0},
+   {name:"عز",photo:"ali1.jpg",score:0},
+   {name:"أليكس",photo:"alex.jpg",score:0}
+  ]
+ },
+ {
+  name:"الفريق الرابع",
+  players:[
+   {name:"أويس",photo:"oais.jpg",score:0},
+   {name:"يحيى",photo:"yahya.jpg",score:0},
+   {name:"عصام",photo:"lg3.jpg",score:0},
+   {name:"نوح",photo:"noah.jpg",score:0}
+  ]
+ }
+];
+
+// Your four original questions
+const DEFAULT_QUESTIONS = [
+ {
+  id:"default-1",
+  q:"ايه اكتر حاجة بتحبها بيا؟",
+  a:[
+   "لابسة شتوي وجاهزة اوديكي تحت الصفر",
+   "انك مش مورية الناس عيونك فيضحكوا",
+   "الي جوا الشنطة اكيد",
+   "صاحبتك مادلين"
+  ]
+ },
+ {
+  id:"default-2",
+  q:"هتفاجئني بايه بأهم يوم بحياتي؟",
+  a:[
+   "موعد عند دكتور تجميل",
+   "اعقد جواز عرفي",
+   "زي ما تيا فاجئتك بالظبط",
+   "اعزم أمي البيت"
+  ]
+ },
+ {
+  id:"default-3",
+  q:"شفنا غلطة شباب اهالينا، بس ايه هي غلطة شبابك؟",
+  a:[
+   "اني مسمعتش كلام أمي واتجوزت الأوفر",
+   "اني سبتك تمثلي ونكدت عالبشر",
+   "اني علمتك السباحة بدل ما اسيبك لربنا",
+   "غلط؟؟! انا مبغلطش زيك يا حبيبتي"
+  ]
+ },
+ {
+  id:"default-4",
+  q:"اتغزل بيا ببيت شعر؟",
+  a:[
+   "وقعت بيكي وفكرتيني عشقان | اخترتك بس عشان عقلي تعبان",
+   "يا عمري يا أجمل شخصية | بكلم أمي انت مالك يا ولية",
+   "خضرا عشان طمعان فدولاراتك | بس بخيلة وهبلة باختياراتك",
+   "شافوكي لقوا دمك تقيل | معرفش ازاي دخلوكي التمثيل"
+  ]
+ }
+];
+
+let questions = DEFAULT_QUESTIONS.map(q=>({...q,a:[...q.a]}));
+
+let qualified = [null,null,null,null];
+let currentQuestion = null;
+let champion = "";
+let selectedQuestionTeam = null;
+let assignedAnswers = [];
+let revealedAnswerCount = 0;
+let usedQuestionIds = [];
+
+const QUESTIONS_VERSION = 4;
+const STORAGE_KEY = "atqadamGame";
+
+// Switch between pages
+function showTab(id,button){
+ document.querySelectorAll(".section").forEach(section=>{
+  section.classList.remove("active");
+ });
+
+ document.querySelectorAll(".tab").forEach(tab=>{
+  tab.classList.remove("active");
+ });
+
+ document.getElementById(id).classList.add("active");
+ button.classList.add("active");
+}
+
+// Randomize answers
+function shuffle(array){
+ const items=[...array];
+
+ for(let i=items.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [items[i],items[j]]=[items[j],items[i]];
+ }
+
+ return items;
+}
+
+// Display teams and players
+function renderTeams(){
+
+ const container=document.getElementById("teamsContainer");
+ container.innerHTML="";
+
+ teams.forEach((team,teamIndex)=>{
+
+  const card=document.createElement("div");
+  card.className="team-card";
+
+  const qualifiedPlayer=qualified[teamIndex];
+
+  card.innerHTML=`
+   <div class="team-header">
+    <h3>${team.name}</h3>
+    <span class="team-status">
+     ${qualifiedPlayer!==null?"🏆 تأهل لاعب":"في المنافسة"}
+    </span>
+   </div>
+
+   <div class="players-grid">
+
+    ${team.players.map((player,playerIndex)=>`
+
+     <div class="player-card">
+
+      <img class="player-photo"
+       src="${player.photo}"
+       alt="${player.name}"
+       onerror="this.style.opacity='.25';this.alt='الصورة غير موجودة'">
+
+      <div class="player-name">${player.name}</div>
+
+      <div class="player-score">${player.score}</div>
+
+      <div class="score-controls">
+
+       <button class="score-btn plus"
+        onclick="addPoint(${teamIndex},${playerIndex})"
+        ${qualifiedPlayer!==null?"disabled":""}>
+        +
+       </button>
+
+       <button class="score-btn minus"
+        onclick="removePoint(${teamIndex},${playerIndex})">
+        −
+       </button>
+
+      </div>
+
+      ${qualifiedPlayer===playerIndex?
+       '<div class="qualified-label">متأهل إلى النهائي 🏆</div>':""}
+
+     </div>
+
+    `).join("")}
+
+   </div>
+  `;
+
+  container.appendChild(card);
+
+ });
+
+ renderFinalists();
+ populateScoringPlayers();
+}
+
+// Add a point
+function addPoint(teamIndex,playerIndex){
+
+ if(qualified[teamIndex]!==null)return;
+
+ const player=teams[teamIndex].players[playerIndex];
+
+ player.score++;
+
+ if(player.score>=3){
+
+  qualified[teamIndex]=playerIndex;
+
+  alert("مبروك! "+player.name+" تأهل إلى النهائي! 🏆");
+ }
+
+ saveGame();
+ renderTeams();
+}
+
+// Remove a point
+function removePoint(teamIndex,playerIndex){
+
+ const player=teams[teamIndex].players[playerIndex];
+
+ if(player.score>0)player.score--;
+
+ if(qualified[teamIndex]===playerIndex && player.score<3){
+  qualified[teamIndex]=null;
+ }
+
+ saveGame();
+ renderTeams();
+}
+
+// Display finalists
+function renderFinalists(){
+
+ const container=document.getElementById("finalistsContainer");
+ const select=document.getElementById("championSelect");
+
+ container.innerHTML="";
+ select.innerHTML='<option value="">اختيار الفائز</option>';
+
+ teams.forEach((team,teamIndex)=>{
+
+  const slot=document.createElement("div");
+  slot.className="finalist-slot";
+
+  const playerIndex=qualified[teamIndex];
+
+  if(playerIndex!==null){
+
+   const player=team.players[playerIndex];
+
+   slot.innerHTML=`
+    <strong>${team.name}</strong>
+    ${player.name} 🏆
+   `;
+
+   const option=document.createElement("option");
+
+   option.value=teamIndex+"-"+playerIndex;
+   option.textContent=player.name+" - "+team.name;
+
+   select.appendChild(option);
+
+  }else{
+
+   slot.innerHTML=`
+    <strong>${team.name}</strong>
+    لم يتأهل أحد بعد
+   `;
+
+  }
+
+  container.appendChild(slot);
+
+ });
+}
+
+// Populate player selection
+function populateScoringPlayers(){
+
+ const teamIndex=Number(
+  document.getElementById("scoringTeam").value||0
+ );
+
+ const select=document.getElementById("scoringPlayer");
+
+ select.innerHTML="";
+
+ teams[teamIndex].players.forEach((player,index)=>{
+
+  const option=document.createElement("option");
+
+  option.value=index;
+  option.textContent=player.name;
+
+  select.appendChild(option);
+
+ });
+
+}
+
+document.getElementById("scoringTeam")
+ .addEventListener("change",populateScoringPlayers);
+
+// Award a point using the selection menus
+function awardSelectedPoint(){
+
+ addPoint(
+  Number(document.getElementById("scoringTeam").value),
+  Number(document.getElementById("scoringPlayer").value)
+ );
+
+}
+
+// Clear previous answer display
+function clearAnswerDisplay(){
+
+ document.getElementById("answersContainer").innerHTML="";
+
+ revealedAnswerCount=0;
+ assignedAnswers=[];
+ selectedQuestionTeam=null;
+
+ updateQuestionTeamButtons();
+
+ document.getElementById("revealNextBtn").disabled=true;
+
+ document.getElementById("revealNextBtn").textContent=
+  "كشف إجابة اللاعب الأول";
+
+}
+
+// Select a question without repeating previously used questions
+function randomQuestion(){
+
+ const available=questions.filter(question=>
+  !usedQuestionIds.includes(question.id)
+ );
+
+ if(!available.length){
+
+  currentQuestion=null;
+
+  clearAnswerDisplay();
+
+  document.getElementById("questionText").textContent=
+   "انتهت كل الأسئلة! 🎉";
+
+  document.getElementById("answerStatus").textContent=
+   "استخدم زر إعادة الأسئلة من البداية لبدء جولة جديدة.";
+
+  saveGame();
+  return;
+ }
+
+ const picked=available[
+  Math.floor(Math.random()*available.length)
+ ];
+
+ currentQuestion=picked;
+
+ usedQuestionIds.push(picked.id);
+
+ clearAnswerDisplay();
+
+ document.getElementById("questionText").textContent=picked.q;
+
+ document.getElementById("answerStatus").textContent=
+  "اختَر الفريق الذي سيلعب هذا السؤال. سيتم توزيع الإجابات تلقائياً على لاعبيه.";
+
+ saveGame();
+
+}
+
+// When a team is selected, automatically assign answers randomly
+function selectQuestionTeam(teamIndex){
+
+ if(!currentQuestion){
+  alert("اختَر سؤالاً أولاً!");
+  return;
+ }
+
+ // Don't reshuffle once answers have started being revealed
+ if(revealedAnswerCount>0){
+  alert("بدأت الإجابات بالفعل. اختَر السؤال التالي لتغيير الفريق.");
+  return;
+ }
+
+ selectedQuestionTeam=teamIndex;
+
+ const shuffledAnswers=shuffle(currentQuestion.a);
+
+ assignedAnswers=teams[teamIndex].players.map(
+  (player,index)=>({
+   playerIndex:index,
+   answer:shuffledAnswers[index]
+  })
+ );
+
+ revealedAnswerCount=0;
+
+ updateQuestionTeamButtons();
+
+ renderAssignedAnswers();
+
+ document.getElementById("answerStatus").textContent=
+  teams[teamIndex].name+
+  " — الإجابة الأولى جاهزة. اكشفها عندما تكون مستعداً!";
+
+ const nextButton=document.getElementById("revealNextBtn");
+
+ nextButton.disabled=false;
+
+ nextButton.textContent=
+  "كشف إجابة "+teams[teamIndex].players[0].name;
+
+ saveGame();
+
+}
+
+// Highlight the selected team
+function updateQuestionTeamButtons(){
+
+ document.querySelectorAll(".team-pick-btn").forEach(
+  (button,index)=>{
+   button.classList.toggle(
+    "active",
+    selectedQuestionTeam===index
+   );
+  }
+ );
+
+}
+
+// Show revealed answers, plus ONE locked card for the next player
+function renderAssignedAnswers(){
+
+ const container=document.getElementById("answersContainer");
+
+ container.innerHTML="";
+
+ if(selectedQuestionTeam===null || !assignedAnswers.length){
+  return;
+ }
+
+ assignedAnswers.forEach((item,i)=>{
+
+  // future players stay completely hidden
+  if(i>revealedAnswerCount) return;
+
+  const player=teams[selectedQuestionTeam].players[item.playerIndex];
+
+  const revealed=i<revealedAnswerCount;
+
+  const card=document.createElement("div");
+
+  card.className=
+   "answer-card answer-reveal-card"+
+   (revealed?"":" locked");
+
+  const img=document.createElement("img");
+
+  img.src=player.photo;
+  img.alt=player.name;
+
+  img.onerror=function(){
+   this.style.opacity=".2";
+  };
+
+  const content=document.createElement("div");
+
+  const name=document.createElement("div");
+
+  name.className="answer-player-name";
+
+  name.textContent="اللاعب "+(i+1)+": "+player.name;
+
+  const answer=document.createElement("div");
+
+  answer.className="answer-player-text";
+
+  // locked cards don't even contain the answer text
+  answer.textContent=revealed?item.answer:"";
+
+  content.append(name,answer);
+
+  card.append(img,content);
+
+  container.appendChild(card);
+
+ });
+
+}
+
+// Reveal the next player's answer
+function revealNextAnswer(){
+
+ if(selectedQuestionTeam===null || !assignedAnswers.length){
+
+  alert("اختَر الفريق أولاً لتوزيع الإجابات.");
+
+  return;
+ }
+
+ if(revealedAnswerCount>=assignedAnswers.length)return;
+
+ const justRevealedIndex=revealedAnswerCount;
+
+ revealedAnswerCount++;
+
+ renderAssignedAnswers();
+
+ const button=document.getElementById("revealNextBtn");
+
+ if(revealedAnswerCount<assignedAnswers.length){
+
+  const nextPlayer=
+   teams[selectedQuestionTeam].players[revealedAnswerCount];
+
+  button.textContent="كشف إجابة "+nextPlayer.name;
+
+  document.getElementById("answerStatus").textContent=
+   "تم كشف إجابة "+
+   teams[selectedQuestionTeam].players[justRevealedIndex].name+
+   ". اضغط لكشف إجابة اللاعب التالي.";
+
+ }else{
+
+  button.disabled=true;
+
+  button.textContent="تم كشف كل الإجابات ✓";
+
+  document.getElementById("answerStatus").textContent=
+   "انتهت إجابات هذا الفريق. اختَر السؤال التالي عندما تكون جاهزاً.";
+
+ }
+
+}
+
+// Reset all questions
+function resetQuestionRound(){
+
+ if(!confirm("هل تريد إعادة جميع الأسئلة لتصبح متاحة من البداية؟")){
+  return;
+ }
+
+ usedQuestionIds=[];
+ currentQuestion=null;
+
+ clearAnswerDisplay();
+
+ document.getElementById("questionText").textContent=
+  "اضغط على زر السؤال لبدء اللعب";
+
+ document.getElementById("answerStatus").textContent=
+  "تمت إعادة الأسئلة. يمكنك البدء من جديد.";
+
+ saveGame();
+
+}
+
+// Add a custom question
+function addQuestion(){
+
+ const q=document.getElementById("newQuestion").value.trim();
+
+ const answers=[
+  "answer1",
+  "answer2",
+  "answer3",
+  "answer4"
+ ].map(id=>document.getElementById(id).value.trim());
+
+ if(!q||answers.some(answer=>!answer)){
+
+  alert("من فضلك اكتب السؤال وكل الإجابات الأربعة.");
+
+  return;
+ }
+
+ questions.push({
+  id:"added-"+Date.now()+"-"+Math.random().toString(36).slice(2,7),
+  q,
+  a:answers
+ });
+
+ document.getElementById("newQuestion").value="";
+
+ ["answer1","answer2","answer3","answer4"].forEach(id=>{
+  document.getElementById(id).value="";
+ });
+
+ saveGame();
+
+ alert("تمت إضافة السؤال بنجاح!");
+
+}
+
+// Declare the champion
+function declareChampion(){
+
+ const value=document.getElementById("championSelect").value;
+
+ if(!value){
+
+  alert("اختار لاعب من المتأهلين أولاً.");
+
+  return;
+ }
+
+ const [teamIndex,playerIndex]=value.split("-").map(Number);
+
+ champion=teams[teamIndex].players[playerIndex].name;
+
+ document.getElementById("championDisplay").textContent=
+  "💍 مبروك للفائز 💍\n"+champion+" 👑";
+
+ saveGame();
+
+}
+
+// Start a new episode
+function newEpisode(){
+
+ if(!confirm("هل تريد بدء حلقة جديدة؟ سيتم مسح اسم العروسة فقط، مع الاحتفاظ بالنقاط والتأهل.")){
+  return;
+ }
+
+ document.getElementById("womanName").value="";
+
+ document.getElementById("episodeNumber").value="حلقة جديدة";
+
+ document.getElementById("championDisplay").textContent="";
+
+ champion="";
+
+ usedQuestionIds=[];
+
+ currentQuestion=null;
+
+ clearAnswerDisplay();
+
+ document.getElementById("questionText").textContent=
+  "اضغط على زر السؤال لبدء اللعب";
+
+ document.getElementById("answerStatus").textContent=
+  "حلقة جديدة — اختَر سؤالاً للبدء.";
+
+ saveGame();
+
+}
+
+// Save everything
+function saveGame(){
+
+ const data={
+
+  teams,
+
+  qualified,
+
+  questions,
+
+  questionsVersion:QUESTIONS_VERSION,
+
+  usedQuestionIds,
+
+  womanName:document.getElementById("womanName").value,
+
+  episodeNumber:document.getElementById("episodeNumber").value,
+
+  champion
+
+ };
+
+ try{
+
+  localStorage.setItem(
+   STORAGE_KEY,
+   JSON.stringify(data)
+  );
+
+ }catch(error){
+
+  console.error("تعذر حفظ البيانات",error);
+
+ }
+
+}
+
+// Load saved game
+function loadGame(){
+
+ const saved=localStorage.getItem(STORAGE_KEY);
+
+ if(!saved)return;
+
+ try{
+
+  const data=JSON.parse(saved);
+
+  // Restore player scores
+  if(Array.isArray(data.teams)){
+
+   data.teams.forEach((team,teamIndex)=>{
+
+    if(teams[teamIndex]&&Array.isArray(team.players)){
+
+     team.players.forEach((player,playerIndex)=>{
+
+      if(teams[teamIndex].players[playerIndex]){
+
+       teams[teamIndex].players[playerIndex].score=
+        Number(player.score)||0;
+
+      }
+
+     });
+
+    }
+
+   });
+
+  }
+
+  // Restore qualified players
+  if(Array.isArray(data.qualified)&&data.qualified.length===4){
+
+   qualified=data.qualified;
+
+  }
+
+  // Always preserve the four official questions.
+  // Keep additional questions created by the host.
+  if(
+  data.questionsVersion === QUESTIONS_VERSION &&
+  Array.isArray(data.questions)
+){
+
+   const defaultsById=new Set(
+    DEFAULT_QUESTIONS.map(question=>question.id)
+   );
+
+   const defaultTexts=new Set(
+    DEFAULT_QUESTIONS.map(question=>question.q)
+   );
+
+   const customQuestions=data.questions.filter(question=>
+    question&&
+    question.q&&
+    Array.isArray(question.a)&&
+    question.a.length===4&&
+    !defaultsById.has(question.id)&&
+    !defaultTexts.has(question.q)
+   );
+
+   const seen=new Set();
+
+   questions=[
+    ...DEFAULT_QUESTIONS.map(question=>({
+     ...question,
+     a:[...question.a]
+    })),
+
+    ...customQuestions.filter(question=>{
+
+     const key=question.q.trim();
+
+     if(seen.has(key))return false;
+
+     seen.add(key);
+
+     return true;
+
+    }).map((question,index)=>({
+
+     ...question,
+
+     id:question.id||("migrated-"+(index+1)),
+
+     a:[...question.a]
+
+    }))
+
+   ];
+
+  }
+
+  // Restore used questions only if the saved version matches.
+  if(
+   data.questionsVersion===QUESTIONS_VERSION&&
+   Array.isArray(data.usedQuestionIds)
+  ){
+
+   usedQuestionIds=data.usedQuestionIds.filter(id=>
+    questions.some(question=>question.id===id)
+   );
+
+  }else{
+
+   usedQuestionIds=[];
+
+  }
+
+  // Restore episode information
+  if(typeof data.womanName==="string"){
+
+   document.getElementById("womanName").value=data.womanName;
+
+  }
+
+  if(typeof data.episodeNumber==="string"){
+
+   document.getElementById("episodeNumber").value=data.episodeNumber;
+
+  }
+
+  // Restore champion
+  if(typeof data.champion==="string"){
+
+   champion=data.champion;
+
+  }
+
+  if(champion){
+
+   document.getElementById("championDisplay").textContent=
+    "💍 مبروك للفائز 💍\n"+champion+" 👑";
+
+  }
+
+ }catch(error){
+
+  console.error("تعذر تحميل البيانات",error);
+
+ }
+
+}
+
+// INITIALIZE THE GAME
+loadGame();
+
+renderTeams();
+
+updateQuestionTeamButtons();
+
+document.getElementById("answerStatus").textContent=
+ "تم استخدام "+
+ usedQuestionIds.length+
+ " من "+
+ questions.length+
+ " سؤالاً في هذه الحلقة.";
+
+</script>
+
+</body>
+</html>
